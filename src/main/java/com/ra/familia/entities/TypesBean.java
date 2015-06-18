@@ -28,4 +28,9 @@ public class TypesBean {
 	public void setID(String iD) {
 		ID = iD;
 	}
+	
+	@Override
+	public String toString() {
+		return name + " / "+type +" * ";
+	}
 }

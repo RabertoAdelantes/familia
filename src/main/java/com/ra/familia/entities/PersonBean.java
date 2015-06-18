@@ -1,13 +1,16 @@
 package com.ra.familia.entities;
 
 public class PersonBean {
-	private String ID; 
+	private String ID;
 	private String first_name;
 	private String midle_name;
 	private String second_name;
-	private String password_name;
+	private String password;
 	private String date_birth;
 	private String date_death;
+	private String email;
+	private boolean isDeleted;
+	private boolean isActive;
 
 	public String getFirst_name() {
 		return first_name;
@@ -33,12 +36,12 @@ public class PersonBean {
 		this.second_name = second_name;
 	}
 
-	public String getPassword_name() {
-		return password_name;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setPassword_name(String password_name) {
-		this.password_name = password_name;
+	public void setPassword(String password_name) {
+		this.password = password_name;
 	}
 
 	public String getDate_birth() {
@@ -56,9 +59,10 @@ public class PersonBean {
 	public void setDate_death(String date_death) {
 		this.date_death = date_death;
 	}
+
 	@Override
 	public String toString() {
-		return first_name + " / "+midle_name+" / "+second_name+" * ";
+		return first_name + " / " + midle_name + " / " + second_name + " * ";
 	}
 
 	public String getID() {
@@ -67,6 +71,30 @@ public class PersonBean {
 
 	public void setID(String iD) {
 		ID = iD;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 }

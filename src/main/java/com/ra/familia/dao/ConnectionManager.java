@@ -7,18 +7,22 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ConnectionManager {
 	// TODO: move to property file
-	public static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
+	private static final Logger LOG = LoggerFactory.getLogger(ConnectionManager.class);
+
 	public static final String DB_URL = "jdbc:oracle:thin:@localhost:1521/db";
 	public static final String USER = "roberto_adelantes";
-	public static final String PASSWORD = "password";
-	public static final String JDBCDRIVER = "sun.jdbc.odbc.JdbcOdbcDriver";
+    public static final String PASSWORD = "password";
+
+	public static final String JDBCDRIVER = "oracle.jdbc.driver.OracleDriver";
 	private static Connection con;
 
 	public static Connection getConnection() {
-		// return getDirectConnection();
-		return getJndiConnection();
+		return getDirectConnection();
 	}
 
 	public static Connection getDirectConnection() {
@@ -27,43 +31,43 @@ public class ConnectionManager {
 			try {
 				con = DriverManager.getConnection(DB_URL, USER, PASSWORD);
 			} catch (SQLException ex) {
-				ex.printStackTrace();
+				LOG.error(ex.getLocalizedMessage());
 			}
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			LOG.error(e.getLocalizedMessage());
 		}
 		return con;
 	}
 
 	public static Connection getJndiConnection() {
 		Context initContext = null;
-		Connection dbCon = null;
+		Connection con = null;
 		try {
 			initContext = new InitialContext();
 			Context webContext = (Context) initContext.lookup("java:/comp/env");
 			DataSource ds = (DataSource) webContext.lookup("jdbc/oradb");
-			dbCon = ds.getConnection();
+			con = ds.getConnection();
 		} catch (NamingException e) {
-			e.printStackTrace();
+			LOG.error(e.getLocalizedMessage());
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOG.error(e.getLocalizedMessage());
 		}
-		return dbCon;
+		return con;
 	}
 
 	public static void closeConnection(final Connection conn) {
 		try {
 			conn.close();
 		} catch (SQLException se) {
-			se.printStackTrace();
+			LOG.error(se.getLocalizedMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error(e.getLocalizedMessage());
 		} finally {
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
-				se.printStackTrace();
+				LOG.error(se.getLocalizedMessage());
 			}
 		}
 	}
@@ -72,16 +76,15 @@ public class ConnectionManager {
 		try {
 			stmt.close();
 		} catch (SQLException se) {
-			se.printStackTrace();
+			LOG.error(se.getLocalizedMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error(e.getLocalizedMessage());
 		} finally {
 			try {
 				if (stmt != null)
 					stmt.close();
 			} catch (SQLException se2) {
-				se2.printStackTrace();
-
+				LOG.error(se2.getLocalizedMessage());
 			}
 		}
 	}
