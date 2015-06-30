@@ -1,6 +1,9 @@
 package com.ra.familia.dao;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
+import java.util.Properties;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -11,15 +14,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ConnectionManager {
-	// TODO: move to property file
-	private static final Logger LOG = LoggerFactory.getLogger(ConnectionManager.class);
+	private static final Logger LOG = LoggerFactory
+			.getLogger(ConnectionManager.class);
 
-	public static final String DB_URL = "jdbc:oracle:thin:@localhost:1521/db";
-	public static final String USER = "roberto_adelantes";
-    public static final String PASSWORD = "password";
-
-	public static final String JDBCDRIVER = "oracle.jdbc.driver.OracleDriver";
+	private static Properties properties;
 	private static Connection con;
+
+	static {
+		properties = new Properties();
+		try (InputStream in = ConnectionManager.class
+				.getResourceAsStream("../../../../jdbc.properties")) {
+			properties.load(in);
+			in.close();
+		} catch (IOException ioex) {
+			LOG.error(ioex.getLocalizedMessage());
+		}
+
+	}
 
 	public static Connection getConnection() {
 		return getDirectConnection();
@@ -27,9 +38,12 @@ public class ConnectionManager {
 
 	public static Connection getDirectConnection() {
 		try {
-			Class.forName(JDBCDRIVER);
+			Class.forName(properties.getProperty("JDBCDRIVER"));
 			try {
-				con = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+				con = DriverManager.getConnection(
+						properties.getProperty("DB_URL"),
+						properties.getProperty("USER"),
+						properties.getProperty("PASSWORD"));
 			} catch (SQLException ex) {
 				LOG.error(ex.getLocalizedMessage());
 			}
@@ -41,7 +55,6 @@ public class ConnectionManager {
 
 	public static Connection getJndiConnection() {
 		Context initContext = null;
-		Connection con = null;
 		try {
 			initContext = new InitialContext();
 			Context webContext = (Context) initContext.lookup("java:/comp/env");

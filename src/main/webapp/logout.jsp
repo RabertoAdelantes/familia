@@ -1,5 +1,3 @@
-<%
-session.setAttribute("userName", null);
-session.invalidate();
-response.sendRedirect("index.jsp");
-%>
+<form method="post" action="Logout">
+	<input type="submit" value="Logout">
+</form>

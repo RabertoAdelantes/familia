@@ -1,4 +1,4 @@
 /target/
 /.git/
-/.settings/
+/.settings
 *.bat

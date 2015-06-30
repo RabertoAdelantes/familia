@@ -21,14 +21,6 @@ public class TypesDao extends AbstractDao<TypesBean> {
 	Set<TypesBean> getAllItems() {
 		return getAllItems(SELECT);
 	}
-	
-	TypesBean getItemByName(String name) {
-		return getItemByField(SELECT, "TYPES.NAME", name);
-	}
-
-	Set<TypesBean> getItemsByName(String name) {
-		return getItemsByField(SELECT, "TYPES.NAME", name);
-	}
 
 	private TypesBean fillBean(final ResultSet rs) throws SQLException {
 		TypesBean type = new TypesBean();
@@ -48,13 +40,9 @@ public class TypesDao extends AbstractDao<TypesBean> {
 
 	@Override
 	void addItem(TypesBean bean) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	void updateItem(TypesBean bean) {
-		// TODO Auto-generated method stub
-		
+	void updateItem(TypesBean bean) {		
 	}
 }

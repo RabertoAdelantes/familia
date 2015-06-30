@@ -1,7 +1,7 @@
 package com.ra.familia.entities;
 
 public class PersonBean {
-	private String ID;
+	private String id;
 	private String first_name;
 	private String midle_name;
 	private String second_name;
@@ -65,12 +65,12 @@ public class PersonBean {
 		return first_name + " / " + midle_name + " / " + second_name + " * ";
 	}
 
-	public String getID() {
-		return ID;
+	public String getId() {
+		return this.id;
 	}
 
-	public void setID(String iD) {
-		ID = iD;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getEmail() {

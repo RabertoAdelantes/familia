@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -21,19 +22,19 @@ public abstract class AbstractDao<T> {
 
 	abstract void updateItem(T bean);
 
-	public Connection getConnection() {
+	protected Connection getConnection() {
 		return ConnectionManager.getConnection();
 	}
 
-	public void closeConnection(final Connection conn) {
+	protected void closeConnection(final Connection conn) {
 		ConnectionManager.closeConnection(conn);
 	}
 
-	public void closeStatement(final Statement stmt) {
+	protected void closeStatement(final Statement stmt) {
 		ConnectionManager.closeStatement(stmt);
 	}
 	
-	public Set<T> getAllItems(String sqlQuery) {
+	protected Set<T> getAllItems(String sqlQuery) {
 		Connection conn = null;
 		Statement stmt = null;
 		Set<T> beans = new HashSet<T>();
@@ -52,16 +53,18 @@ public abstract class AbstractDao<T> {
 		return beans;
 	}
 	
-	public T getItemByField(final String sqlQuery, final String fieldName,final String fieldValue) {
+	protected Set<T> getItemByFields(final String sqlQuery, final String where,final List<Pair<Integer,String>> pairs) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		T bean = null;
 		Set<T> beans = new HashSet<T>();
 		try {
 			conn = getConnection();
 			stmt = conn.prepareStatement(sqlQuery
-					+ " where " +fieldName+" =?");
-			stmt.setString(1, fieldValue);
+					+ where);
+
+			for (int index = 0; index < pairs.size(); index++) {
+				stmt.setString(index+1, pairs.get(index).getValue());
+			}
 			ResultSet rs = stmt.executeQuery();
 			beans = fillBeans(rs);
 			rs.close();
@@ -71,21 +74,27 @@ public abstract class AbstractDao<T> {
 			closeStatement(stmt);
 			closeConnection(conn);
 		}
+		return beans;
+	}
+	
+	protected T getItemByField(final String sqlQuery, final String where,final List<Pair<Integer,String>> pairs) {
+		Set<T> beans = getItemByFields(sqlQuery,where,pairs);
+		T bean = null;
 		if (!beans.isEmpty()) {
 			bean = beans.iterator().next();
 		}
 		return bean;
 	}
 
-	public Set<T> getItemsByField(final String sqlQuery, final String fieldName,final String fieldValue) {
+	protected Set<T> getItemsByField(final String sqlQuery, final String fieldName,final String fieldValue) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		Set<T> persons = new HashSet<T>();
 		try {
 			conn = getConnection();
 			stmt = conn.prepareStatement(sqlQuery
-					+ " where "+fieldName+" like ?");
-			stmt.setString(1, "%"+fieldValue+"%");
+					+ " where "+fieldName+" ?");
+			stmt.setString(1, fieldValue);
 			ResultSet rs = stmt.executeQuery();
 			persons = fillBeans(rs);
 			rs.close();
@@ -97,5 +106,4 @@ public abstract class AbstractDao<T> {
 		}
 		return persons;
 	}
-	
 }
