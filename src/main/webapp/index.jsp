@@ -25,22 +25,12 @@
 					</tr>
 					<tr>
 						<td><input type="submit" value="Login" /></td>
+						<td><jsp:include page="include/error_include.jsp" /></td>
 					</tr>
 				</tbody>
 			</table>
 		</center>
 	</form>
-
-	<form method="post" action="profile">
-		<center>
-			<table border="0" width="30%" cellpadding="3">
-				<tbody>
-					<tr>
-						<td><input type="submit" value="Register" /></td>
-					</tr>
-				</tbody>
-			</table>
-		</center>
-	</form>
+	<jsp:include page="include/register_include.jsp" />
 </body>
 </html>

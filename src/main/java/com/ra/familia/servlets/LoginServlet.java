@@ -25,14 +25,15 @@ public class LoginServlet extends GenericServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String name = req.getParameter("userName");
-		String password = req.getParameter("password");
+		String name = req.getParameter(USER_NAME);
+		String password = req.getParameter(PASSWORD);
 
 		PersonBean person = getUserByName(name, password);
 		String nextStep = SEARCH_URL;
 		if (person == null) {
 			LOG.info("Login failed");
 			nextStep = req.getContextPath();
+			req.getSession().setAttribute(SES_ERROR,ERR_LOGIN_FAILED);
 		} else {
 			LOG.info("Login Success");
 			req.getSession().setAttribute(USER_BEAN, person);

@@ -2,7 +2,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="com.ra.familia.entities.PersonBean"%>
 <%@ page import="java.util.Set"%>
-<%@ include file="logout.jsp"%>
+<%@ include file="include/logout_include.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
