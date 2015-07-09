@@ -1,12 +1,7 @@
-<%@ taglib prefix="err" uri="/WEB-INF/custom.tld"%>
+<%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-	String errorMessage = (String) session
-			.getAttribute("session_error");
-	if (errorMessage != null) {
-%>
-<err:exceptionDisplay>ERROR : </err:exceptionDisplay>
-<%=errorMessage%>
-<%
-	}
-%>
+
+<c:if test="${sessionScope.session_error != null}">
+    <font color="red">ERROR : </font><b><c:out value="${sessionScope.session_error}" /></b>
+</c:if>
+

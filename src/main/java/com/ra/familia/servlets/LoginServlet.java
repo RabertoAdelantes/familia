@@ -44,7 +44,7 @@ public class LoginServlet extends GenericServlet {
 	private PersonBean getUserByName(final String name, final String password) {
 		PersonBean person = new PersonBean();
 		person.setPassword(password);
-		person.setFirst_name(name);
+		person.setFirstName(name);
 
 		person = personDao.getItemByName(person);
 		return person;

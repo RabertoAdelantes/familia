@@ -43,17 +43,17 @@
 					<tr>
 						<td><input type="text" value="${person.id}" name="id"
 							hidden="true" /></td>
-						<td>${person.first_name}</td>
+						<td>${person.firstName}</td>
 						<td>&nbsp;</td>
-						<td>${person.midle_name}</td>
+						<td>${person.midleName}</td>
 						<td>&nbsp;</td>
-						<td>${person.second_name}</td>
+						<td>${person.secondName}</td>
 						<td>&nbsp;</td>
 						<td>${person.email}</td>
 						<td>&nbsp;</td>
-						<td>${person.date_birth}</td>
+						<td>${person.dateBirth}</td>
 						<td>&nbsp;</td>
-						<td>${person.date_death}</td>
+						<td>${person.dateDeath}</td>
 						<td><input type="submit" value="Select" /></td>
 					</tr>
 					</form>

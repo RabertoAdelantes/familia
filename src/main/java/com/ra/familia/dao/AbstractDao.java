@@ -12,7 +12,10 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractDao<T> {
+import com.ra.familia.servlets.utils.TablesDictionary;
+import com.ra.familia.servlets.utils.UrlsDictionary;
+
+public abstract class AbstractDao<T> implements UrlsDictionary,TablesDictionary{
 	private static final Logger LOG = LoggerFactory
 			.getLogger(AbstractDao.class);
 	
@@ -62,9 +65,7 @@ public abstract class AbstractDao<T> {
 			stmt = conn.prepareStatement(sqlQuery
 					+ where);
 
-			for (int index = 0; index < pairs.size(); index++) {
-				stmt.setString(index+1, pairs.get(index).getValue());
-			}
+			fillStatmentParameters(pairs, stmt);
 			ResultSet rs = stmt.executeQuery();
 			beans = fillBeans(rs);
 			rs.close();
@@ -76,6 +77,15 @@ public abstract class AbstractDao<T> {
 		}
 		return beans;
 	}
+
+	protected void fillStatmentParameters(
+			final List<Pair<Integer, String>> pairs, PreparedStatement stmt)
+			throws SQLException {
+		for (int index = 0; index < pairs.size(); index++) {
+			stmt.setString(index+1, pairs.get(index).getValue());
+		}
+	}
+	
 	
 	protected T getItemByField(final String sqlQuery, final String where,final List<Pair<Integer,String>> pairs) {
 		Set<T> beans = getItemByFields(sqlQuery,where,pairs);

@@ -2,67 +2,69 @@ package com.ra.familia.entities;
 
 public class PersonBean {
 	private String id;
-	private String first_name;
-	private String midle_name;
-	private String second_name;
+	private String firstName;
+	private String midleName;
+	private String lastName;
+	private String lastName2;
 	private String password;
-	private String date_birth;
-	private String date_death;
+	private String dateBirth;
+	private String dateDeath;
 	private String email;
+	private Object photo;
 	private boolean isDeleted;
 	private boolean isActive;
 
-	public String getFirst_name() {
-		return first_name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getMidle_name() {
-		return midle_name;
+	public String getMidleName() {
+		return midleName;
 	}
 
-	public void setMidle_name(String midle_name) {
-		this.midle_name = midle_name;
+	public void setMidleName(String midleName) {
+		this.midleName = midleName;
 	}
 
-	public String getSecond_name() {
-		return second_name;
+	public String getSecondName() {
+		return lastName;
 	}
 
-	public void setSecond_name(String second_name) {
-		this.second_name = second_name;
+	public void setLastName(String secondName) {
+		this.lastName = secondName;
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password_name) {
-		this.password = password_name;
+	public void setPassword(String passwordName) {
+		this.password = passwordName;
 	}
 
-	public String getDate_birth() {
-		return date_birth;
+	public String getDateBirth() {
+		return dateBirth;
 	}
 
-	public void setDate_birth(String date_birth) {
-		this.date_birth = date_birth;
+	public void setDateBirth(String dateBirth) {
+		this.dateBirth = dateBirth;
 	}
 
-	public String getDate_death() {
-		return date_death;
+	public String getDateDeath() {
+		return dateDeath;
 	}
 
-	public void setDate_death(String date_death) {
-		this.date_death = date_death;
+	public void setDateDeath(String dateDeath) {
+		this.dateDeath = dateDeath;
 	}
 
 	@Override
 	public String toString() {
-		return first_name + " / " + midle_name + " / " + second_name + " * ";
+		return firstName + " / " + midleName + " / " + lastName + " * ";
 	}
 
 	public String getId() {
@@ -77,8 +79,8 @@ public class PersonBean {
 		return this.email;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public String setEmail(String email) {
+		return this.email = email;
 	}
 
 	public boolean isDeleted() {
@@ -95,6 +97,22 @@ public class PersonBean {
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	public String getLastName2() {
+		return lastName2;
+	}
+
+	public void setLastName2(String lastName2) {
+		this.lastName2 = lastName2;
+	}
+
+	public Object getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(Object file) {
+		this.photo = file;
 	}
 
 }

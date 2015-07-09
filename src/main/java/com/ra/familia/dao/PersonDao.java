@@ -18,12 +18,11 @@ import com.ra.familia.entities.PersonBean;
 public class PersonDao extends AbstractDao<PersonBean> {
 	private static final Logger LOG = LoggerFactory.getLogger(PersonDao.class);
 
-	private static final String TABLE = "PERSON".intern();
-	private static final String SELECT = "SELECT * FROM " + TABLE;
+	private static final String SELECT = "SELECT * FROM " + P_TABLE;
 	private static final String INSERT = "INSERT INTO "
-			+ TABLE
+			+ P_TABLE
 			+ " (FIRST_NAME, MIDLE_NAME, LAST_NAME, LAST_NAME2, PASSWORD, EMAIL, DATE_BIRTH, DATE_DEATH, ISACTIVE, ISDELETED, PK) VALUES (?,?,?,?,?,?,?,?,?,?,seq_person.NEXTVAL)";
-	private static final String UPDATE = "UPDATE " + TABLE + " SET ";
+	private static final String UPDATE = "UPDATE " + P_TABLE + " SET ";
 	private static final String WHERE = " WHERE ";
 
 	public PersonDao() {
@@ -32,23 +31,23 @@ public class PersonDao extends AbstractDao<PersonBean> {
 	Set<PersonBean> getAllItems() {
 		return getAllItems(SELECT);
 	}
-   
+
 	public PersonBean getItemByName(final PersonBean bean) {
 		StringBuffer where = new StringBuffer();
 		List<Pair<Integer, String>> pairs = new ArrayList<>();
-		PersonDaoHelper.fillSearchByName(bean, where, pairs);		
+		PersonDaoHelper.fillSearchByName(bean, where, pairs);
 		return getItemByField(SELECT, WHERE + where.toString(), pairs);
 	}
-	
+
 	public PersonBean getItemById(final String id) {
 		StringBuffer where = new StringBuffer();
 		List<Pair<Integer, String>> pairs = new ArrayList<>();
 		PersonBean bean = new PersonBean();
 		bean.setId(id);
-		PersonDaoHelper.fillSearchById(bean, where, pairs);		
+		PersonDaoHelper.fillSearchById(bean, where, pairs);
 		return getItemByField(SELECT, WHERE + where.toString(), pairs);
 	}
-	
+
 	public Set<PersonBean> getItemsByName(final PersonBean bean) {
 		StringBuffer where = new StringBuffer();
 		List<Pair<Integer, String>> pairs = new ArrayList<>();
@@ -71,10 +70,10 @@ public class PersonDao extends AbstractDao<PersonBean> {
 		Connection conn = getConnection();
 		try {
 			PreparedStatement preparedStatement = conn.prepareStatement(INSERT);
-			preparedStatement.setString(1, bean.getFirst_name());
-			preparedStatement.setString(2, bean.getMidle_name());
-			preparedStatement.setString(3, bean.getSecond_name());
-			preparedStatement.setString(4, bean.getSecond_name());
+			preparedStatement.setString(1, bean.getFirstName());
+			preparedStatement.setString(2, bean.getMidleName());
+			preparedStatement.setString(3, bean.getSecondName());
+			preparedStatement.setString(4, bean.getSecondName());
 			preparedStatement.setString(5, bean.getPassword());
 			preparedStatement.setString(6, bean.getEmail());
 			preparedStatement.setTimestamp(7,
@@ -92,30 +91,39 @@ public class PersonDao extends AbstractDao<PersonBean> {
 	@Override
 	public void updateItem(PersonBean bean) {
 		Connection conn = getConnection();
+		List<Pair<Integer, String>> pairs = new ArrayList<>();
 		try {
 			StringBuffer updateSql = new StringBuffer();
 			updateSql.append(UPDATE);
 			StringBuffer conditions = new StringBuffer();
-			PersonDaoHelper.setUpdateCondition(conditions, "FIRST_NAME",
-					bean.getFirst_name());
-			PersonDaoHelper.setUpdateCondition(conditions, "LAST_NAME",
-					bean.getSecond_name());
-			PersonDaoHelper.setUpdateCondition(conditions, "MIDLE_NAME",
-					bean.getMidle_name());
-			PersonDaoHelper.setUpdateCondition(conditions, "PASSWORD",
-					bean.getPassword());
-			PersonDaoHelper.setUpdateCondition(conditions, "EMAIL",
-					bean.getEmail());
-			PersonDaoHelper.setUpdateBooleanCondition(conditions, "ISACTIVE",
-					bean.isActive());
-			PersonDaoHelper.setUpdateBooleanCondition(conditions, "ISDELETED",
-					bean.isActive());
+			Pair<Integer, String> pair = PersonDaoHelper.setUpdateCondition(
+					conditions, P_FIRST_NAME, bean.getFirstName());
+			pairs.add(pair);
+			pair = PersonDaoHelper.setUpdateCondition(conditions, P_LAST_NAME,
+					bean.getSecondName());
+			pairs.add(pair);
+			pair = PersonDaoHelper.setUpdateCondition(conditions, P_MIDLE_NAME,
+					bean.getMidleName());
+			pairs.add(pair);
 
+			pair = PersonDaoHelper.setUpdateCondition(conditions, P_EMAIL,
+					bean.getEmail());
+			pairs.add(pair);
+
+			pair = PersonDaoHelper.setUpdateCondition(conditions, P_PHOTO, bean
+					.getPhoto().toString());
+			pairs.add(pair);
+
+			PersonDaoHelper.setUpdateBooleanCondition(conditions, P_ISACTIVE,
+					bean.isActive());
+			PersonDaoHelper.setUpdateBooleanCondition(conditions, P_ISDELETED,
+					bean.isActive());
 			updateSql.append(conditions.toString());
 			updateSql.append(WHERE);
-			updateSql.append(TABLE + ".pk=" + bean.getId());
+			updateSql.append(P_TABLE + "." + PK + "=" + bean.getId());
 			PreparedStatement preparedStatement = conn
 					.prepareStatement(updateSql.toString());
+			fillStatmentParameters(pairs, preparedStatement);
 			preparedStatement.executeUpdate();
 		} catch (SQLException exception) {
 			LOG.error(exception.getLocalizedMessage());

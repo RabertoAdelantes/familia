@@ -7,9 +7,9 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import com.ra.familia.entities.PersonBean;
+import com.ra.familia.servlets.utils.TablesDictionary;
 
-public class PersonDaoHelper {
-	private static final String TABLE = "PERSON".intern();
+public class PersonDaoHelper implements TablesDictionary{
 
 	private PersonDaoHelper() {
 
@@ -44,9 +44,9 @@ public class PersonDaoHelper {
 		Pair<Integer, String> pair = new Pair<Integer, String>();
 		if (fieldValue != null) {
 			if (conditions.toString().isEmpty()) {
-				conditions.append(TABLE + "." + fieldName + " =?");
+				conditions.append(P_TABLE + "." + fieldName + " =?");
 			} else {
-				conditions.append(" " + delimiter + " " + TABLE + "."
+				conditions.append(" " + delimiter + " " + P_TABLE + "."
 						+ fieldName + "=?");
 			}
 			int count = StringUtils.countMatches(conditions.toString(),
@@ -61,10 +61,10 @@ public class PersonDaoHelper {
 			final Boolean fieldValue, final String delimiter) {
 		if (fieldValue != null) {
 			if (conditions.toString().isEmpty()) {
-				conditions.append(TABLE + "." + fieldName + " ='"
+				conditions.append(P_TABLE + "." + fieldName + " ='"
 						+ convertBooleanToInt(fieldValue) + "'");
 			} else {
-				conditions.append(" " + delimiter + " " + TABLE + "."
+				conditions.append(" " + delimiter + " " + P_TABLE + "."
 						+ fieldName + "='" + convertBooleanToInt(fieldValue)
 						+ "'");
 			}
@@ -84,11 +84,11 @@ public class PersonDaoHelper {
 	public static void fillSearchByName(final PersonBean bean,
 			final StringBuffer where, final List<Pair<Integer, String>> pairs) {
 		Pair<Integer, String> pair = PersonDaoHelper.setWhereAndCondition(
-				where, "FIRST_NAME", bean.getFirst_name());
+				where, P_FIRST_NAME, bean.getFirstName());
 		if (pair.getKey() != null) {
 			pairs.add(pair);
 		}
-		pair = PersonDaoHelper.setWhereAndCondition(where, "PASSWORD",
+		pair = PersonDaoHelper.setWhereAndCondition(where, P_PASSWORD,
 				bean.getPassword());
 		if (pair.getKey() != null) {
 			pairs.add(pair);
@@ -98,7 +98,7 @@ public class PersonDaoHelper {
 	public static void fillSearchById(final PersonBean bean,
 			final StringBuffer where, final List<Pair<Integer, String>> pairs) {
 		Pair<Integer, String> pair = PersonDaoHelper.setWhereAndCondition(
-				where, "pk", bean.getId());
+				where, PK, bean.getId());
 		if (pair.getKey() != null) {
 			pairs.add(pair);
 		}
@@ -107,27 +107,27 @@ public class PersonDaoHelper {
 	public static void fillSearchAll(final PersonBean bean,
 			final StringBuffer where, final List<Pair<Integer, String>> pairs) {
 		Pair<Integer, String> pair = PersonDaoHelper.setWhereOrCondition(
-				where, "FIRST_NAME", bean.getFirst_name());
+				where, P_FIRST_NAME, bean.getFirstName());
 		if (pair.getKey() != null) {
 			pairs.add(pair);
 		}
-		pair = PersonDaoHelper.setWhereOrCondition(where, "PASSWORD",
+		pair = PersonDaoHelper.setWhereOrCondition(where, P_PASSWORD,
 				bean.getPassword());
 		if (pair.getKey() != null) {
 			pairs.add(pair);
 		}
 
 		pair = PersonDaoHelper.setWhereOrCondition(
-				where, "LAST_NAME", bean.getSecond_name());
+				where, P_LAST_NAME, bean.getSecondName());
 		if (pair.getKey() != null) {
 			pairs.add(pair);
 		}
-		pair = PersonDaoHelper.setWhereOrCondition(where, "MIDLE_NAME",
-				bean.getMidle_name());
+		pair = PersonDaoHelper.setWhereOrCondition(where, P_MIDLE_NAME,
+				bean.getMidleName());
 		if (pair.getKey() != null) {
 			pairs.add(pair);
 		}
-		pair = PersonDaoHelper.setWhereOrCondition(where, "EMAIL",
+		pair = PersonDaoHelper.setWhereOrCondition(where, P_EMAIL,
 				bean.getEmail());
 		if (pair.getKey() != null) {
 			pairs.add(pair);
@@ -136,11 +136,14 @@ public class PersonDaoHelper {
 
 	public static PersonBean fillBeanByRs(final ResultSet rs) throws SQLException {
 		PersonBean person = new PersonBean();
-		person.setId(rs.getString("PK"));
-		person.setFirst_name(rs.getString("FIRST_NAME"));
-		person.setSecond_name(rs.getString("LAST_NAME"));
-		person.setMidle_name(rs.getString("MIDLE_NAME"));
-		person.setPassword(rs.getString("PASSWORD"));
+		person.setId(rs.getString(PK));
+		person.setFirstName(rs.getString(P_FIRST_NAME));
+		person.setLastName(rs.getString(P_LAST_NAME));
+		person.setMidleName(rs.getString(P_MIDLE_NAME));
+		person.setPassword(rs.getString(P_PASSWORD));
+		person.setEmail(rs.getString(P_EMAIL));
+		person.setDateBirth(rs.getString(P_DATE_BIRTH));
+		person.setDateBirth(rs.getString(P_DATE_DEATH));
 		return person;
 	}
 }
