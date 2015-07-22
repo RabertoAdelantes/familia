@@ -1,6 +1,5 @@
 package com.ra.familia.servlets;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +67,7 @@ public class GenericServlet extends HttpServlet implements UrlsDictionary {
 				person.setLastName2(iterable.getValue().toString());
 			}
 			if (PHOTO.equals(iterable.getKey())) {
-				person.setPhoto(iterable.getValue());
+				person.setFilePath(iterable.getValue());
 			}
 		}
 		return person;

@@ -1,5 +1,6 @@
 package com.ra.familia.dao;
 
+import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -15,19 +16,19 @@ public class PersonDaoHelper implements TablesDictionary{
 
 	}
 
-	public static Pair<Integer, String> setUpdateCondition(
+	public static Pair<Integer, Object> setUpdateCondition(
 			final StringBuffer conditions, final String fieldName,
-			final String fieldValue) {
+			final Object fieldValue) {
 		return setCondition(conditions, fieldName, fieldValue, " , ");
 	}
 
-	public static Pair<Integer, String> setWhereAndCondition(
+	public static Pair<Integer, Object> setWhereAndCondition(
 			final StringBuffer conditions, final String fieldName,
 			final String fieldValue) {
 		return setCondition(conditions, fieldName, fieldValue, " AND ");
 	}
 	
-	public static Pair<Integer, String> setWhereOrCondition(
+	public static Pair<Integer, Object> setWhereOrCondition(
 			final StringBuffer conditions, final String fieldName,
 			final String fieldValue) {
 		return setCondition(conditions, fieldName, fieldValue, " OR ");
@@ -38,10 +39,10 @@ public class PersonDaoHelper implements TablesDictionary{
 		setUpdateBooleanCondition(conditions, fieldName, fieldValue, " , ");
 	}
 
-	private static Pair<Integer, String> setCondition(
+	private static Pair<Integer, Object> setCondition(
 			final StringBuffer conditions, final String fieldName,
-			final String fieldValue, final String delimiter) {
-		Pair<Integer, String> pair = new Pair<Integer, String>();
+			final Object fieldValue, final String delimiter) {
+		Pair<Integer, Object> pair = new Pair<Integer, Object>();
 		if (fieldValue != null) {
 			if (conditions.toString().isEmpty()) {
 				conditions.append(P_TABLE + "." + fieldName + " =?");
@@ -82,8 +83,8 @@ public class PersonDaoHelper implements TablesDictionary{
 	}
 
 	public static void fillSearchByName(final PersonBean bean,
-			final StringBuffer where, final List<Pair<Integer, String>> pairs) {
-		Pair<Integer, String> pair = PersonDaoHelper.setWhereAndCondition(
+			final StringBuffer where, final List<Pair<Integer, Object>> pairs) {
+		Pair<Integer, Object> pair = PersonDaoHelper.setWhereAndCondition(
 				where, P_FIRST_NAME, bean.getFirstName());
 		if (pair.getKey() != null) {
 			pairs.add(pair);
@@ -96,8 +97,8 @@ public class PersonDaoHelper implements TablesDictionary{
 	}
 	
 	public static void fillSearchById(final PersonBean bean,
-			final StringBuffer where, final List<Pair<Integer, String>> pairs) {
-		Pair<Integer, String> pair = PersonDaoHelper.setWhereAndCondition(
+			final StringBuffer where, final List<Pair<Integer, Object>> pairs) {
+		Pair<Integer, Object> pair = PersonDaoHelper.setWhereAndCondition(
 				where, PK, bean.getId());
 		if (pair.getKey() != null) {
 			pairs.add(pair);
@@ -105,8 +106,8 @@ public class PersonDaoHelper implements TablesDictionary{
 	}
 
 	public static void fillSearchAll(final PersonBean bean,
-			final StringBuffer where, final List<Pair<Integer, String>> pairs) {
-		Pair<Integer, String> pair = PersonDaoHelper.setWhereOrCondition(
+			final StringBuffer where, final List<Pair<Integer, Object>> pairs) {
+		Pair<Integer, Object> pair = PersonDaoHelper.setWhereOrCondition(
 				where, P_FIRST_NAME, bean.getFirstName());
 		if (pair.getKey() != null) {
 			pairs.add(pair);
@@ -136,7 +137,7 @@ public class PersonDaoHelper implements TablesDictionary{
 
 	public static PersonBean fillBeanByRs(final ResultSet rs) throws SQLException {
 		PersonBean person = new PersonBean();
-		person.setId(rs.getString(PK));
+		person.setId(rs.getString(PK)); 
 		person.setFirstName(rs.getString(P_FIRST_NAME));
 		person.setLastName(rs.getString(P_LAST_NAME));
 		person.setMidleName(rs.getString(P_MIDLE_NAME));
@@ -144,6 +145,9 @@ public class PersonDaoHelper implements TablesDictionary{
 		person.setEmail(rs.getString(P_EMAIL));
 		person.setDateBirth(rs.getString(P_DATE_BIRTH));
 		person.setDateBirth(rs.getString(P_DATE_DEATH));
+		Blob blob = rs.getBlob(P_FILE_DATA);
+		person.setDbFile(blob.getBytes(1,(int)blob.length())); 
+		person.setFilePath(rs.getObject(P_PHOTO).toString()); 
 		return person;
 	}
 }

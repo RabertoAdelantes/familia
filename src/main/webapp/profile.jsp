@@ -79,7 +79,14 @@
 					<tr>
 						<td>Portrait Photo:</td>
 						<td><input type="file" name="photo" size="50" /></td>
+						
 					</tr>
+					
+					<tr>
+						<td>Profile Image:</td>
+						<td><img src="image/?id=<%=user.getId()%>" height="200px" width="200px" align="left" /></td>
+					</tr>
+					
 					<tr>
 						<td><input type="submit" value="Save"></td>
 						<td>&nbsp;</td>

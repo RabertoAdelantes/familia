@@ -34,14 +34,14 @@ public class PersonDao extends AbstractDao<PersonBean> {
 
 	public PersonBean getItemByName(final PersonBean bean) {
 		StringBuffer where = new StringBuffer();
-		List<Pair<Integer, String>> pairs = new ArrayList<>();
+		List<Pair<Integer, Object>> pairs = new ArrayList<>();
 		PersonDaoHelper.fillSearchByName(bean, where, pairs);
 		return getItemByField(SELECT, WHERE + where.toString(), pairs);
 	}
 
 	public PersonBean getItemById(final String id) {
 		StringBuffer where = new StringBuffer();
-		List<Pair<Integer, String>> pairs = new ArrayList<>();
+		List<Pair<Integer, Object>> pairs = new ArrayList<>();
 		PersonBean bean = new PersonBean();
 		bean.setId(id);
 		PersonDaoHelper.fillSearchById(bean, where, pairs);
@@ -50,7 +50,7 @@ public class PersonDao extends AbstractDao<PersonBean> {
 
 	public Set<PersonBean> getItemsByName(final PersonBean bean) {
 		StringBuffer where = new StringBuffer();
-		List<Pair<Integer, String>> pairs = new ArrayList<>();
+		List<Pair<Integer, Object>> pairs = new ArrayList<>();
 		PersonDaoHelper.fillSearchAll(bean, where, pairs);
 		return getItemByFields(SELECT, WHERE + where.toString(), pairs);
 	}
@@ -91,12 +91,12 @@ public class PersonDao extends AbstractDao<PersonBean> {
 	@Override
 	public void updateItem(PersonBean bean) {
 		Connection conn = getConnection();
-		List<Pair<Integer, String>> pairs = new ArrayList<>();
+		List<Pair<Integer, Object>> pairs = new ArrayList<>();
 		try {
 			StringBuffer updateSql = new StringBuffer();
 			updateSql.append(UPDATE);
 			StringBuffer conditions = new StringBuffer();
-			Pair<Integer, String> pair = PersonDaoHelper.setUpdateCondition(
+			Pair<Integer, Object> pair = PersonDaoHelper.setUpdateCondition(
 					conditions, P_FIRST_NAME, bean.getFirstName());
 			pairs.add(pair);
 			pair = PersonDaoHelper.setUpdateCondition(conditions, P_LAST_NAME,
@@ -111,7 +111,11 @@ public class PersonDao extends AbstractDao<PersonBean> {
 			pairs.add(pair);
 
 			pair = PersonDaoHelper.setUpdateCondition(conditions, P_PHOTO, bean
-					.getPhoto().toString());
+					.getFilePath().toString());
+			pairs.add(pair);
+			
+			pair = PersonDaoHelper.setUpdateCondition(conditions, P_FILE_DATA, bean
+					.getDbFile());
 			pairs.add(pair);
 
 			PersonDaoHelper.setUpdateBooleanCondition(conditions, P_ISACTIVE,

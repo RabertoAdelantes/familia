@@ -1,5 +1,7 @@
 package com.ra.familia.entities;
 
+import java.io.InputStream;
+
 public class PersonBean {
 	private String id;
 	private String firstName;
@@ -10,7 +12,8 @@ public class PersonBean {
 	private String dateBirth;
 	private String dateDeath;
 	private String email;
-	private Object photo;
+	private Object pathToFile;
+	private byte[] dbFile;
 	private boolean isDeleted;
 	private boolean isActive;
 
@@ -107,12 +110,20 @@ public class PersonBean {
 		this.lastName2 = lastName2;
 	}
 
-	public Object getPhoto() {
-		return photo;
+	public Object getFilePath() {
+		return pathToFile;
 	}
 
-	public void setPhoto(Object file) {
-		this.photo = file;
+	public void setFilePath(Object file) {
+		this.pathToFile = file;
+	}
+
+	public byte[] getDbFile() {
+		return dbFile;
+	}
+
+	public void setDbFile(byte[] dbFile) {
+		this.dbFile = dbFile;
 	}
 
 }

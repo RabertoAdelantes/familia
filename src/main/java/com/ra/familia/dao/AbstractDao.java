@@ -1,5 +1,6 @@
 package com.ra.familia.dao;
 
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,10 +16,11 @@ import org.slf4j.LoggerFactory;
 import com.ra.familia.servlets.utils.TablesDictionary;
 import com.ra.familia.servlets.utils.UrlsDictionary;
 
-public abstract class AbstractDao<T> implements UrlsDictionary,TablesDictionary{
+public abstract class AbstractDao<T> implements UrlsDictionary,
+		TablesDictionary {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(AbstractDao.class);
-	
+
 	abstract Set<T> fillBeans(ResultSet rs) throws SQLException;
 
 	abstract void addItem(T bean);
@@ -36,7 +38,7 @@ public abstract class AbstractDao<T> implements UrlsDictionary,TablesDictionary{
 	protected void closeStatement(final Statement stmt) {
 		ConnectionManager.closeStatement(stmt);
 	}
-	
+
 	protected Set<T> getAllItems(String sqlQuery) {
 		Connection conn = null;
 		Statement stmt = null;
@@ -55,15 +57,15 @@ public abstract class AbstractDao<T> implements UrlsDictionary,TablesDictionary{
 		}
 		return beans;
 	}
-	
-	protected Set<T> getItemByFields(final String sqlQuery, final String where,final List<Pair<Integer,String>> pairs) {
+
+	protected Set<T> getItemByFields(final String sqlQuery, final String where,
+			final List<Pair<Integer, Object>> pairs) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		Set<T> beans = new HashSet<T>();
 		try {
 			conn = getConnection();
-			stmt = conn.prepareStatement(sqlQuery
-					+ where);
+			stmt = conn.prepareStatement(sqlQuery + where);
 
 			fillStatmentParameters(pairs, stmt);
 			ResultSet rs = stmt.executeQuery();
@@ -79,16 +81,25 @@ public abstract class AbstractDao<T> implements UrlsDictionary,TablesDictionary{
 	}
 
 	protected void fillStatmentParameters(
-			final List<Pair<Integer, String>> pairs, PreparedStatement stmt)
-			throws SQLException {
+			final List<Pair<Integer, Object>> pairs, PreparedStatement stmt) {
 		for (int index = 0; index < pairs.size(); index++) {
-			stmt.setString(index+1, pairs.get(index).getValue());
+			Object obj = pairs.get(index).getValue();
+			try {
+				if (obj instanceof FileInputStream) {
+					FileInputStream fis = (FileInputStream)obj;
+					stmt.setBinaryStream(index + 1, fis);
+				} else {
+					stmt.setString(index + 1, obj.toString());
+				}
+			} catch (SQLException sqlex) {
+				LOG.error(sqlex.getLocalizedMessage());
+			}
 		}
 	}
-	
-	
-	protected T getItemByField(final String sqlQuery, final String where,final List<Pair<Integer,String>> pairs) {
-		Set<T> beans = getItemByFields(sqlQuery,where,pairs);
+
+	protected T getItemByField(final String sqlQuery, final String where,
+			final List<Pair<Integer, Object>> pairs) {
+		Set<T> beans = getItemByFields(sqlQuery, where, pairs);
 		T bean = null;
 		if (!beans.isEmpty()) {
 			bean = beans.iterator().next();
@@ -96,14 +107,15 @@ public abstract class AbstractDao<T> implements UrlsDictionary,TablesDictionary{
 		return bean;
 	}
 
-	protected Set<T> getItemsByField(final String sqlQuery, final String fieldName,final String fieldValue) {
+	protected Set<T> getItemsByField(final String sqlQuery,
+			final String fieldName, final String fieldValue) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		Set<T> persons = new HashSet<T>();
 		try {
 			conn = getConnection();
-			stmt = conn.prepareStatement(sqlQuery
-					+ " where "+fieldName+" ?");
+			stmt = conn.prepareStatement(sqlQuery + " where " + fieldName
+					+ " ?");
 			stmt.setString(1, fieldValue);
 			ResultSet rs = stmt.executeQuery();
 			persons = fillBeans(rs);
