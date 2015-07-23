@@ -7,6 +7,8 @@ import javax.servlet.*;
 import com.ra.familia.dao.DaoFactory;
 import com.ra.familia.dao.PersonDao;
 import com.ra.familia.entities.PersonBean;
+import com.ra.familia.services.PersonServiceImpl;
+import com.ra.familia.services.Services;
 
 import java.io.*;
 
@@ -20,7 +22,7 @@ public class LoginServlet extends GenericServlet {
 			.getLogger(LoginServlet.class);
 
 	private static final long serialVersionUID = 8623907130423043967L;
-	private PersonDao personDao = DaoFactory.getInstance().getPersonDao();
+	private Services<PersonBean> personService = new PersonServiceImpl();
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -45,7 +47,7 @@ public class LoginServlet extends GenericServlet {
 		PersonBean person = new PersonBean();
 		person.setPassword(password);
 		person.setFirstName(name);
-		person = personDao.getItemByName(person);
+		person = personService.getItemByName(person);
 		return person;
 	}
 	

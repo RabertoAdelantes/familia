@@ -7,9 +7,9 @@ import javax.servlet.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ra.familia.dao.DaoFactory;
-import com.ra.familia.dao.PersonDao;
 import com.ra.familia.entities.PersonBean;
+import com.ra.familia.services.PersonServiceImpl;
+import com.ra.familia.services.Services;
 
 import java.io.*;
 import java.util.Set;
@@ -22,13 +22,13 @@ public class SearchServlet extends GenericServlet {
 
 	private static final long serialVersionUID = 8781195695257213199L;
 
-	private PersonDao personDao = DaoFactory.getInstance().getPersonDao();
+	private Services<PersonBean> personService = new PersonServiceImpl();
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		PersonBean person = getRequestParams(req);
-		Set<PersonBean> persons = personDao.getItemsByName(person);
+		Set<PersonBean> persons = personService.getItemsByName(person);
 		req.getSession().setAttribute(SEARCH_SET, persons);
 		req.getRequestDispatcher(SEARCH_JSP).forward(req, resp);
 	}

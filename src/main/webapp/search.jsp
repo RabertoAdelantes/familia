@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="jgc" uri="WEB-INF/custom.tld"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="com.ra.familia.entities.PersonBean"%>
 <%@ page import="java.util.Set"%>
@@ -58,6 +59,11 @@
 					</tr>
 					</form>
 				</c:forEach>
+				
+				<c:if test="${sessionScope.result.size() == 0}">
+						<jgc:resultempty/>
+				</c:if>
+				
 			</tbody>
 		</table>
 	</center>

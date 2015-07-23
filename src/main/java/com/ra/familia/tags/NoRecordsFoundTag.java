@@ -1,7 +1,6 @@
 package com.ra.familia.tags;
 
 import java.io.IOException;
-import java.io.StringWriter;
 
 import javax.servlet.jsp.tagext.*;
 import javax.servlet.jsp.*;
@@ -9,18 +8,16 @@ import javax.servlet.jsp.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ExceptionDisplayTag extends SimpleTagSupport {
+public class NoRecordsFoundTag extends SimpleTagSupport {
 
 	private static final long serialVersionUID = -4061579853792785156L;
 
 	private static final Logger LOG = LoggerFactory
-			.getLogger(ExceptionDisplayTag.class);
-
-	StringWriter sw = new StringWriter();
+			.getLogger(NoRecordsFoundTag.class);
 
 	public void doTag() throws JspException, IOException {
-		getJspBody().invoke(sw);
-		getJspContext().getOut().println("<b><font color=\"RED\">"+sw.toString()+"</font></b>");
+		final JspWriter out = getJspContext().getOut();
+		out.println("<b><font color=\"#0101DF\">NO RECORDS FOUND</font></b>");
 	}
 
 }

@@ -33,8 +33,8 @@ public interface UrlsDictionary {
 	// request parameters
 	public static final String ERR_LOGIN_FAILED = "Login failed : user or password is incorrect";
 	
-	public static final String USER_UPLOAD_FOLDER = "user_upload_folder";
-	public static final String FILE_MAX_SIZE = "file.size.max";
-	public static final String USER_UPLOAD_DEFAUL_FOLDER = "Z:\\";
+//	public static final String USER_UPLOAD_FOLDER = "user_upload_folder";
+//	public static final String FILE_MAX_SIZE = "file.size.max";
+//	public static final String USER_UPLOAD_DEFAUL_FOLDER = "Z:\\";
 
 }

@@ -15,6 +15,9 @@ import com.ra.familia.dao.DaoFactory;
 import com.ra.familia.dao.PersonDao;
 import com.ra.familia.dao.PropertiesManager;
 import com.ra.familia.entities.PersonBean;
+import com.ra.familia.services.IOService;
+import com.ra.familia.services.PersonServiceImpl;
+import com.ra.familia.services.Services;
 
 import java.io.*;
 import java.util.Properties;
@@ -28,10 +31,9 @@ public class PersonServlet extends GenericServlet {
 			.getLogger(PersonServlet.class);
 	private static final long serialVersionUID = 8781195695257213199L;
 
-	private PersonDao personDao = DaoFactory.getInstance().getPersonDao();
-
-	private static Properties properties = PropertiesManager
-			.getCommonProperties();
+	private IOService ioService = new IOService();
+	
+	private Services<PersonBean> personService = new PersonServiceImpl();
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
@@ -44,54 +46,17 @@ public class PersonServlet extends GenericServlet {
 		String redirectUrl = PROFILE_JSP;
 		if (ServletFileUpload.isMultipartContent(req)) {
 			PersonBean bean = getParamsFromMultipleForm(req);
-			storageFile(bean);
-			if (personDao.getItemById(bean.getId()) == null) {
-				personDao.addItem(bean);
+			ioService.storageFile(bean);
+			if (personService.getById(bean.getId()) == null) {
+				personService.addItem(bean);
 				redirectUrl = req.getContextPath();
 			} else {
-				personDao.updateItem(bean);
+				personService.updateItem(bean);
 			}
 		}
 		String id = req.getParameter(ID);
-		PersonBean bean = personDao.getItemById(id);
+		PersonBean bean = personService.getById(id);
 		req.getSession().setAttribute(USER_BEAN, bean);
 		resp.sendRedirect(redirectUrl);
 	}
-
-	private void storageFile(PersonBean bean) {
-		String max_size = properties.getProperty(FILE_MAX_SIZE, "1048576");
-		FileItem item = (FileItem) bean.getFilePath();
-		String name = getFileName(item);
-		try {
-			item.write(new File(name));
-			bean.setFilePath(name);
-			
-			if (item.getSize() < Long.valueOf(max_size)) {
-				FileInputStream in = new FileInputStream(name);
-				byte[] bytes = IOUtils.toByteArray(in);
-				bean.setDbFile(bytes);
-			} 
-		} catch (Exception ex) {
-			LOG.error(String.format("Error occured on save '%s'",
-					ex.getLocalizedMessage()));
-		}
-	}
-
-	private String getFileName(final FileItem item) {
-		String directory = properties.getProperty(USER_UPLOAD_FOLDER,
-				USER_UPLOAD_DEFAUL_FOLDER);
-		String name = directory + File.separator;
-		if (isFileExists(name + item.getName())) {
-			String[] fileAttr = item.getName().split("\\.");
-			String fName = fileAttr[0];
-			String fExt = fileAttr[1];
-			name += fName + "_" + UUID.randomUUID().toString() + "." + fExt;
-		}
-		return name;
-	}
-
-	private boolean isFileExists(final String fname) {
-		return new File(fname).exists();
-	}
-
 }

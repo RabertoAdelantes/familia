@@ -6,4 +6,11 @@
     <tag-class>com.ra.familia.tags.ExceptionDisplayTag</tag-class>
 	<body-content>scriptless</body-content>  
  </tag>
+ 
+ 
+ <tag>
+    <name>resultempty</name>
+    <tag-class>com.ra.familia.tags.NoRecordsFoundTag</tag-class>
+	<body-content>resultempty</body-content>  
+ </tag>
 </taglib>
