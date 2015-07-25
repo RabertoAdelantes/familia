@@ -1,8 +1,11 @@
 package com.ra.familia.entities;
 
-import java.io.InputStream;
+import java.io.Serializable;
 
-public class PersonBean {
+public class PersonBean implements SuperBean, Serializable{
+
+	private static final long serialVersionUID = -7002784234984756018L;
+	
 	private String id;
 	private String firstName;
 	private String midleName;
@@ -70,14 +73,6 @@ public class PersonBean {
 		return firstName + " / " + midleName + " / " + lastName + " * ";
 	}
 
-	public String getId() {
-		return this.id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public String getEmail() {
 		return this.email;
 	}
@@ -124,6 +119,15 @@ public class PersonBean {
 
 	public void setDbFile(byte[] dbFile) {
 		this.dbFile = dbFile;
+	}
+
+	@Override
+	public String getID() {
+		return this.id;
+	}
+
+	public void setID(String id) {
+		this.id = id;
 	}
 
 }

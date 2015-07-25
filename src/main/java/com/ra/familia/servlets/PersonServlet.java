@@ -4,24 +4,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.servlet.*;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ra.familia.dao.DaoFactory;
-import com.ra.familia.dao.PersonDao;
-import com.ra.familia.dao.PropertiesManager;
 import com.ra.familia.entities.PersonBean;
 import com.ra.familia.services.IOService;
 import com.ra.familia.services.PersonServiceImpl;
 import com.ra.familia.services.Services;
 
 import java.io.*;
-import java.util.Properties;
-import java.util.UUID;
+
 
 @WebServlet(name = "PersonServlet", displayName = "Profile Servlet", urlPatterns = {
 		"/profile", "/select", "/Profile", "/Select" }, loadOnStartup = 1)
@@ -47,7 +40,7 @@ public class PersonServlet extends GenericServlet {
 		if (ServletFileUpload.isMultipartContent(req)) {
 			PersonBean bean = getParamsFromMultipleForm(req);
 			ioService.storageFile(bean);
-			if (personService.getById(bean.getId()) == null) {
+			if (personService.getById(bean.getID()) == null) {
 				personService.addItem(bean);
 				redirectUrl = req.getContextPath();
 			} else {

@@ -4,6 +4,10 @@
 <jsp:useBean id="user" class="com.ra.familia.entities.PersonBean"
 	scope="session" />
 
+<c:if test="${user.firstName == null}">
+	<c:redirect url="/"/>
+</c:if>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -21,7 +25,7 @@
 				<form method="post" action="profile" enctype="multipart/form-data">
 					<tr>
 						<td></td>
-						<td><input type="hidden" value="<%=user.getId()%>" name="id" /></td>
+						<td><input type="hidden" value="<%=user.getID()%>" name="id" /></td>
 					</tr>
 					<tr>
 					<tr>
@@ -84,7 +88,7 @@
 					
 					<tr>
 						<td>Profile Image:</td>
-						<td><img src="image/?id=<%=user.getId()%>" height="200px" width="200px" align="left" /></td>
+						<td><img src="image/?id=<%=user.getID()%>" height="200px" width="200px" align="left" /></td>
 					</tr>
 					
 					<tr>

@@ -26,7 +26,7 @@ public class GenericServlet extends HttpServlet implements UrlsDictionary {
 
 	protected PersonBean getRequestParams(HttpServletRequest req) {
 		PersonBean person = new PersonBean();
-		person.setId(req.getParameter(ID));
+		person.setID(req.getParameter(ID));
 		person.setDateBirth(req.getParameter(DATE_BIRTH));
 		person.setDateDeath(req.getParameter(DATE_DEATH));
 		person.setPassword(req.getParameter(DATE_DEATH));
@@ -43,7 +43,7 @@ public class GenericServlet extends HttpServlet implements UrlsDictionary {
 		Map<String, Object> params = getParameters(req);
 		for (Entry<String, Object> iterable : params.entrySet()) {
 			if (ID.equals(iterable.getKey())) {
-				person.setId(iterable.getValue().toString());
+				person.setID(iterable.getValue().toString());
 			}
 			if (DATE_BIRTH.equals(iterable.getKey())) {
 				person.setDateBirth(iterable.getValue().toString());

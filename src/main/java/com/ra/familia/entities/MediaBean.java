@@ -1,8 +1,10 @@
 package com.ra.familia.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MediaBean {
+public class MediaBean implements SuperBean, Serializable{
+	private static final long serialVersionUID = -6978842748315770797L;
 	private String ID;
 	private String source;
 	private String notes;

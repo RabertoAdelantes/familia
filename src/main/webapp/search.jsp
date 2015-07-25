@@ -42,7 +42,7 @@
 				<c:forEach items="${sessionScope.result}" var="person">
 					<form method="post" action="Select">
 					<tr>
-						<td><input type="text" value="${person.id}" name="id"
+						<td><input type="text" value="${person.ID}" name="id"
 							hidden="true" /></td>
 						<td>${person.firstName}</td>
 						<td>&nbsp;</td>

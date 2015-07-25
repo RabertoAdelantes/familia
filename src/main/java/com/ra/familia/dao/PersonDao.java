@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,10 +29,6 @@ public class PersonDao extends AbstractDao<PersonBean> {
 	public PersonDao() {
 	}
 
-	Set<PersonBean> getAllItems() {
-		return getAllItems(SELECT);
-	}
-
 	public PersonBean getItemByName(final PersonBean bean) {
 		StringBuffer where = new StringBuffer();
 		List<Pair<Integer, Object>> pairs = new ArrayList<>();
@@ -43,7 +40,7 @@ public class PersonDao extends AbstractDao<PersonBean> {
 		StringBuffer where = new StringBuffer();
 		List<Pair<Integer, Object>> pairs = new ArrayList<>();
 		PersonBean bean = new PersonBean();
-		bean.setId(id);
+		bean.setID(id);
 		PersonDaoHelper.fillSearchById(bean, where, pairs);
 		return getItemByField(SELECT, WHERE + where.toString(), pairs);
 	}
@@ -124,7 +121,7 @@ public class PersonDao extends AbstractDao<PersonBean> {
 					bean.isActive());
 			updateSql.append(conditions.toString());
 			updateSql.append(WHERE);
-			updateSql.append(P_TABLE + "." + PK + "=" + bean.getId());
+			updateSql.append(P_TABLE + "." + PK + "=" + bean.getID());
 			PreparedStatement preparedStatement = conn
 					.prepareStatement(updateSql.toString());
 			fillStatmentParameters(pairs, preparedStatement);
@@ -133,4 +130,9 @@ public class PersonDao extends AbstractDao<PersonBean> {
 			LOG.error(exception.getLocalizedMessage());
 		}
 	}
+	
+	public Collection<PersonBean> getAllItems() {
+		return super.getAllItems(SELECT);
+	}
+
 }

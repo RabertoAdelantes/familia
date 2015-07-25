@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +27,7 @@ public abstract class AbstractDao<T> implements UrlsDictionary,
 	abstract void addItem(T bean);
 
 	abstract void updateItem(T bean);
-
+	
 	protected Connection getConnection() {
 		return ConnectionManager.getConnection();
 	}
@@ -37,25 +38,6 @@ public abstract class AbstractDao<T> implements UrlsDictionary,
 
 	protected void closeStatement(final Statement stmt) {
 		ConnectionManager.closeStatement(stmt);
-	}
-
-	protected Set<T> getAllItems(String sqlQuery) {
-		Connection conn = null;
-		Statement stmt = null;
-		Set<T> beans = new HashSet<T>();
-		try {
-			conn = getConnection();
-			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(sqlQuery);
-			beans = fillBeans(rs);
-			rs.close();
-		} catch (Exception e) {
-			LOG.error(e.getLocalizedMessage());
-		} finally {
-			closeStatement(stmt);
-			closeConnection(conn);
-		}
-		return beans;
 	}
 
 	protected Set<T> getItemByFields(final String sqlQuery, final String where,
@@ -107,25 +89,23 @@ public abstract class AbstractDao<T> implements UrlsDictionary,
 		return bean;
 	}
 
-	protected Set<T> getItemsByField(final String sqlQuery,
-			final String fieldName, final String fieldValue) {
+	protected Collection<T> getAllItems(String sqlQuery) {
 		Connection conn = null;
-		PreparedStatement stmt = null;
-		Set<T> persons = new HashSet<T>();
+		Statement stmt = null;
+		Set<T> beans = new HashSet<T>();
 		try {
 			conn = getConnection();
-			stmt = conn.prepareStatement(sqlQuery + " where " + fieldName
-					+ " ?");
-			stmt.setString(1, fieldValue);
-			ResultSet rs = stmt.executeQuery();
-			persons = fillBeans(rs);
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sqlQuery);
+			beans = fillBeans(rs);
 			rs.close();
 		} catch (Exception e) {
-			LOG.error(e.getLocalizedMessage());
+			LOG.error(String.format("Get all items error :{'s'}",e.getLocalizedMessage()));
 		} finally {
 			closeStatement(stmt);
 			closeConnection(conn);
 		}
-		return persons;
+		return beans;
 	}
+
 }

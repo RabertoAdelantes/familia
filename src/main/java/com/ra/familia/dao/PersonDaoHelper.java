@@ -99,7 +99,7 @@ public class PersonDaoHelper implements TablesDictionary{
 	public static void fillSearchById(final PersonBean bean,
 			final StringBuffer where, final List<Pair<Integer, Object>> pairs) {
 		Pair<Integer, Object> pair = PersonDaoHelper.setWhereAndCondition(
-				where, PK, bean.getId());
+				where, PK, bean.getID());
 		if (pair.getKey() != null) {
 			pairs.add(pair);
 		}
@@ -137,7 +137,7 @@ public class PersonDaoHelper implements TablesDictionary{
 
 	public static PersonBean fillBeanByRs(final ResultSet rs) throws SQLException {
 		PersonBean person = new PersonBean();
-		person.setId(rs.getString(PK)); 
+		person.setID(rs.getString(PK)); 
 		person.setFirstName(rs.getString(P_FIRST_NAME));
 		person.setLastName(rs.getString(P_LAST_NAME));
 		person.setMidleName(rs.getString(P_MIDLE_NAME));
@@ -146,8 +146,14 @@ public class PersonDaoHelper implements TablesDictionary{
 		person.setDateBirth(rs.getString(P_DATE_BIRTH));
 		person.setDateBirth(rs.getString(P_DATE_DEATH));
 		Blob blob = rs.getBlob(P_FILE_DATA);
-		person.setDbFile(blob.getBytes(1,(int)blob.length())); 
-		person.setFilePath(rs.getObject(P_PHOTO).toString()); 
+		byte[] bytes= new byte[] {};
+		if (blob.length()!=0)
+		{
+			bytes = blob.getBytes(1,(int)blob.length());
+		}
+		person.setDbFile(bytes); 
+		String path = rs.getObject(P_PHOTO)==null?StringUtils.EMPTY:rs.getObject(P_PHOTO).toString();
+		person.setFilePath(path); 
 		return person;
 	}
 }

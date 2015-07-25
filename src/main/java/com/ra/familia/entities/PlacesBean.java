@@ -1,8 +1,11 @@
 package com.ra.familia.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PlacesBean {
+public class PlacesBean implements SuperBean, Serializable{
+
+	private static final long serialVersionUID = 1304323181020065179L;
 	private String ID; 
 	private String name;
 	private String notes;

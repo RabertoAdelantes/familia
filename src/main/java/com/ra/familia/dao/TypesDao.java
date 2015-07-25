@@ -2,6 +2,7 @@ package com.ra.familia.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +19,7 @@ public class TypesDao extends AbstractDao<TypesBean> {
 
 	}
 	
-	Set<TypesBean> getAllItems() {
+	public Collection<TypesBean> getAllItems() {
 		return getAllItems(SELECT);
 	}
 

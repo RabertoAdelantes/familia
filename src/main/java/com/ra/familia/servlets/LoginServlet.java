@@ -4,8 +4,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.servlet.*;
 
-import com.ra.familia.dao.DaoFactory;
-import com.ra.familia.dao.PersonDao;
 import com.ra.familia.entities.PersonBean;
 import com.ra.familia.services.PersonServiceImpl;
 import com.ra.familia.services.Services;

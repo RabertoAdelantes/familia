@@ -1,6 +1,9 @@
 package com.ra.familia.entities;
 
-public class TypesBean {
+import java.io.Serializable;
+
+public class TypesBean implements SuperBean, Serializable{
+	private static final long serialVersionUID = -5155191490217284346L;
 	private String ID; 
 	private String name;
 	private String type;

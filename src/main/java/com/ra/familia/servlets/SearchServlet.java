@@ -12,7 +12,7 @@ import com.ra.familia.services.PersonServiceImpl;
 import com.ra.familia.services.Services;
 
 import java.io.*;
-import java.util.Set;
+import java.util.Collection;
 
 @WebServlet(name = "SearchServlet", displayName = "Search Servlet", urlPatterns = {
 		"/search", "/Search" }, loadOnStartup = 1)
@@ -28,7 +28,11 @@ public class SearchServlet extends GenericServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		PersonBean person = getRequestParams(req);
-		Set<PersonBean> persons = personService.getItemsByName(person);
+		Collection<PersonBean> persons = personService.getItemsByName(person);
+		if ((person.getFirstName()==null)||(person.getFirstName().isEmpty()))
+		{
+			persons = personService.getAllItems();
+		}
 		req.getSession().setAttribute(SEARCH_SET, persons);
 		req.getRequestDispatcher(SEARCH_JSP).forward(req, resp);
 	}

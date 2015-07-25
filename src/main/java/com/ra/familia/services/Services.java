@@ -1,5 +1,6 @@
 package com.ra.familia.services;
 
+import java.util.Collection;
 import java.util.Set;
 
 import com.ra.familia.entities.PersonBean;
@@ -14,5 +15,7 @@ public interface Services<T> {
 	public T getItemByName(T bean);
 	
 	public Set<T> getItemsByName(T bean);
+	
+	public Collection<T> getAllItems();
 
 }
