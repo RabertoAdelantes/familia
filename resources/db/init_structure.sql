@@ -3,7 +3,9 @@ CREATE SEQUENCE seq_person MINVALUE 1 START WITH 1 INCREMENT BY 1 CACHE 100000;
 CREATE SEQUENCE seq_personref MINVALUE 1 START WITH 1 INCREMENT BY 1 CACHE 100000;
 CREATE SEQUENCE seq_types MINVALUE 1 START WITH 1INCREMENT BY 1 CACHE 100000;
 CREATE SEQUENCE seq_media MINVALUE 1 START WITH 1 INCREMENT BY 1CACHE 100000;
-------------------------- End ence section ------------------------------
+CREATE SEQUENCE seq_group MINVALUE 1 START WITH 1 INCREMENT BY 1 CACHE 100000;
+
+------------------------- End Sequence section ------------------------------
 CREATE TABLE Person (
    first_name varchar2(255)  NOT NULL,
    midle_name varchar2(255)  NOT NULL,
@@ -15,8 +17,15 @@ CREATE TABLE Person (
    date_death date  NULL,
    isActive integer  DEFAULT 0 NOT NULL,
    isDeleted integer  DEFAULT 1 NOT NULL,
+   groupId integer  DEFAULT 1 NOT NULL,
    pk integer  NOT NULL,
    CONSTRAINT Person_pk PRIMARY KEY (pk)
+);
+
+CREATE TABLE UserGroup (
+   name varchar2(255)  NOT NULL,
+   pk integer  NOT NULL,
+   CONSTRAINT Group_pk PRIMARY KEY (pk)
 ) ;
 
 CREATE TABLE PersonReference (

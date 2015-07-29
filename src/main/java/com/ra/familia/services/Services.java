@@ -3,14 +3,12 @@ package com.ra.familia.services;
 import java.util.Collection;
 import java.util.Set;
 
-import com.ra.familia.entities.PersonBean;
-
 public interface Services<T> {
 	public T getById(String personId);
 
-	public void addItem(PersonBean bean);
+	public void addItem(T bean);
 
-	public void updateItem(PersonBean bean);
+	public void updateItem(T bean);
 	
 	public T getItemByName(T bean);
 	

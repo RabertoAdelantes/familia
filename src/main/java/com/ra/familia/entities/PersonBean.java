@@ -1,8 +1,6 @@
 package com.ra.familia.entities;
 
-import java.io.Serializable;
-
-public class PersonBean implements SuperBean, Serializable{
+public class PersonBean implements SuperBean{
 
 	private static final long serialVersionUID = -7002784234984756018L;
 	
@@ -19,7 +17,8 @@ public class PersonBean implements SuperBean, Serializable{
 	private byte[] dbFile;
 	private boolean isDeleted;
 	private boolean isActive;
-
+	private String groupId;
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -93,6 +92,10 @@ public class PersonBean implements SuperBean, Serializable{
 		return isActive;
 	}
 
+	public boolean getIsActive() {
+		return isActive;
+	}
+	
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
@@ -128,6 +131,14 @@ public class PersonBean implements SuperBean, Serializable{
 
 	public void setID(String id) {
 		this.id = id;
+	}
+
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
 	}
 
 }

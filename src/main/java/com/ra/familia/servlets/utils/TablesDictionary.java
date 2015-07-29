@@ -16,4 +16,8 @@ public interface TablesDictionary {
 	public static final String  P_ISDELETED = "ISDELETED";
 	public static final String  P_PHOTO = "PHOTO";
 	public static final String  P_FILE_DATA = "FILE_DATA";
+	public static final String P_GROUP_ID = "GROUPID";	
+	
+	public final String G_PERSONGROUP = "USERGROUP";
+	public final String G_NAME = "NAME";
 }

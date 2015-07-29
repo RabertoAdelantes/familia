@@ -55,6 +55,11 @@
 						<td>${person.dateBirth}</td>
 						<td>&nbsp;</td>
 						<td>${person.dateDeath}</td>
+						<td>&nbsp;</td>
+						<c:if test="${sessionScope.isAdmin==true}">
+							<td><c:out value="<a href=\\"http://${req.requestURL}/activate?id=${person.ID}"/>
+							<c:out value="${person.isActive eq true ? 'ACTIVE': 'NOTACTIVE'}"/></td>
+						</c:if>						
 						<td><input type="submit" value="Select" /></td>
 					</tr>
 					</form>

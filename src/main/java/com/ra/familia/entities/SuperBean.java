@@ -1,5 +1,7 @@
 package com.ra.familia.entities;
 
-public interface SuperBean {
+import java.io.Serializable;
+
+public interface SuperBean extends Serializable{
 	public String getID();
 }

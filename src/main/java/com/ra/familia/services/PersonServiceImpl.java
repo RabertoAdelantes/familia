@@ -12,7 +12,7 @@ import com.ra.familia.entities.PersonBean;
 public class PersonServiceImpl implements Services<PersonBean> {
 
 	private PersonDao personDao = DaoFactory.getInstance().getPersonDao();
-	private AppliactionCashe imgCashe = AppliactionCashe.getInsatnce();
+	private ApplicationCashe imgCashe = ApplicationCashe.getInsatnce();
 
 	public PersonBean getById(String personId) {
 		PersonBean person = (PersonBean) imgCashe.getObject(personId);

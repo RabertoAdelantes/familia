@@ -3,6 +3,7 @@ package com.ra.familia.servlets.utils;
 public interface UrlsDictionary {
 
 	// session attributes
+	public static final String IS_ADMIN = "isAdmin";
 	public static final String USER_BEAN = "user";
 	public static final String SEARCH_SET = "result";
 	public static final String PROFILE_URL = "profile";
@@ -15,6 +16,7 @@ public interface UrlsDictionary {
 	public static final String SEARCH_JSP = "search.jsp";
 	public static final String INDEX_JSP = "index.jsp";
 	public static final String PROFILE_JSP = "profile.jsp";
+	public static final String REGISTER_JSP = "register.jsp";
 	// request parameters
 	public static final String PHOTO = "photo";
 	public static final String USER_NAME = "userName";
@@ -32,9 +34,5 @@ public interface UrlsDictionary {
 
 	// request parameters
 	public static final String ERR_LOGIN_FAILED = "Login failed : user or password is incorrect";
-	
-//	public static final String USER_UPLOAD_FOLDER = "user_upload_folder";
-//	public static final String FILE_MAX_SIZE = "file.size.max";
-//	public static final String USER_UPLOAD_DEFAUL_FOLDER = "Z:\\";
 
 }

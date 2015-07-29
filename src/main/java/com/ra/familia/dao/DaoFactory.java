@@ -4,6 +4,7 @@ public final class DaoFactory {
 	
 	private static DaoFactory daoFactory;
 	private static PersonDao personDao = new PersonDao();
+	private static PersonGroupDao personGroupDao = new PersonGroupDao();
 	private static TypesDao typesDao = new TypesDao();
 	
 	private DaoFactory()
@@ -28,5 +29,10 @@ public final class DaoFactory {
 	public TypesDao getTypesDao()
 	{
 		return typesDao;
+	}
+	
+	public PersonGroupDao getPersonGroupDao()
+	{
+		return personGroupDao;
 	}
 }

@@ -2,7 +2,7 @@ package com.ra.familia.entities;
 
 import java.io.Serializable;
 
-public class TypesBean implements SuperBean, Serializable{
+public class TypesBean implements SuperBean{
 	private static final long serialVersionUID = -5155191490217284346L;
 	private String ID; 
 	private String name;

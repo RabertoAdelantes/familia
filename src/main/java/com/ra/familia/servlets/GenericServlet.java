@@ -60,6 +60,9 @@ public class GenericServlet extends HttpServlet implements UrlsDictionary {
 			if (LAST_NAME.equals(iterable.getKey())) {
 				person.setLastName(iterable.getValue().toString());
 			}
+			if (PASSWORD.equals(iterable.getKey())) {
+				person.setPassword(iterable.getValue().toString());
+			}
 			if (EMAIL.equals(iterable.getKey())) {
 				person.setEmail(iterable.getValue().toString());
 			}

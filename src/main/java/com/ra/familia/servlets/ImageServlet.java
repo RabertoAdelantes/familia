@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ra.familia.entities.PersonBean;
-import com.ra.familia.services.AppliactionCashe;
+import com.ra.familia.services.ApplicationCashe;
 import com.ra.familia.services.PersonServiceImpl;
 import com.ra.familia.services.Services;
 
@@ -23,7 +23,7 @@ public class ImageServlet extends HttpServlet {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(ImageServlet.class);
 
-	private AppliactionCashe imgCashe = AppliactionCashe.getInsatnce();
+	private ApplicationCashe imgCashe = ApplicationCashe.getInsatnce();
 	
 	private static final long serialVersionUID = -3378483395350978236L;
 	private Services<PersonBean> personService = new PersonServiceImpl();
@@ -32,7 +32,13 @@ public class ImageServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		String imageId = request.getParameter("id");
 		byte[] bytes = imgCashe.get(imageId);
-		retriveMedia(response, imageId, bytes);
+		PersonBean person = personService.getById(imageId);
+		byte[] bytes3= saveToCashe(imageId, person);
+		byte[] bytes2 = person.getDbFile();
+		bytes2.equals(bytes3);
+		response.getOutputStream().write(bytes3);
+		response.getOutputStream().flush();
+		response.getOutputStream().close();
 	}
 
 	private void retriveMedia(HttpServletResponse response, String imageId,
@@ -45,25 +51,27 @@ public class ImageServlet extends HttpServlet {
 			bytes = saveToCashe(imageId, person);
 		}
 
-		BufferedOutputStream output = new BufferedOutputStream(
-				response.getOutputStream());
+//		BufferedOutputStream output = new BufferedOutputStream(
+//				response.getOutputStream());
 		try {
-			output.write(bytes);
-			output.flush();
+			response.getOutputStream().write(bytes);
+			response.getOutputStream().flush();
 			response.setContentLength(bytes.length);
 		} catch (Exception ex) {
 			LOG.error(String.format(
 					"Error on image rendering occured '%s' for ID '%s'",
 					ex.getLocalizedMessage(), imageId));
 		} finally {
-			output.close();
+			response.getOutputStream().close();
 		}
 	}
 
 	private byte[] saveToCashe(String imageId, PersonBean person) {
 		byte[] bytes = person.getDbFile();
 		imgCashe.add(imageId, bytes);
-		return bytes;
+		byte[] bytes2 =imgCashe.get(imageId);
+		bytes.equals(bytes2);
+		return bytes2;
 	}
 
 }

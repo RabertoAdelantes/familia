@@ -145,6 +145,11 @@ public class PersonDaoHelper implements TablesDictionary{
 		person.setEmail(rs.getString(P_EMAIL));
 		person.setDateBirth(rs.getString(P_DATE_BIRTH));
 		person.setDateBirth(rs.getString(P_DATE_DEATH));
+		person.setGroupId(rs.getString(P_GROUP_ID));
+		person.setDeleted(rs.getString(P_ISDELETED).equals("1")?true:false);
+		person.setActive(rs.getString(P_ISACTIVE).equals("1")?true:false);
+		
+		
 		Blob blob = rs.getBlob(P_FILE_DATA);
 		byte[] bytes= new byte[] {};
 		if (blob.length()!=0)

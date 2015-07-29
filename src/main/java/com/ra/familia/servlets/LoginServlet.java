@@ -4,7 +4,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.servlet.*;
 
+import com.ra.familia.entities.GroupBean;
 import com.ra.familia.entities.PersonBean;
+import com.ra.familia.services.PersonGroupServiceImpl;
 import com.ra.familia.services.PersonServiceImpl;
 import com.ra.familia.services.Services;
 
@@ -20,7 +22,9 @@ public class LoginServlet extends GenericServlet {
 			.getLogger(LoginServlet.class);
 
 	private static final long serialVersionUID = 8623907130423043967L;
+
 	private Services<PersonBean> personService = new PersonServiceImpl();
+	private PersonGroupServiceImpl personGroupService = new PersonGroupServiceImpl();
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -37,6 +41,8 @@ public class LoginServlet extends GenericServlet {
 		} else {
 			LOG.info("Login Success");
 			req.getSession().setAttribute(USER_BEAN, person);
+			boolean isAdmin = personGroupService.isUserAdmin(person);
+			req.getSession().setAttribute(IS_ADMIN, isAdmin);
 		}
 		resp.sendRedirect(nextStep);
 	}

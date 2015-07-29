@@ -3,7 +3,7 @@ package com.ra.familia.entities;
 import java.io.Serializable;
 import java.util.List;
 
-public class PlacesBean implements SuperBean, Serializable{
+public class PlacesBean implements SuperBean{
 
 	private static final long serialVersionUID = 1304323181020065179L;
 	private String ID; 
