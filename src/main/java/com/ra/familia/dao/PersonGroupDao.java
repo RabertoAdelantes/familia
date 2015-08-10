@@ -1,6 +1,10 @@
 package com.ra.familia.dao;
 
+import static com.ra.familia.servlets.utils.TablesDictionary.G_PERSONGROUP;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_TABLE;
+
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,10 +16,8 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.PreparedStatement;
-
 import com.ra.familia.entities.GroupBean;
-import com.ra.familia.entities.PersonBean;
+import com.ra.familia.exceptions.DaoExeception;
 
 public class PersonGroupDao extends AbstractDao<GroupBean> {
 	private static final Logger LOG = LoggerFactory.getLogger(PersonGroupDao.class);
@@ -61,7 +63,7 @@ public class PersonGroupDao extends AbstractDao<GroupBean> {
 		return super.getAllItems(SELECT);
 	}
 
-	public GroupBean getItemByName(final GroupBean bean) {
+	public GroupBean getItemByName(final GroupBean bean) throws DaoExeception {
 		StringBuffer where = new StringBuffer();
 		List<Pair<Integer, Object>> pairs = new ArrayList<>();
 		PersonGroupDaoHelper.fillSearchByName(bean, where, pairs);

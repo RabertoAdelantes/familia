@@ -8,29 +8,33 @@ import org.apache.commons.collections.CollectionUtils;
 import com.ra.familia.dao.DaoFactory;
 import com.ra.familia.dao.PersonDao;
 import com.ra.familia.entities.PersonBean;
+import com.ra.familia.exceptions.DaoExeception;
 
 public class PersonServiceImpl implements Services<PersonBean> {
 
 	private PersonDao personDao = DaoFactory.getInstance().getPersonDao();
 	private ApplicationCashe imgCashe = ApplicationCashe.getInsatnce();
 
-	public PersonBean getById(String personId) {
+	@Override
+	public PersonBean getById(String personId) throws DaoExeception {
 		PersonBean person = (PersonBean) imgCashe.getObject(personId);
 		person = person == null ? personDao.getItemById(personId) : person;
 		addPersonToCashe(person);
 		return person;
 	}
 
-	public void addItem(PersonBean bean) {
+	@Override
+	public void addItem(PersonBean bean) throws DaoExeception {
 		personDao.addItem(bean);
 	}
 
+	@Override
 	public void updateItem(PersonBean bean) {
 		personDao.updateItem(bean);
 	}
 
 	@Override
-	public PersonBean getItemByName(PersonBean person) {
+	public PersonBean getItemByName(PersonBean person) throws DaoExeception {
 		PersonBean personRet = (PersonBean) imgCashe.getObject(person.getID());
 		personRet = personRet == null ? personDao.getItemByName(person) : personRet;
 		addPersonToCashe(personRet);
@@ -38,7 +42,7 @@ public class PersonServiceImpl implements Services<PersonBean> {
 	}
 
 	@Override
-	public Set<PersonBean> getItemsByName(PersonBean person) {
+	public Set<PersonBean> getItemsByName(PersonBean person) throws DaoExeception {
 		Set<PersonBean> persons =  personDao.getItemsByName(person);
 		addPersonsToCashe(persons);
 		return persons;

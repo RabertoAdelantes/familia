@@ -1,5 +1,20 @@
 package com.ra.familia.dao;
 
+import static com.ra.familia.servlets.utils.TablesDictionary.PK;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_DATE_BIRTH;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_DATE_DEATH;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_EMAIL;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_FILE_DATA;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_FIRST_NAME;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_GROUP_ID;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_ISACTIVE;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_ISDELETED;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_LAST_NAME;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_MIDLE_NAME;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_PASSWORD;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_PHOTO;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_TABLE;
+
 import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,9 +23,9 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import com.ra.familia.entities.PersonBean;
-import com.ra.familia.servlets.utils.TablesDictionary;
 
-public class PersonDaoHelper implements TablesDictionary{
+
+public class PersonDaoHelper {
 
 	private PersonDaoHelper() {
 

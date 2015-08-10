@@ -29,12 +29,7 @@ public class IOService {
 		String directory = properties.getProperty(USER_UPLOAD_FOLDER,
 				USER_UPLOAD_DEFAUL_FOLDER);
 		String name = directory + File.separator;
-		if (isFileExists(name + item.getName())) {
-			String[] fileAttr = item.getName().split("\\.");
-			String fName = fileAttr[0];
-			String fExt = fileAttr[1];
-			name += fName + "_" + UUID.randomUUID().toString() + "." + fExt;
-		}
+		name += UUID.randomUUID().toString() + "." + item.getContentType().split("/")[1];
 		return name;
 	}
 
@@ -48,7 +43,7 @@ public class IOService {
 		String name = getFileName(item);
 		try {
 			item.write(new File(name));
-			bean.setFilePath(name);
+			//bean.setFilePath(item);
 			
 			if (item.getSize() < Long.valueOf(max_size)) {
 				FileInputStream in = new FileInputStream(name);

@@ -1,6 +1,18 @@
 package com.ra.familia.dao;
 
+import static com.ra.familia.servlets.utils.TablesDictionary.PK;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_EMAIL;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_FILE_DATA;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_FIRST_NAME;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_ISACTIVE;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_ISDELETED;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_LAST_NAME;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_MIDLE_NAME;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_PHOTO;
+import static com.ra.familia.servlets.utils.TablesDictionary.P_TABLE;
+
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,9 +24,9 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.PreparedStatement;
-
 import com.ra.familia.entities.PersonBean;
+import com.ra.familia.exceptions.DaoExeception;
+
 
 public class PersonDao extends AbstractDao<PersonBean> {
 	private static final Logger LOG = LoggerFactory.getLogger(PersonDao.class);
@@ -29,14 +41,14 @@ public class PersonDao extends AbstractDao<PersonBean> {
 	public PersonDao() {
 	}
 
-	public PersonBean getItemByName(final PersonBean bean) {
+	public PersonBean getItemByName(final PersonBean bean) throws DaoExeception {
 		StringBuffer where = new StringBuffer();
 		List<Pair<Integer, Object>> pairs = new ArrayList<>();
 		PersonDaoHelper.fillSearchByName(bean, where, pairs);
 		return getItemByField(SELECT, WHERE + where.toString(), pairs);
 	}
 
-	public PersonBean getItemById(final String id) {
+	public PersonBean getItemById(final String id) throws DaoExeception {
 		StringBuffer where = new StringBuffer();
 		List<Pair<Integer, Object>> pairs = new ArrayList<>();
 		PersonBean bean = new PersonBean();
@@ -45,7 +57,7 @@ public class PersonDao extends AbstractDao<PersonBean> {
 		return getItemByField(SELECT, WHERE + where.toString(), pairs);
 	}
 
-	public Set<PersonBean> getItemsByName(final PersonBean bean) {
+	public Set<PersonBean> getItemsByName(final PersonBean bean) throws DaoExeception {
 		StringBuffer where = new StringBuffer();
 		List<Pair<Integer, Object>> pairs = new ArrayList<>();
 		PersonDaoHelper.fillSearchAll(bean, where, pairs);
@@ -63,7 +75,7 @@ public class PersonDao extends AbstractDao<PersonBean> {
 	}
 
 	@Override
-	public void addItem(PersonBean bean) {
+	public void addItem(PersonBean bean) throws DaoExeception {
 		Connection conn = getConnection();
 		try {
 			PreparedStatement preparedStatement = conn.prepareStatement(INSERT);
@@ -82,6 +94,7 @@ public class PersonDao extends AbstractDao<PersonBean> {
 			preparedStatement.executeUpdate();
 		} catch (SQLException exception) {
 			LOG.error(exception.getLocalizedMessage());
+			throw new DaoExeception(exception.getLocalizedMessage());
 		}
 	}
 

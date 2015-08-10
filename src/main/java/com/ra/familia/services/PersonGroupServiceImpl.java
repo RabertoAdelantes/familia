@@ -3,12 +3,11 @@ package com.ra.familia.services;
 import java.util.Collection;
 import java.util.Set;
 
-
-
 import com.ra.familia.dao.DaoFactory;
 import com.ra.familia.dao.PersonGroupDao;
 import com.ra.familia.entities.GroupBean;
 import com.ra.familia.entities.PersonBean;
+import com.ra.familia.exceptions.DaoExeception;
 
 public class PersonGroupServiceImpl implements Services<GroupBean> {
 
@@ -25,7 +24,7 @@ public class PersonGroupServiceImpl implements Services<GroupBean> {
 	}
 
 	@Override
-	public GroupBean getItemByName(GroupBean bean) {
+	public GroupBean getItemByName(GroupBean bean) throws DaoExeception  {
 		return personGroupDao.getItemByName(bean);
 	}
 

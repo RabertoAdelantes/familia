@@ -1,8 +1,13 @@
 package com.ra.familia.servlets.utils;
 
-public interface TablesDictionary {
+public final class TablesDictionary {
 
-	public final String P_TABLE = "PERSON";
+	private TablesDictionary()
+	{
+		
+	}
+	
+	public static final String P_TABLE = "PERSON";
 	public static final String PK = "PK";
 	public static final String P_EMAIL = "EMAIL";
 	public static final String P_PASSWORD = "PASSWORD";
@@ -18,6 +23,6 @@ public interface TablesDictionary {
 	public static final String  P_FILE_DATA = "FILE_DATA";
 	public static final String P_GROUP_ID = "GROUPID";	
 	
-	public final String G_PERSONGROUP = "USERGROUP";
-	public final String G_NAME = "NAME";
+	public static final String G_PERSONGROUP = "USERGROUP";
+	public static final String G_NAME = "NAME";
 }

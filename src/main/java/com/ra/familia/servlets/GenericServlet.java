@@ -1,5 +1,16 @@
 package com.ra.familia.servlets;
 
+import static com.ra.familia.servlets.utils.UrlsDictionary.DATE_BIRTH;
+import static com.ra.familia.servlets.utils.UrlsDictionary.DATE_DEATH;
+import static com.ra.familia.servlets.utils.UrlsDictionary.EMAIL;
+import static com.ra.familia.servlets.utils.UrlsDictionary.FIRST_NAME;
+import static com.ra.familia.servlets.utils.UrlsDictionary.ID;
+import static com.ra.familia.servlets.utils.UrlsDictionary.LAST_NAME;
+import static com.ra.familia.servlets.utils.UrlsDictionary.LAST_NAME2;
+import static com.ra.familia.servlets.utils.UrlsDictionary.MIDLE_NAME;
+import static com.ra.familia.servlets.utils.UrlsDictionary.PASSWORD;
+import static com.ra.familia.servlets.utils.UrlsDictionary.PHOTO;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +26,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ra.familia.entities.PersonBean;
-import com.ra.familia.servlets.utils.UrlsDictionary;
 
-public class GenericServlet extends HttpServlet implements UrlsDictionary {
+
+public class GenericServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -1211204935725232738L;
 

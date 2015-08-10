@@ -1,5 +1,9 @@
 package com.ra.familia.dao;
 
+import static com.ra.familia.servlets.utils.TablesDictionary.G_NAME;
+import static com.ra.familia.servlets.utils.TablesDictionary.G_PERSONGROUP;
+import static com.ra.familia.servlets.utils.TablesDictionary.PK;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -8,9 +12,8 @@ import org.apache.commons.lang.StringUtils;
 
 import com.ra.familia.entities.GroupBean;
 import com.ra.familia.entities.PersonBean;
-import com.ra.familia.servlets.utils.TablesDictionary;
 
-public class PersonGroupDaoHelper implements TablesDictionary{
+public class PersonGroupDaoHelper {
 
 	private PersonGroupDaoHelper() {
 

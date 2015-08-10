@@ -1,27 +1,39 @@
 package com.ra.familia.servlets;
 
+import static com.ra.familia.servlets.utils.UrlsDictionary.ERR_LOGIN_FAILED;
+import static com.ra.familia.servlets.utils.UrlsDictionary.IS_ADMIN;
+import static com.ra.familia.servlets.utils.UrlsDictionary.PASSWORD;
+import static com.ra.familia.servlets.utils.UrlsDictionary.SEARCH_URL;
+import static com.ra.familia.servlets.utils.UrlsDictionary.SES_ERROR;
+import static com.ra.familia.servlets.utils.UrlsDictionary.USER_BEAN;
+import static com.ra.familia.servlets.utils.UrlsDictionary.USER_NAME;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
-import javax.servlet.*;
-
-import com.ra.familia.entities.GroupBean;
-import com.ra.familia.entities.PersonBean;
-import com.ra.familia.services.PersonGroupServiceImpl;
-import com.ra.familia.services.PersonServiceImpl;
-import com.ra.familia.services.Services;
-
-import java.io.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ra.familia.entities.PersonBean;
+import com.ra.familia.exceptions.DaoExeception;
+import com.ra.familia.services.PersonGroupServiceImpl;
+import com.ra.familia.services.PersonServiceImpl;
+import com.ra.familia.services.Services;
+
+
 @WebServlet(name = "LoginServlet", displayName = "Authorization Servlet", urlPatterns = { "/login","/Login" }, loadOnStartup = 1)
 public class LoginServlet extends GenericServlet {
+
+	private static final long serialVersionUID = 4583682557004705736L;
+
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(LoginServlet.class);
 
-	private static final long serialVersionUID = 8623907130423043967L;
 
 	private Services<PersonBean> personService = new PersonServiceImpl();
 	private PersonGroupServiceImpl personGroupService = new PersonGroupServiceImpl();
@@ -51,7 +63,12 @@ public class LoginServlet extends GenericServlet {
 		PersonBean person = new PersonBean();
 		person.setPassword(password);
 		person.setFirstName(name);
-		person = personService.getItemByName(person);
+		try {
+			person = personService.getItemByName(person);
+		} catch (DaoExeception ex) {
+			//req.setAttribute(REQ_ERROR, CAN_NOT_COMPLETE);
+			LOG.error(ex.getMessage());
+		}
 		return person;
 	}
 	

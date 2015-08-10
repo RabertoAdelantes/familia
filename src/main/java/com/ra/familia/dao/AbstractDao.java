@@ -14,17 +14,15 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ra.familia.servlets.utils.TablesDictionary;
-import com.ra.familia.servlets.utils.UrlsDictionary;
+import com.ra.familia.exceptions.DaoExeception;
 
-public abstract class AbstractDao<T> implements UrlsDictionary,
-		TablesDictionary {
+public abstract class AbstractDao<T> {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(AbstractDao.class);
 
 	abstract Set<T> fillBeans(ResultSet rs) throws SQLException;
 
-	abstract void addItem(T bean);
+	abstract void addItem(T bean) throws DaoExeception;
 
 	abstract void updateItem(T bean);
 	
@@ -41,7 +39,7 @@ public abstract class AbstractDao<T> implements UrlsDictionary,
 	}
 
 	protected Set<T> getItemByFields(final String sqlQuery, final String where,
-			final List<Pair<Integer, Object>> pairs) {
+			final List<Pair<Integer, Object>> pairs) throws DaoExeception {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		Set<T> beans = new HashSet<T>();
@@ -53,8 +51,9 @@ public abstract class AbstractDao<T> implements UrlsDictionary,
 			ResultSet rs = stmt.executeQuery();
 			beans = fillBeans(rs);
 			rs.close();
-		} catch (Exception e) {
-			LOG.error(e.getLocalizedMessage());
+		} catch (Exception ex) {
+			LOG.error(ex.getLocalizedMessage());
+			throw new DaoExeception(ex.getLocalizedMessage());
 		} finally {
 			closeStatement(stmt);
 			closeConnection(conn);
@@ -80,7 +79,7 @@ public abstract class AbstractDao<T> implements UrlsDictionary,
 	}
 
 	protected T getItemByField(final String sqlQuery, final String where,
-			final List<Pair<Integer, Object>> pairs) {
+			final List<Pair<Integer, Object>> pairs) throws DaoExeception {
 		Set<T> beans = getItemByFields(sqlQuery, where, pairs);
 		T bean = null;
 		if (!beans.isEmpty()) {

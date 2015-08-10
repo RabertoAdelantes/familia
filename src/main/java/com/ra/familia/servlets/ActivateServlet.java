@@ -1,9 +1,7 @@
 package com.ra.familia.servlets;
 
-import static com.ra.familia.servlets.utils.UrlsDictionary.CAN_NOT_COMPLETE;
 import static com.ra.familia.servlets.utils.UrlsDictionary.ID;
 import static com.ra.familia.servlets.utils.UrlsDictionary.PROFILE_JSP;
-import static com.ra.familia.servlets.utils.UrlsDictionary.REQ_ERROR;
 import static com.ra.familia.servlets.utils.UrlsDictionary.USER_BEAN;
 
 import java.io.IOException;
@@ -25,10 +23,10 @@ import com.ra.familia.services.Services;
 
 @WebServlet(name = "PersonServlet", displayName = "Profile Servlet", urlPatterns = {
 		"/profile", "/select", "/Profile", "/Select" }, loadOnStartup = 1)
-public class PersonServlet extends GenericServlet {
+public class ActivateServlet extends GenericServlet {
 
 	private static final Logger LOG = LoggerFactory
-			.getLogger(PersonServlet.class);
+			.getLogger(ActivateServlet.class);
 	private static final long serialVersionUID = 8781195695257213199L;
 
 	private IOService ioService = new IOService();
@@ -56,17 +54,16 @@ public class PersonServlet extends GenericServlet {
 					personService.updateItem(bean);
 				}
 			} catch (DaoExeception ex) {
-				req.setAttribute(REQ_ERROR, CAN_NOT_COMPLETE);
 				LOG.error(ex.getMessage());
 			}
 		}
 		String id = req.getParameter(ID);
-		PersonBean bean =null;
+		PersonBean bean = null;
 		try {
 			bean = personService.getById(id);
-		} catch (DaoExeception ex) {
-			req.setAttribute(REQ_ERROR, CAN_NOT_COMPLETE);
-			LOG.error(ex.getMessage());
+		} catch (DaoExeception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		req.getSession().setAttribute(USER_BEAN, bean);
 		resp.sendRedirect(redirectUrl);

@@ -1,22 +1,30 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<html>
+<head>
+<title>Registration</title>
+</head>
+
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 
 <script type="text/javascript">
 function redirect(elem){
      elem.setAttribute("action","index.jsp");
      elem.submit();
 }
+
+$(function() {
+  $( "#datebirth" ).datepicker();
+  $( "#datedeath" ).datepicker();
+});
 </script>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Registration</title>
-</head>
 <body bgcolor="white">
 	<center>
-		<table border="0" width="30%" cellpadding="5">
+		<table border="0" width="20%" cellpadding="5">
 			<thead>
 				<tr>
 					<th colspan="13">Register new user</th>
@@ -46,15 +54,17 @@ function redirect(elem){
 						<td><input type="text" value="" name="email" /></td>
 					</tr>
 					<tr>
-						<td>Date birth</td>
-						<td><input type="text" value="" name="date_birth" /></td>
+						<td>* Date birth</td>
+						<td><input type="text" value="" name="date_birth"
+							id="datebirth" />
 					</tr>
 					<tr>
-						<td>Date death</td>
-						<td><input type="text" value="" name="date_death" /></td>
+						<td>* Date deat</td>
+						<td><input type="date" value="" name="date_death"
+							id="datedeath" />
 					</tr>
 					<tr>
-						<td>Portrait Photo:</td>
+						<td>Portrait Photo</td>
 						<td><input type="file" name="photo" size="50" /></td>
 					</tr>
 					<tr>
@@ -62,21 +72,13 @@ function redirect(elem){
 						<td>&nbsp;</td>
 					</tr>
 					<tr>
-						<td><c:if test="${requestScope.request_error != null}">
-								<c:out value="${requestScope.request_error}" />
-							</c:if></td>
 						<td></td>
+						<td><c:if test="${requestScope.request_error != null}">
+								<font color="red">ERROR : </font><b><c:out value="${requestScope.request_error}" /></b>
+							</c:if>
+						<h5>* click to select the date</h5>	
+						</td>
 					</tr>
-				</form>
-				<form method="post" action="" onsubmit="redirect(this);">
-					<table border="0" width="30%" cellpadding="3">
-						<tbody>
-							<tr>
-								<td><input type="submit" value="Login" /></td>
-							</tr>
-						</tbody>
-					</table>
-					</center>
 				</form>
 			</tbody>
 		</table>

@@ -22,53 +22,55 @@
 			</thead>
 			<tbody>
 				<form method="post" action="search">
-				<tr>
-					<td>First Name</td>
-					<td><input type="text" value="" name="firstName" /></td>
-					<td>Midle Name</td>
-					<td><input type="text" value="" name="midleName" /></td>
-					<td>Last Name</td>
-					<td><input type="text" value="" name="lastName" /></td>
-					<td>Email</td>
-					<td><input type="text" value="" name="email" /></td>
-					<td>Date birth</td>
-					<td><input type="text" value="" name="date_birth" /></td>
-					<td>Date birth</td>
-					<td><input type="text" value="" name="date_death" /></td>
-					<td><input type="submit" value="Search"></td>
-				</tr>
+					<tr>
+						<td>First Name</td>
+						<td><input type="text" value="" name="firstName" /></td>
+						<td>Midle Name</td>
+						<td><input type="text" value="" name="midleName" /></td>
+						<td>Last Name</td>
+						<td><input type="text" value="" name="lastName" /></td>
+						<td>Email</td>
+						<td><input type="text" value="" name="email" /></td>
+						<td>Date birth</td>
+						<td><input type="text" value="" name="date_birth" /></td>
+						<td>Date birth</td>
+						<td><input type="text" value="" name="date_death" /></td>
+						<td><input type="submit" value="Search"></td>
+					</tr>
 				</form>
 
 				<c:forEach items="${sessionScope.result}" var="person">
 					<form method="post" action="Select">
-					<tr>
-						<td><input type="text" value="${person.ID}" name="id"
-							hidden="true" /></td>
-						<td>${person.firstName}</td>
-						<td>&nbsp;</td>
-						<td>${person.midleName}</td>
-						<td>&nbsp;</td>
-						<td>${person.secondName}</td>
-						<td>&nbsp;</td>
-						<td>${person.email}</td>
-						<td>&nbsp;</td>
-						<td>${person.dateBirth}</td>
-						<td>&nbsp;</td>
-						<td>${person.dateDeath}</td>
-						<td>&nbsp;</td>
-						<c:if test="${sessionScope.isAdmin==true}">
-							<td><c:out value="<a href=\\"http://${req.requestURL}/activate?id=${person.ID}"/>
-							<c:out value="${person.isActive eq true ? 'ACTIVE': 'NOTACTIVE'}"/></td>
-						</c:if>						
-						<td><input type="submit" value="Select" /></td>
-					</tr>
+						<tr>
+							<td><input type="text" value="${person.ID}" name="id"
+								hidden="true" /></td>
+							<td>${person.firstName}</td>
+							<td>&nbsp;</td>
+							<td>${person.midleName}</td>
+							<td>&nbsp;</td>
+							<td>${person.secondName}</td>
+							<td>&nbsp;</td>
+							<td>${person.email}</td>
+							<td>&nbsp;</td>
+							<td>${person.dateBirth}</td>
+							<td>&nbsp;</td>
+							<td>${person.dateDeath}</td>
+							<td>&nbsp;</td>
+							<c:if test="${sessionScope.isAdmin==true}">
+								<td><a
+									href='<c:out value="${pageContext.request.contextPath}/activate?id=${person.ID}"/>'><c:out
+											value="${person.isActive eq true ? '': 'ACT2'}" /></td>
+								</td>
+							</c:if>
+							<td><input type="submit" value="Select" /></td>
+						</tr>
 					</form>
 				</c:forEach>
-				
+
 				<c:if test="${sessionScope.result.size() == 0}">
-						<jgc:resultempty/>
+					<jgc:resultempty />
 				</c:if>
-				
+
 			</tbody>
 		</table>
 	</center>
