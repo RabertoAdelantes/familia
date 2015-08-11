@@ -27,14 +27,15 @@ import org.slf4j.LoggerFactory;
 import com.ra.familia.entities.PersonBean;
 import com.ra.familia.exceptions.DaoExeception;
 
-
 public class PersonDao extends AbstractDao<PersonBean> {
+
 	private static final Logger LOG = LoggerFactory.getLogger(PersonDao.class);
 
 	private static final String SELECT = "SELECT * FROM " + P_TABLE;
 	private static final String INSERT = "INSERT INTO "
 			+ P_TABLE
-			+ " (FIRST_NAME, MIDLE_NAME, LAST_NAME, LAST_NAME2, PASSWORD, EMAIL, DATE_BIRTH, DATE_DEATH, ISACTIVE, ISDELETED, PK) VALUES (?,?,?,?,?,?,?,?,?,?,seq_person.NEXTVAL)";
+			+ " (FIRST_NAME, MIDLE_NAME, LAST_NAME, LAST_NAME2, PASSWORD, EMAIL, DATE_BIRTH, DATE_DEATH, ISACTIVE, ISDELETED, PK) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+
 	private static final String UPDATE = "UPDATE " + P_TABLE + " SET ";
 	private static final String WHERE = " WHERE ";
 
@@ -57,7 +58,8 @@ public class PersonDao extends AbstractDao<PersonBean> {
 		return getItemByField(SELECT, WHERE + where.toString(), pairs);
 	}
 
-	public Set<PersonBean> getItemsByName(final PersonBean bean) throws DaoExeception {
+	public Set<PersonBean> getItemsByName(final PersonBean bean)
+			throws DaoExeception {
 		StringBuffer where = new StringBuffer();
 		List<Pair<Integer, Object>> pairs = new ArrayList<>();
 		PersonDaoHelper.fillSearchAll(bean, where, pairs);
@@ -85,12 +87,13 @@ public class PersonDao extends AbstractDao<PersonBean> {
 			preparedStatement.setString(4, bean.getSecondName());
 			preparedStatement.setString(5, bean.getPassword());
 			preparedStatement.setString(6, bean.getEmail());
-			preparedStatement.setTimestamp(7,
-					PersonDaoHelper.getCurrentTimeStamp());
-			preparedStatement.setTimestamp(8,
-					PersonDaoHelper.getCurrentTimeStamp());
-			preparedStatement.setBoolean(9, false);
-			preparedStatement.setBoolean(10, false);
+			preparedStatement
+					.setTimestamp(7, getTimeStamp(bean.getDateDeath()));
+			preparedStatement
+					.setTimestamp(8, getTimeStamp(bean.getDateDeath()));
+			preparedStatement.setInt(9, 0);
+			preparedStatement.setInt(10, 0);
+			preparedStatement.setLong(11, getNextSequence());
 			preparedStatement.executeUpdate();
 		} catch (SQLException exception) {
 			LOG.error(exception.getLocalizedMessage());
@@ -123,9 +126,9 @@ public class PersonDao extends AbstractDao<PersonBean> {
 			pair = PersonDaoHelper.setUpdateCondition(conditions, P_PHOTO, bean
 					.getFilePath().toString());
 			pairs.add(pair);
-			
-			pair = PersonDaoHelper.setUpdateCondition(conditions, P_FILE_DATA, bean
-					.getDbFile());
+
+			pair = PersonDaoHelper.setUpdateCondition(conditions, P_FILE_DATA,
+					bean.getDbFile());
 			pairs.add(pair);
 
 			PersonDaoHelper.setUpdateBooleanCondition(conditions, P_ISACTIVE,
@@ -143,7 +146,7 @@ public class PersonDao extends AbstractDao<PersonBean> {
 			LOG.error(exception.getLocalizedMessage());
 		}
 	}
-	
+
 	public Collection<PersonBean> getAllItems() {
 		return super.getAllItems(SELECT);
 	}

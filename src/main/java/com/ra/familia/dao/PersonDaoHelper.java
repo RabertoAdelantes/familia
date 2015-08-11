@@ -87,12 +87,6 @@ public class PersonDaoHelper {
 		}
 	}
 
-	public static java.sql.Timestamp getCurrentTimeStamp() {
-
-		java.util.Date today = new java.util.Date();
-		return new java.sql.Timestamp(today.getTime());
-	}
-
 	public static int convertBooleanToInt(boolean b) {
 		return Boolean.compare(b, false);
 	}
