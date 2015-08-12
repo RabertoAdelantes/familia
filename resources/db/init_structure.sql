@@ -7,12 +7,12 @@ CREATE SEQUENCE seq_group MINVALUE 1 START WITH 1 INCREMENT BY 1 CACHE 100000;
 
 ------------------------- End Sequence section ------------------------------
 CREATE TABLE Person (
-   first_name varchar2(255)  NOT NULL,
-   midle_name varchar2(255)  NOT NULL,
-   last_name varchar2(255)  NOT NULL,
-   last_name2 varchar2(255)  NULL,
-   password varchar2(255)  NOT NULL,
-   email varchar2(255)  NOT NULL,
+   first_name varchar(255)  NOT NULL,
+   midle_name varchar(255)  NOT NULL,
+   last_name varchar(255)  NOT NULL,
+   last_name2 varchar(255)  NULL,
+   password varchar(255)  NOT NULL,
+   email varchar(255)  NOT NULL,
    date_birth date  NOT NULL,
    date_death date  NULL,
    isActive integer  DEFAULT 0 NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE Person (
 );
 
 CREATE TABLE UserGroup (
-   name varchar2(255)  NOT NULL,
+   name varchar(255)  NOT NULL,
    pk integer  NOT NULL,
    CONSTRAINT Group_pk PRIMARY KEY (pk)
 ) ;
@@ -37,14 +37,14 @@ CREATE TABLE PersonReference (
 ) ;
 CREATE TABLE Types (
    pk integer  NOT NULL,
-   name varchar2(255)  NOT NULL,
-   type varchar2(100)  NOT NULL,
+   name varchar(255)  NOT NULL,
+   type varchar(100)  NOT NULL,
    CONSTRAINT Types_pk PRIMARY KEY (pk)
 ) ;
 CREATE TABLE Media (
    source clob  NOT NULL,
-   external_sourse varchar2(255) NULL,
-   notes varchar2(4000)  NULL,
+   external_sourse varchar(255) NULL,
+   notes varchar(4000)  NULL,
    person_pk integer  NOT NULL,
    types_pk integer  NOT NULL,
    pk integer  NOT NULL,
@@ -54,8 +54,8 @@ CREATE TABLE Media (
 ) ;
 CREATE TABLE Places (
    pk integer  NOT NULL,
-   name varchar2(255)  NOT NULL,
-   notes varchar2(4000)  NOT NULL,
+   name varchar(255)  NOT NULL,
+   notes varchar(4000)  NOT NULL,
    types_pk integer  NOT NULL,
    person_pk integer  NOT NULL,
    start_date date  NOT NULL,
