@@ -93,6 +93,12 @@
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
-	</classpathentry>      
+	</classpathentry>
+    <classpathentry kind="var" path="M2_REPO/org/postgresql/postgresql/9.4-1201-jdbc41/postgresql-9.4-1201-jdbc41.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>    
+
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

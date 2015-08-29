@@ -129,7 +129,7 @@ public abstract class AbstractDao<T> {
 			beans = fillBeans(rs);
 			rs.close();
 		} catch (Exception e) {
-			LOG.error(String.format("Get all items error :{'s'}",
+			LOG.error(String.format("Get all items error :%s",
 					e.getLocalizedMessage()));
 		} finally {
 			closeStatement(stmt);
