@@ -1,10 +1,6 @@
 package com.ra.familia.servlets;
 
-import static com.ra.familia.servlets.utils.UrlsDictionary.CAN_NOT_COMPLETE;
-import static com.ra.familia.servlets.utils.UrlsDictionary.ID;
-import static com.ra.familia.servlets.utils.UrlsDictionary.PROFILE_JSP;
-import static com.ra.familia.servlets.utils.UrlsDictionary.REQ_ERROR;
-import static com.ra.familia.servlets.utils.UrlsDictionary.USER_BEAN;
+import static com.ra.familia.servlets.constants.UrlsConstants.*;
 
 import java.io.IOException;
 
@@ -24,7 +20,7 @@ import com.ra.familia.services.PersonServiceImpl;
 import com.ra.familia.services.Services;
 
 @WebServlet(name = "PersonServlet", displayName = "Profile Servlet", urlPatterns = {
-		"/profile", "/select", "/Profile", "/Select" }, loadOnStartup = 1)
+		"/profile", "/select", "/Profile", "/Select" })
 public class PersonServlet extends GenericServlet {
 
 	private static final Logger LOG = LoggerFactory
@@ -32,7 +28,7 @@ public class PersonServlet extends GenericServlet {
 	private static final long serialVersionUID = 8781195695257213199L;
 
 	private IOService ioService = new IOService();
-	
+
 	private Services<PersonBean> personService = new PersonServiceImpl();
 
 	@Override

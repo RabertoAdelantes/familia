@@ -1,8 +1,6 @@
 package com.ra.familia.servlets;
 
-import static com.ra.familia.servlets.utils.UrlsDictionary.ID;
-import static com.ra.familia.servlets.utils.UrlsDictionary.PROFILE_JSP;
-import static com.ra.familia.servlets.utils.UrlsDictionary.USER_BEAN;
+import static com.ra.familia.servlets.constants.UrlsConstants.*;
 
 import java.io.IOException;
 
@@ -11,26 +9,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ra.familia.entities.PersonBean;
 import com.ra.familia.exceptions.DaoExeception;
-import com.ra.familia.services.IOService;
 import com.ra.familia.services.PersonServiceImpl;
 import com.ra.familia.services.Services;
 
-@WebServlet(name = "PersonServlet", displayName = "Profile Servlet", urlPatterns = {
-		"/profile", "/select", "/Profile", "/Select" }, loadOnStartup = 1)
+@WebServlet(name = "Profile Servlet", displayName = "Profile Servlet", urlPatterns = {
+		"/activate", "/Activate" })
 public class ActivateServlet extends GenericServlet {
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(ActivateServlet.class);
 	private static final long serialVersionUID = 8781195695257213199L;
 
-	private IOService ioService = new IOService();
-	
 	private Services<PersonBean> personService = new PersonServiceImpl();
 
 	@Override
@@ -42,30 +36,19 @@ public class ActivateServlet extends GenericServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String redirectUrl = PROFILE_JSP;
-		if (ServletFileUpload.isMultipartContent(req)) {
-			PersonBean bean = getParamsFromMultipleForm(req);
-			ioService.storageFile(bean);
+		PersonBean bean = null;
+		String id = req.getParameter(ID);
 			try {
-				if (personService.getById(bean.getID()) == null) {
-					personService.addItem(bean);
-					redirectUrl = req.getContextPath();
-				} else {
+				bean = personService.getById(id);
+				if (bean!=null)
+				{
+					bean.setActive(true);
 					personService.updateItem(bean);
 				}
-			} catch (DaoExeception ex) {
-				LOG.error(ex.getMessage());
+			} catch (DaoExeception daoex) {
+				LOG.error(daoex.getMessage());
 			}
-		}
-		String id = req.getParameter(ID);
-		PersonBean bean = null;
-		try {
-			bean = personService.getById(id);
-		} catch (DaoExeception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		req.getSession().setAttribute(USER_BEAN, bean);
-		resp.sendRedirect(redirectUrl);
+		resp.sendRedirect(SEARCH_URL+"?id="+id);
 	}
 }

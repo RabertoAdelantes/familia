@@ -18,9 +18,7 @@ public class PersonServiceImpl implements Services<PersonBean> {
 	@Override
 	public PersonBean getById(String personId) throws DaoExeception {
 		PersonBean person = (PersonBean) imgCashe.getObject(personId);
-		person = person == null ? personDao.getItemById(personId) : person;
-		addPersonToCashe(person);
-		return person;
+		return person == null ? personDao.getItemById(personId) : person;
 	}
 
 	@Override

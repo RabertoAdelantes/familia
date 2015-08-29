@@ -1,8 +1,7 @@
 package com.ra.familia.entities;
 
-import java.io.Serializable;
-
-public class TypesBean implements SuperBean{
+public class TypeBean implements SuperBean{
+	
 	private static final long serialVersionUID = -5155191490217284346L;
 	private String ID; 
 	private String name;
@@ -24,6 +23,7 @@ public class TypesBean implements SuperBean{
 		this.type = type;
 	}
 
+	@Override
 	public String getID() {
 		return ID;
 	}

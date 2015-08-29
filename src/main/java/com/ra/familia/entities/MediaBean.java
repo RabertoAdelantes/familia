@@ -7,9 +7,10 @@ public class MediaBean implements SuperBean{
 	private String ID;
 	private String source;
 	private String notes;
-	private List<TypesBean> types;
+	private TypeBean type;
 	private List<PersonBean> persons;
 
+	@Override
 	public String getID() {
 		return ID;
 	}
@@ -26,12 +27,12 @@ public class MediaBean implements SuperBean{
 		this.notes = notes;
 	}
 
-	public List<TypesBean> getTypes() {
-		return types;
+	public TypeBean getType() {
+		return type;
 	}
 
-	public void setTypes(List<TypesBean> types) {
-		this.types = types;
+	public void setTypes(TypeBean type) {
+		this.type = type;
 	}
 
 	public List<PersonBean> getPersons() {

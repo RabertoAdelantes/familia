@@ -1,11 +1,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="include\logout_include.jsp"%>
+<%@ include file="include\search_include.jsp"%>
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:useBean id="user" class="com.ra.familia.entities.PersonBean"
 	scope="session" />
 
 <c:if test="${user.firstName == null}">
-	<c:redirect url="/"/>
+	<c:redirect url="/" />
 </c:if>
 
 <html>
@@ -77,24 +79,41 @@
 						<td>Date death</td>
 						<td><input type="text"
 							value="<%if (user.getDateDeath() != null) {
-			}%>"
+							out.println(user.getDateDeath());
+						}
+						%>"
 							name="date_death" /></td>
 					</tr>
 					<tr>
 						<td>Portrait Photo:</td>
 						<td><input type="file" name="photo" size="50" /></td>
-						
+
 					</tr>
-					
+
 					<tr>
 						<td>Profile Image:</td>
-						<td><img src="image/?id=<%=user.getID()%>" height="200px" width="200px" align="left" /></td>
+						<td><img src="image/?id=<%=user.getID()%>" height="200px"
+							width="200px" align="left" /></td>
 					</tr>
-					
-					<tr>
-						<td><input type="submit" value="Save"></td>
-						<td>&nbsp;</td>
-					</tr>
+
+				    <tr>
+					<td>User status is :</td>
+					<td><%if (user.getIsActive() == true) 
+							{
+							out.println("Active");
+			          }
+			          else
+			          {
+			        	  out.println("<font color=\"red\"><b>Not Active</b></font>");
+			          }
+			          %>
+					</td>
+				</tr>
+				</tr>
+				<tr>
+					<td><input type="submit" value="Save"></td>
+					<td>&nbsp;</td>
+				</tr>
 				</form>
 			</tbody>
 		</table>

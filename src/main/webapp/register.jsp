@@ -4,18 +4,12 @@
 <head>
 <title>Registration</title>
 </head>
-
 <link rel="stylesheet"
 	href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
 <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 
 <script type="text/javascript">
-function redirect(elem){
-     elem.setAttribute("action","index.jsp");
-     elem.submit();
-}
-
 $(function() {
   $( "#datebirth" ).datepicker();
   $( "#datedeath" ).datepicker();
@@ -35,32 +29,32 @@ $(function() {
 					<tr>
 					<tr>
 						<td>First Name</td>
-						<td><input type="text" value="" name="firstName" /></td>
+						<td><input type="text" value="<c:out value="${bean.firstName}"/>" name="firstName" /></td>
 					</tr>
 					<tr>
 						<td>Midle Name</td>
-						<td><input type="text" value="" name="midleName" /></td>
+						<td><input type="text" value="<c:out value="${bean.midleName}"/>" name="midleName" /></td>
 					</tr>
 					<tr>
 						<td>Last Name</td>
-						<td><input type="text" value="" name="lastName" /></td>
+						<td><input type="text" value="<c:out value="${bean.secondName}"/>" name="lastName" /></td>
 					</tr>
 					<tr>
 						<td>Password</td>
-						<td><input type="password" value="" name="password" T /></td>
+						<td><input type="password" value="<c:out value="${bean.password}"/>" name="password"/></td>
 					</tr>
 					<tr>
 						<td>Email</td>
-						<td><input type="text" value="" name="email" /></td>
+						<td><input type="text" value="<c:out value="${bean.email}"/>" name="email" /></td>
 					</tr>
 					<tr>
 						<td>* Date birth</td>
-						<td><input type="text" value="" name="date_birth"
+						<td><input type="text" value="<c:out value="${bean.dateBirth}"/>" name="date_birth"
 							id="datebirth" />
 					</tr>
 					<tr>
 						<td>* Date deat</td>
-						<td><input type="date" value="" name="date_death"
+						<td><input type="date" value="<c:out value="${bean.dateDeath}"/>" name="date_death"
 							id="datedeath" />
 					</tr>
 					<tr>

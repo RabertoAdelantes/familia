@@ -1,15 +1,6 @@
 package com.ra.familia.dao;
 
-import static com.ra.familia.servlets.utils.TablesDictionary.PK;
-import static com.ra.familia.servlets.utils.TablesDictionary.P_EMAIL;
-import static com.ra.familia.servlets.utils.TablesDictionary.P_FILE_DATA;
-import static com.ra.familia.servlets.utils.TablesDictionary.P_FIRST_NAME;
-import static com.ra.familia.servlets.utils.TablesDictionary.P_ISACTIVE;
-import static com.ra.familia.servlets.utils.TablesDictionary.P_ISDELETED;
-import static com.ra.familia.servlets.utils.TablesDictionary.P_LAST_NAME;
-import static com.ra.familia.servlets.utils.TablesDictionary.P_MIDLE_NAME;
-import static com.ra.familia.servlets.utils.TablesDictionary.P_PHOTO;
-import static com.ra.familia.servlets.utils.TablesDictionary.P_TABLE;
+import static com.ra.familia.servlets.constants.TablesConstants.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,9 +23,12 @@ public class PersonDao extends AbstractDao<PersonBean> {
 	private static final Logger LOG = LoggerFactory.getLogger(PersonDao.class);
 
 	private static final String SELECT = "SELECT * FROM " + P_TABLE;
-	private static final String INSERT = "INSERT INTO "
-			+ P_TABLE
-			+ " (FIRST_NAME, MIDLE_NAME, LAST_NAME, LAST_NAME2, PASSWORD, EMAIL, DATE_BIRTH, DATE_DEATH, ISACTIVE, ISDELETED, PK) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+	private static final String INSERT = "INSERT INTO " + P_TABLE + " ("
+			+ P_FIRST_NAME + ", " + P_MIDLE_NAME + ", " + P_LAST_NAME + ", "
+			+ P_LAST_NAME2 + ", " + P_PASSWORD + ", " + P_EMAIL + ", "
+			+ P_DATE_BIRTH + ", " + P_DATE_DEATH + ", " + P_ISACTIVE + ", "
+			+ P_ISDELETED + ", " + P_PHOTO + "," + PK
+			+ ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 
 	private static final String UPDATE = "UPDATE " + P_TABLE + " SET ";
 	private static final String WHERE = " WHERE ";
@@ -93,7 +87,8 @@ public class PersonDao extends AbstractDao<PersonBean> {
 					.setTimestamp(8, getTimeStamp(bean.getDateDeath()));
 			preparedStatement.setInt(9, 0);
 			preparedStatement.setInt(10, 0);
-			preparedStatement.setLong(11, getNextSequence());
+			preparedStatement.setString(11, bean.getFilePath().toString());
+			preparedStatement.setLong(12, getNextSequence());
 			preparedStatement.executeUpdate();
 		} catch (SQLException exception) {
 			LOG.error(exception.getLocalizedMessage());
@@ -111,30 +106,34 @@ public class PersonDao extends AbstractDao<PersonBean> {
 			StringBuffer conditions = new StringBuffer();
 			Pair<Integer, Object> pair = PersonDaoHelper.setUpdateCondition(
 					conditions, P_FIRST_NAME, bean.getFirstName());
-			pairs.add(pair);
+			addPair(pairs, pair);
 			pair = PersonDaoHelper.setUpdateCondition(conditions, P_LAST_NAME,
 					bean.getSecondName());
-			pairs.add(pair);
+			addPair(pairs, pair);
 			pair = PersonDaoHelper.setUpdateCondition(conditions, P_MIDLE_NAME,
 					bean.getMidleName());
-			pairs.add(pair);
+			addPair(pairs, pair);
 
 			pair = PersonDaoHelper.setUpdateCondition(conditions, P_EMAIL,
 					bean.getEmail());
-			pairs.add(pair);
+			addPair(pairs, pair);
 
 			pair = PersonDaoHelper.setUpdateCondition(conditions, P_PHOTO, bean
 					.getFilePath().toString());
-			pairs.add(pair);
+			addPair(pairs, pair);
 
 			pair = PersonDaoHelper.setUpdateCondition(conditions, P_FILE_DATA,
 					bean.getDbFile());
-			pairs.add(pair);
+			addPair(pairs, pair);
 
-			PersonDaoHelper.setUpdateBooleanCondition(conditions, P_ISACTIVE,
-					bean.isActive());
-			PersonDaoHelper.setUpdateBooleanCondition(conditions, P_ISDELETED,
-					bean.isActive());
+			pair = PersonDaoHelper.setUpdateBooleanCondition(conditions,
+					P_ISACTIVE, bean.isActive());
+			addPair(pairs, pair);
+
+			pair = PersonDaoHelper.setUpdateBooleanCondition(conditions,
+					P_ISDELETED, bean.isDeleted());
+			addPair(pairs, pair);
+
 			updateSql.append(conditions.toString());
 			updateSql.append(WHERE);
 			updateSql.append(P_TABLE + "." + PK + "=" + bean.getID());
@@ -144,6 +143,13 @@ public class PersonDao extends AbstractDao<PersonBean> {
 			preparedStatement.executeUpdate();
 		} catch (SQLException exception) {
 			LOG.error(exception.getLocalizedMessage());
+		}
+	}
+
+	private void addPair(List<Pair<Integer, Object>> pairs,
+			Pair<Integer, Object> pair) {
+		if (pair.getKey() != null && pair.getValue() != null) {
+			pairs.add(pair);
 		}
 	}
 

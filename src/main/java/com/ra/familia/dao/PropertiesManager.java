@@ -13,6 +13,7 @@ public class PropertiesManager {
 
 	private static Properties jdbcProperties;
 	private static Properties commonProperties;
+	private static Properties mailProperties;
 
 	static {
 		jdbcProperties = new Properties();
@@ -32,6 +33,15 @@ public class PropertiesManager {
 		} catch (IOException ioex) {
 			LOG.error(ioex.getLocalizedMessage());
 		}
+		
+		mailProperties = new Properties();
+		try (InputStream in = PropertiesManager.class
+				.getResourceAsStream("../../../../mail.properties")) {
+			mailProperties.load(in);
+			in.close();
+		} catch (IOException ioex) {
+			LOG.error(ioex.getLocalizedMessage());
+		}
 
 	}
 
@@ -43,5 +53,10 @@ public class PropertiesManager {
 	public static Properties getCommonProperties()
 	{
 		return commonProperties;
+	}
+	
+	public static Properties getMailProperties()
+	{
+		return mailProperties;
 	}
 }

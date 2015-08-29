@@ -11,6 +11,7 @@ import com.ra.familia.exceptions.DaoExeception;
 
 public class PersonGroupServiceImpl implements Services<GroupBean> {
 
+	private static final String ADMIN = "Admin";
 	private PersonGroupDao personGroupDao = DaoFactory.getInstance().getPersonGroupDao();
 
 	@Override
@@ -48,7 +49,7 @@ public class PersonGroupServiceImpl implements Services<GroupBean> {
 		boolean isAdmin = false;
 		Collection<GroupBean> groups = personGroupDao.getAllItems();
 		for (GroupBean groupBean : groups) {
-			if (user.getGroupId().equals(groupBean.getID())&&(groupBean.getName().equals("Admin")))
+			if (groupBean.getID().equals(user.getGroupId())&&(ADMIN.equals(groupBean.getName())))
 			{
 				isAdmin = true;
 			}

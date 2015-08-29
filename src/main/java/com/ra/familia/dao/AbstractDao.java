@@ -58,11 +58,11 @@ public abstract class AbstractDao<T> {
 			stmt = conn.prepareStatement(sqlQuery + where);
 
 			fillStatmentParameters(pairs, stmt);
-			ResultSet rs = stmt.executeQuery();
+			ResultSet rs = stmt.executeQuery(); 
 			beans = fillBeans(rs);
 			rs.close();
 		} catch (Exception ex) {
-			LOG.error(ex.getLocalizedMessage());
+			LOG.error("getItemByFields:" + ex.getLocalizedMessage());
 			throw new DaoExeception(ex.getLocalizedMessage());
 		} finally {
 			closeStatement(stmt);
@@ -79,13 +79,33 @@ public abstract class AbstractDao<T> {
 				if (obj instanceof FileInputStream) {
 					FileInputStream fis = (FileInputStream) obj;
 					stmt.setBinaryStream(index + 1, fis);
-				} else {
-					stmt.setString(index + 1, obj.toString());
+				} else if (getInteger(obj)>=0)
+				{
+					stmt.setInt(index + 1, getInteger(obj.toString()));
+				}
+				else if (!isBoolean(obj))
+				{
+					// TODO: fix me asap
+					stmt.setString(index + 1, obj.toString());				
 				}
 			} catch (SQLException sqlex) {
 				LOG.error(sqlex.getLocalizedMessage());
 			}
 		}
+	}
+
+	private boolean isBoolean(Object obj) {
+		return obj.toString().equalsIgnoreCase("true")||obj.toString().equalsIgnoreCase("false")?true:false;
+	}
+
+	private int getInteger(Object obj) {
+		int retValue = -1;
+		try{
+			retValue = Integer.valueOf(obj.toString());
+	} catch(NumberFormatException e) {
+	       // no need to catch
+	    }
+		return retValue;
 	}
 
 	protected T getItemByField(final String sqlQuery, final String where,

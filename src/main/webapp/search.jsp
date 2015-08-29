@@ -59,10 +59,10 @@
 							<c:if test="${sessionScope.isAdmin==true}">
 								<td><a
 									href='<c:out value="${pageContext.request.contextPath}/activate?id=${person.ID}"/>'><c:out
-											value="${person.isActive eq true ? '': 'ACT2'}" /></td>
+											value="${person.isActive eq true ? '': 'ACTIVATE'}" /></td>
 								</td>
 							</c:if>
-							<td><input type="submit" value="Select" /></td>
+							<td><input type="submit" value="Open" /></td>
 						</tr>
 					</form>
 				</c:forEach>

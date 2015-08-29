@@ -1,6 +1,5 @@
 package com.ra.familia.entities;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class PlacesBean implements SuperBean{
@@ -9,7 +8,7 @@ public class PlacesBean implements SuperBean{
 	private String ID; 
 	private String name;
 	private String notes;
-	private List<TypesBean> types;
+	private List<TypeBean> types;
 	private List<PersonBean> persons;
 
 	public String getNotes() {
@@ -28,11 +27,11 @@ public class PlacesBean implements SuperBean{
 		this.name = name;
 	}
 
-	public List<TypesBean> getTypes() {
+	public List<TypeBean> getTypes() {
 		return types;
 	}
 
-	public void setTypes(List<TypesBean> types) {
+	public void setTypes(List<TypeBean> types) {
 		this.types = types;
 	}
 
@@ -44,6 +43,7 @@ public class PlacesBean implements SuperBean{
 		this.persons = persons;
 	}
 
+	@Override
 	public String getID() {
 		return ID;
 	}

@@ -51,10 +51,6 @@ public class ApplicationCashe {
 		}
 	}
 
-	void clear() {
-		imgCashe.clear();
-	}
-
 	private byte[] convertToBytes(SuperBean object) throws IOException {
 		return object==null?null:SerializationUtils.serialize(object);
 	}

@@ -18,6 +18,7 @@ CREATE TABLE Person (
    isActive integer  DEFAULT 0 NOT NULL,
    isDeleted integer  DEFAULT 1 NOT NULL,
    groupId integer  DEFAULT 1 NOT NULL,
+   photo varchar(255) NULL,
    pk integer  NOT NULL,
    CONSTRAINT Person_pk PRIMARY KEY (pk)
 );
@@ -42,7 +43,7 @@ CREATE TABLE Types (
    CONSTRAINT Types_pk PRIMARY KEY (pk)
 ) ;
 CREATE TABLE Media (
-   source clob  NOT NULL,
+   -- source clob  NOT NULL,
    external_sourse varchar(255) NULL,
    notes varchar(4000)  NULL,
    person_pk integer  NOT NULL,
@@ -51,7 +52,7 @@ CREATE TABLE Media (
    "date" date  NULL,
    isPrimary smallint  DEFAULT 0 NOT NULL,
    CONSTRAINT Media_pk PRIMARY KEY (pk)
-) ;
+);
 CREATE TABLE Places (
    pk integer  NOT NULL,
    name varchar(255)  NOT NULL,

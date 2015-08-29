@@ -1,15 +1,6 @@
 package com.ra.familia.servlets;
 
-import static com.ra.familia.servlets.utils.UrlsDictionary.DATE_BIRTH;
-import static com.ra.familia.servlets.utils.UrlsDictionary.DATE_DEATH;
-import static com.ra.familia.servlets.utils.UrlsDictionary.EMAIL;
-import static com.ra.familia.servlets.utils.UrlsDictionary.FIRST_NAME;
-import static com.ra.familia.servlets.utils.UrlsDictionary.ID;
-import static com.ra.familia.servlets.utils.UrlsDictionary.LAST_NAME;
-import static com.ra.familia.servlets.utils.UrlsDictionary.LAST_NAME2;
-import static com.ra.familia.servlets.utils.UrlsDictionary.MIDLE_NAME;
-import static com.ra.familia.servlets.utils.UrlsDictionary.PASSWORD;
-import static com.ra.familia.servlets.utils.UrlsDictionary.PHOTO;
+import static com.ra.familia.servlets.constants.UrlsConstants.*;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,8 +1,6 @@
 package com.ra.familia.dao;
 
-import static com.ra.familia.servlets.utils.TablesDictionary.G_NAME;
-import static com.ra.familia.servlets.utils.TablesDictionary.G_PERSONGROUP;
-import static com.ra.familia.servlets.utils.TablesDictionary.PK;
+import static com.ra.familia.servlets.constants.TablesConstants.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

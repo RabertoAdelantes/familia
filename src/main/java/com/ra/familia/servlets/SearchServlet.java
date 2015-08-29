@@ -1,9 +1,6 @@
 package com.ra.familia.servlets;
 
-import static com.ra.familia.servlets.utils.UrlsDictionary.INDEX_JSP;
-import static com.ra.familia.servlets.utils.UrlsDictionary.SEARCH_JSP;
-import static com.ra.familia.servlets.utils.UrlsDictionary.SEARCH_SET;
-import static com.ra.familia.servlets.utils.UrlsDictionary.USER_BEAN;
+import static com.ra.familia.servlets.constants.UrlsConstants.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +20,7 @@ import com.ra.familia.services.PersonServiceImpl;
 import com.ra.familia.services.Services;
 
 @WebServlet(name = "SearchServlet", displayName = "Search Servlet", urlPatterns = {
-		"/search", "/Search" }, loadOnStartup = 1)
+		"/search", "/Search" })
 public class SearchServlet extends GenericServlet {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(SearchServlet.class);
@@ -37,30 +34,66 @@ public class SearchServlet extends GenericServlet {
 			throws ServletException, IOException {
 		PersonBean person = getRequestParams(req);
 		Collection<PersonBean> persons = new ArrayList<>();
-		try {
-			persons = personService.getItemsByName(person);
-		} catch (DaoExeception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if ((person.getFirstName()==null)||(person.getFirstName().isEmpty()))
+		
+		if (person.getID()!=null)
 		{
+			person = getPersonById(person);
+			if (person!=null)
+			{
+				persons.add(person);
+			}
+		}
+		else if ((person.getFirstName() == null)
+				|| (person.getFirstName().isEmpty())) {
 			persons = personService.getAllItems();
 		}
+		else
+		{
+			try {
+				persons = personService.getItemsByName(person);
+			} catch (DaoExeception dex) {
+				LOG.error(dex.getMessage());
+			}
+		}
 		req.getSession().setAttribute(SEARCH_SET, persons);
-		req.getRequestDispatcher(SEARCH_JSP).forward(req, resp);
+		resp.sendRedirect(SEARCH_JSP);
 	}
 
+	private PersonBean getPersonById(PersonBean person) {
+		PersonBean prsn = null;
+		try {
+			prsn = personService.getById(person.getID());
+		} catch (DaoExeception dex) {
+			LOG.error(dex.getMessage());
+		}
+		return prsn;
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		PersonBean person = (PersonBean) req.getSession().getAttribute(
 				USER_BEAN);
-		String redirectUrl = SEARCH_JSP;
 		if (person == null) {
-			redirectUrl = INDEX_JSP;
-		} 
-		req.getRequestDispatcher(redirectUrl).forward(req, resp);
+			req.getRequestDispatcher(INDEX_JSP).forward(req, resp);
+		} else {
+			String id = req.getParameter(ID);
+			if (isValidPersonId(id)) {
+				req.setAttribute(ID, id);
+			}
+		}
+		doPost(req, resp);
+	}
+
+	private boolean isValidPersonId(String id) {
+		PersonBean person = null;
+		if (id != null) {
+			try {
+				person = personService.getById(id);
+			} catch (DaoExeception dex) {
+				LOG.error(dex.getMessage());
+			}
+		}
+		return person != null ? true : false;
 	}
 }

@@ -1,9 +1,9 @@
-package com.ra.familia.servlets.utils;
+package com.ra.familia.servlets.constants;
 
 
-public final class UrlsDictionary {
+public final class UrlsConstants {
 
-	private UrlsDictionary()
+	private UrlsConstants()
 	{
 		
 	}
@@ -16,13 +16,13 @@ public final class UrlsDictionary {
 	// request attributes
 	public static final String REQ_ERROR = "request_error";
 	public static final String SES_ERROR = "session_error";
-
+	public static final String BEAN = "bean";
 	// jsp pages
 	public static final String SEARCH_JSP = "search.jsp";
 	public static final String INDEX_JSP = "index.jsp";
 	public static final String PROFILE_JSP = "profile.jsp";
-	public static final String REGISTER_JSP = "register.jsp";
-	public static final String REGISTER_SUCCESS_JSP = "register_success.jsp";
+	public static final String REGISTER_JSP = "/register.jsp";
+	public static final String REGISTER_SUCCESS_JSP = "/register_success.jsp";
 	// request parameters
 	public static final String PHOTO = "photo";
 	public static final String USER_NAME = "userName";

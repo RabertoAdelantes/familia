@@ -1,17 +1,6 @@
 package com.ra.familia.servlets;
 
-import static com.ra.familia.servlets.utils.UrlsDictionary.CAN_NOT_COMPLETE;
-import static com.ra.familia.servlets.utils.UrlsDictionary.EAMIL_IS_NOT_CORRECT;
-import static com.ra.familia.servlets.utils.UrlsDictionary.EMAIL_PATTERN;
-import static com.ra.familia.servlets.utils.UrlsDictionary.FILE_NOTSPECIFIED;
-import static com.ra.familia.servlets.utils.UrlsDictionary.FILE_NOT_UPLOAD;
-import static com.ra.familia.servlets.utils.UrlsDictionary.IMAGE_PATTERN;
-import static com.ra.familia.servlets.utils.UrlsDictionary.PASSWORD_EMPTY;
-import static com.ra.familia.servlets.utils.UrlsDictionary.REGISTER_JSP;
-import static com.ra.familia.servlets.utils.UrlsDictionary.REGISTER_SUCCESS_JSP;
-import static com.ra.familia.servlets.utils.UrlsDictionary.REQ_ERROR;
-import static com.ra.familia.servlets.utils.UrlsDictionary.SECOND_NAME;
-import static com.ra.familia.servlets.utils.UrlsDictionary.USER_ALREDY_EXISTS;
+import static com.ra.familia.servlets.constants.UrlsConstants.*;
 
 import java.io.IOException;
 
@@ -23,18 +12,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ra.familia.entities.PersonBean;
 import com.ra.familia.exceptions.DaoExeception;
 import com.ra.familia.services.IOService;
+import com.ra.familia.services.MailService;
 import com.ra.familia.services.PersonServiceImpl;
 import com.ra.familia.services.Services;
 
 @WebServlet(name = "RegisterServlet", displayName = "Register Servlet", urlPatterns = {
-		"/register", "/Register" }, loadOnStartup = 1)
+		"/register", "/Register" })
 public class RegisterServlet extends GenericServlet {
 
 	private static final Logger LOG = LoggerFactory
@@ -42,6 +31,8 @@ public class RegisterServlet extends GenericServlet {
 	private static final long serialVersionUID = 8781195695257213199L;
 
 	private IOService ioService = new IOService();
+	
+	private MailService mailService = new MailService();
 
 	private Services<PersonBean> personService = new PersonServiceImpl();
 
@@ -61,52 +52,44 @@ public class RegisterServlet extends GenericServlet {
 	}
 
 	private String register(HttpServletRequest req) {
-		String nextJSP = "/" + REGISTER_JSP;
 		StringBuffer messages = new StringBuffer();
-		if (ServletFileUpload.isMultipartContent(req)) {
-			PersonBean bean = getParamsFromMultipleForm(req);
-			messages.append(validateMandatories(bean));
-			if (messages.length()==0) {
-				String message = processedFile(req, bean);
-				messages.append(message);
-				if (messages.length()==0) {
-					PersonBean person = getPerson(bean, req);
-					if (person == null) {
-						message = addPerson(bean);
-						messages.append(message);
-						nextJSP = (messages.length()==0) ? "/"
-								+ REGISTER_SUCCESS_JSP : nextJSP;
+		PersonBean bean = getParamsFromMultipleForm(req);
+		validateMandatories(bean,messages);
+		if (ServletFileUpload.isMultipartContent(req)&&isErrored(messages)) {
+				processedFile(req, bean,messages);
+				if (isErrored(messages)) {
+					if (getPerson(bean, req) == null) {
+						addPerson(bean,messages);
 					} else {
 						messages.append(USER_ALREDY_EXISTS);
-
 					}
 				}
-			}
 		}
 		req.setAttribute(REQ_ERROR, messages);
-		return nextJSP;
+		req.setAttribute(BEAN, bean);
+		return isErrored(messages) ? REGISTER_SUCCESS_JSP : REGISTER_JSP;
 	}
 
-	private String validateMandatories(PersonBean bean) {
-		StringBuffer errorMessage = new StringBuffer();
+	private boolean isErrored(StringBuffer messages) {
+		return messages.length()==0;
+	}
 
+	private void validateMandatories(PersonBean bean,StringBuffer errors) {
 		if (!bean.getEmail().matches(EMAIL_PATTERN)) {
-			errorMessage.append(EAMIL_IS_NOT_CORRECT);
+			errors.append(EAMIL_IS_NOT_CORRECT);
 		}
 
-		if (bean.getSecondName().isEmpty()) {
-			errorMessage.append(SECOND_NAME);
+		if (bean.getSecondName().isEmpty()&&isErrored(errors)) {
+			errors.append(SECOND_NAME);
 		}
 
-		if (bean.getSecondName().matches(IMAGE_PATTERN)) {
-			errorMessage.append(FILE_NOT_UPLOAD);
+		if (bean.getSecondName().matches(IMAGE_PATTERN)&&isErrored(errors)) {
+			errors.append(FILE_NOT_UPLOAD);
 		}
 
-		if (bean.getPassword().isEmpty()) {
-			errorMessage.append(PASSWORD_EMPTY);
-		}
-		
-		return errorMessage.toString();
+		if (bean.getPassword().isEmpty()&&isErrored(errors)) {
+			errors.append(PASSWORD_EMPTY);
+		}		
 	}
 
 	private PersonBean getPerson(PersonBean bean, HttpServletRequest req) {
@@ -120,25 +103,22 @@ public class RegisterServlet extends GenericServlet {
 		return person;
 	}
 
-	private String addPerson(PersonBean bean) {
-		String errorMessage = StringUtils.EMPTY;
+	private void addPerson(PersonBean bean,StringBuffer errors) {
 		try {
 			personService.addItem(bean);
+			mailService.sendRegistrationMail(bean);
 		} catch (DaoExeception ex) {
-			errorMessage = CAN_NOT_COMPLETE;
+			errors.append(CAN_NOT_COMPLETE);
 		}
-		return errorMessage;
 	}
 
-	private String processedFile(HttpServletRequest req, PersonBean bean) {
-		String error = StringUtils.EMPTY;
+	private void processedFile(HttpServletRequest req, PersonBean bean,StringBuffer errors) {
 		DiskFileItem diskItem = ((DiskFileItem) bean.getFilePath());
 		if (diskItem.getSize() == 0) {
-			error = FILE_NOTSPECIFIED;
+			errors.append(FILE_NOTSPECIFIED);
 		} else {
 			ioService.storageFile(bean);
 		}
-		return error;
 	}
 
 }
