@@ -37,6 +37,7 @@ public final class UrlsConstants {
 	public static final String NEW = "new";
 	public static final String TRUE = "true";
 	public static final String ID = "id";
+	public static final String REMEMBER = "remember";
 
 	// request parameters
 	public static final String ERR_LOGIN_FAILED = "Login failed : user or password is incorrect";

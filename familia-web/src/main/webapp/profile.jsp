@@ -1,8 +1,8 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ include file="include\logout_include.jsp"%>
-<%@ include file="include\search_include.jsp"%>
+<%@ include file="include/logout_include.jsp"%>
+<%@ include file="include/search_include.jsp"%>
+<%@ include file="include/localized_header.jsp"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
 
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:useBean id="user" class="com.ra.familia.entities.PersonBean"
 	scope="session" />
 
@@ -31,7 +31,7 @@
 					</tr>
 					<tr>
 					<tr>
-						<td>First Name</td>
+						<td><fmt:message key="user.name.first" bundle="${bundle}"/></td>
 						<td><input type="text"
 							value="<%if (user.getFirstName() != null) {
 				out.println(user.getFirstName());
@@ -39,7 +39,7 @@
 							name="firstName" /></td>
 					</tr>
 					<tr>
-						<td>Midle Name</td>
+						<td><fmt:message key="user.name.midle" bundle="${bundle}"/></td>
 						<td><input type="text"
 							value="<%if (user.getMidleName() != null) {
 				out.println(user.getMidleName());
@@ -47,7 +47,7 @@
 							name="midleName" /></td>
 					</tr>
 					<tr>
-						<td>Last Name</td>
+						<td><fmt:message key="user.name.last" bundle="${bundle}"/></td>
 						<td><input type="text"
 							value="<%if (user.getSecondName() != null) {
 				out.println(user.getSecondName());
@@ -55,12 +55,12 @@
 							name="lastName" /></td>
 					</tr>
 					<tr>
-						<td>Password</td>
+						<td><fmt:message key="user.name.password" bundle="${bundle}"/></td>
 						<td><input type="password" value="" name="password"
 							disabled="disabled" /></td>
 					</tr>
 					<tr>
-						<td>Email</td>
+						<td><fmt:message key="btn.email" bundle="${bundle}"/></td>
 						<td><input type="text"
 							value="<%if (user.getEmail() != null) {
 				out.println(user.getEmail());
@@ -68,15 +68,13 @@
 							name="email" /></td>
 					</tr>
 					<tr>
-						<td>Date birth</td>
+						<td><fmt:message key="user.date.birth" bundle="${bundle}"/></td>
 						<td><input type="text"
-							value="<%if (user.getDateBirth() != null) {
-				out.println(user.getDateBirth());
-			}%>"
+							value="<c:out value="${bean.dateDeath}"/>"
 							name="date_birth" /></td>
 					</tr>
 					<tr>
-						<td>Date death</td>
+						<td><fmt:message key="user.date.death" bundle="${bundle}"/></td>
 						<td><input type="text"
 							value="<%if (user.getDateDeath() != null) {
 							out.println(user.getDateDeath());

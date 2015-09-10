@@ -42,6 +42,13 @@ public class PersonDao extends AbstractDao<PersonBean> {
 		PersonDaoHelper.fillSearchByName(bean, where, pairs);
 		return getItemByField(SELECT, WHERE + where.toString(), pairs);
 	}
+	
+	public PersonBean getItemByEmail(final PersonBean bean) throws DaoExeception {
+		StringBuffer where = new StringBuffer();
+		List<Pair<Integer, Object>> pairs = new ArrayList<>();
+		PersonDaoHelper.fillSearchByEmail(bean, where, pairs);
+		return getItemByField(SELECT, WHERE + where.toString(), pairs);
+	}
 
 	public PersonBean getItemById(final String id) throws DaoExeception {
 		StringBuffer where = new StringBuffer();

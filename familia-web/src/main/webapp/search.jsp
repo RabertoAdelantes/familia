@@ -1,9 +1,10 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="jgc" uri="WEB-INF/custom.tld"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="com.ra.familia.entities.PersonBean"%>
 <%@ page import="java.util.Set"%>
 <%@ include file="include/logout_include.jsp"%>
+<%@ include file="include/localized_header.jsp"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,26 +17,26 @@
 			<thead>
 				<tr>
 					<th colspan="13">
-						<h2>Search persons</h2>
+						<h2><fmt:message key="search.title" bundle="${bundle}"/></h2>
 					</th>
 				</tr>
 			</thead>
 			<tbody>
 				<form method="post" action="search">
 					<tr>
-						<td>First Name</td>
+						<td><fmt:message key="user.name.first" bundle="${bundle}"/></td>
 						<td><input type="text" value="" name="firstName" /></td>
-						<td>Midle Name</td>
+						<td><fmt:message key="user.name.midle" bundle="${bundle}"/></td>
 						<td><input type="text" value="" name="midleName" /></td>
-						<td>Last Name</td>
+						<td><fmt:message key="user.name.last" bundle="${bundle}"/></td>
 						<td><input type="text" value="" name="lastName" /></td>
-						<td>Email</td>
+						<td><fmt:message key="btn.email" bundle="${bundle}"/></td>
 						<td><input type="text" value="" name="email" /></td>
-						<td>Date birth</td>
+						<td><fmt:message key="user.date.birth" bundle="${bundle}"/></td>
 						<td><input type="text" value="" name="date_birth" /></td>
-						<td>Date birth</td>
+						<td><fmt:message key="user.date.death" bundle="${bundle}"/></td>
 						<td><input type="text" value="" name="date_death" /></td>
-						<td><input type="submit" value="Search"></td>
+						<td><input type="submit" value="<fmt:message key="btn.search" bundle="${bundle}"/>"></td>
 					</tr>
 				</form>
 
@@ -62,7 +63,7 @@
 											value="${person.isActive eq true ? '': 'ACTIVATE'}" /></td>
 								</td>
 							</c:if>
-							<td><input type="submit" value="Open" /></td>
+							<td><input type="submit" value="<fmt:message key="btn.open" bundle="${bundle}"/>" /></td>
 						</tr>
 					</form>
 				</c:forEach>

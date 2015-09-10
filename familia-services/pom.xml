@@ -59,5 +59,13 @@
 				</configuration>
 			</plugin>
 		</plugins>
+        <resources>
+			<resource>
+				<directory>${basedir}/resources</directory>
+				<includes>
+					<include>*.properties</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 </project>

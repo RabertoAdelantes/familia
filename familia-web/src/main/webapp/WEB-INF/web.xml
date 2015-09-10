@@ -3,7 +3,7 @@
 	version="3.0">
 	<display-name>Grande Familia</display-name>
 	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>init.jsp</welcome-file>
 	</welcome-file-list>
 	<jsp-config>
 		<taglib>
@@ -11,4 +11,9 @@
 			<taglib-location>/tld/custom.tld</taglib-location>
 		</taglib>
 	</jsp-config>
+	
+	<context-param>
+	    <param-name>javax.servlet.jsp.jstl.fmt.locale</param-name>
+	    <param-value>es_ES</param-value>	
+    </context-param>
 </web-app>

@@ -1,6 +1,16 @@
 body {
-	background-image: url(../imagines/familia2.jpg);
-	background-repeat: no-repeat;
-	background-position: center;
-	background-attachment: fixed, fixed;
+	background: url(../imagines/index_logo.jpg) no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.panel-default {
+	opacity: 0.9;
+	margin-top: 30px;
+}
+
+.form-group.last {
+	margin-bottom: 0px;
 }

@@ -93,6 +93,16 @@ public class PersonDaoHelper {
 		addPair(pairs, pair);
 	}
 	
+	public static void fillSearchByEmail(final PersonBean bean,
+			final StringBuffer where, final List<Pair<Integer, Object>> pairs) {
+		Pair<Integer, Object> pair = PersonDaoHelper.setWhereAndCondition(
+				where, P_EMAIL, bean.getEmail());
+		addPair(pairs, pair);
+		pair = PersonDaoHelper.setWhereAndCondition(where, P_PASSWORD,
+				bean.getPassword());
+		addPair(pairs, pair);
+	}
+	
 	public static void fillSearchById(final PersonBean bean,
 			final StringBuffer where, final List<Pair<Integer, Object>> pairs) {
 		Pair<Integer, Object> pair = PersonDaoHelper.setWhereAndCondition(

@@ -1,5 +1,6 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ include file="include/localized_header.jsp"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
+
 <html>
 <head>
 <title>Registration</title>
@@ -21,39 +22,39 @@ $(function() {
 		<table border="0" width="20%" cellpadding="5">
 			<thead>
 				<tr>
-					<th colspan="13">Register new user</th>
+					<th colspan="13"><fmt:message key="registration.title" bundle="${bundle}"/></th>
 				</tr>
 			</thead>
 			<tbody>
 				<form method="post" action="register" enctype="multipart/form-data">
 					<tr>
 					<tr>
-						<td>First Name</td>
+						<td><fmt:message key="user.name.first" bundle="${bundle}"/></td>
 						<td><input type="text" value="<c:out value="${bean.firstName}"/>" name="firstName" /></td>
 					</tr>
 					<tr>
-						<td>Midle Name</td>
+						<td><fmt:message key="user.name.midle" bundle="${bundle}"/></td>
 						<td><input type="text" value="<c:out value="${bean.midleName}"/>" name="midleName" /></td>
 					</tr>
 					<tr>
-						<td>Last Name</td>
+						<td><fmt:message key="user.name.last" bundle="${bundle}"/></td>
 						<td><input type="text" value="<c:out value="${bean.secondName}"/>" name="lastName" /></td>
 					</tr>
 					<tr>
-						<td>Password</td>
+						<td><fmt:message key="user.name.password" bundle="${bundle}"/></td>
 						<td><input type="password" value="<c:out value="${bean.password}"/>" name="password"/></td>
 					</tr>
 					<tr>
-						<td>Email</td>
+						<td><fmt:message key="btn.email" bundle="${bundle}"/></td>
 						<td><input type="text" value="<c:out value="${bean.email}"/>" name="email" /></td>
 					</tr>
 					<tr>
-						<td>* Date birth</td>
+						<td><fmt:message key="user.date.birth" bundle="${bundle}"/></td>
 						<td><input type="text" value="<c:out value="${bean.dateBirth}"/>" name="date_birth"
 							id="datebirth" />
 					</tr>
 					<tr>
-						<td>* Date deat</td>
+						<td><fmt:message key="user.date.death" bundle="${bundle}"/></td>
 						<td><input type="date" value="<c:out value="${bean.dateDeath}"/>" name="date_death"
 							id="datedeath" />
 					</tr>
@@ -62,7 +63,7 @@ $(function() {
 						<td><input type="file" name="photo" size="50" /></td>
 					</tr>
 					<tr>
-						<td><input type="submit" value="Register"></td>
+						<td><input type="submit" value="<fmt:message key="btn.register" bundle="${bundle}"/>"></td>
 						<td>&nbsp;</td>
 					</tr>
 					<tr>
@@ -70,7 +71,7 @@ $(function() {
 						<td><c:if test="${requestScope.request_error != null}">
 								<font color="red">ERROR : </font><b><c:out value="${requestScope.request_error}" /></b>
 							</c:if>
-						<h5>* click to select the date</h5>	
+						<h5><fmt:message key="comments.dates" bundle="${bundle}"/></h5>	
 						</td>
 					</tr>
 				</form>

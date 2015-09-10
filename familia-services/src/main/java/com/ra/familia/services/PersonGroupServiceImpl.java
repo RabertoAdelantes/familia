@@ -49,7 +49,7 @@ public class PersonGroupServiceImpl implements Services<GroupBean> {
 		boolean isAdmin = false;
 		Collection<GroupBean> groups = personGroupDao.getAllItems();
 		for (GroupBean groupBean : groups) {
-			if (groupBean.getID().equals(user.getGroupId())&&(ADMIN.equals(groupBean.getName())))
+			if (groupBean.getID().equals(user.getGroupId())&&ADMIN.equals(groupBean.getName()))
 			{
 				isAdmin = true;
 			}

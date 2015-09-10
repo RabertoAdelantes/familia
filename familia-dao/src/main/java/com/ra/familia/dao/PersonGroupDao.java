@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ra.familia.entities.GroupBean;
-import com.ra.familia.entities.PersonBean;
 import com.ra.familia.exceptions.DaoExeception;
 
 public class PersonGroupDao extends AbstractDao<GroupBean> {

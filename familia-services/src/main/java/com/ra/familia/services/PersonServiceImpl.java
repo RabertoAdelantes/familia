@@ -46,6 +46,13 @@ public class PersonServiceImpl implements Services<PersonBean> {
 		return persons;
 	}
 
+	public PersonBean getItemByEmail(PersonBean person) throws DaoExeception {
+		PersonBean personRet = (PersonBean) imgCashe.getObject(person.getID());
+		personRet = personRet == null ? personDao.getItemByEmail(person) : personRet;
+		addPersonToCashe(personRet);
+		return personRet;
+	}
+	
 	private void addPersonToCashe(PersonBean person) {
 			imgCashe.add(person);
 	}
