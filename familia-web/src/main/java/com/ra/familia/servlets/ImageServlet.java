@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ra.familia.entities.PersonBean;
-import com.ra.familia.exceptions.DaoExeception;
+import com.ra.familia.exceptions.FamiliaException;
 import com.ra.familia.services.IOService;
 import com.ra.familia.services.PersonServiceImpl;
 import com.ra.familia.services.Services;
@@ -27,31 +27,36 @@ public class ImageServlet extends HttpServlet {
 	private IOService ioService = new IOService();
 	private static final long serialVersionUID = -3378483395350978236L;
 	private Services<PersonBean> personService = new PersonServiceImpl();
+
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String imageId = request.getParameter("id");
-		byte[] bytes = ioService.getCashe().get(imageId+IMG_SUFFIX);
-		if (bytes == null) {
+		if (imageId != null) {
 			PersonBean person = getPersonByImage(imageId);
 			if (person != null) {
-				bytes = ioService.getMediaFromFs(person.getFilePath()
-						.toString());
-				ioService.getCashe().add(imageId+IMG_SUFFIX, bytes);
+				ioService.getCashe().add(imageId + IMG_SUFFIX,
+						person.getDbFile());
+				byte[] bytes = person.getDbFile();
+				if (bytes != null) {
+					response.setContentType("image/jpg");
+					response.getOutputStream().write(bytes);
+					response.getOutputStream().flush();
+					response.getOutputStream().close();
+				}
 			}
 		}
-		response.getOutputStream().write(bytes);
-		response.getOutputStream().flush();
-		response.getOutputStream().close();
 	}
 
 	private PersonBean getPersonByImage(String imageId) {
-		PersonBean person = null;
+		PersonBean personBean = null;
 		try {
-			person = personService.getById(imageId);
-		} catch (DaoExeception ex) {
-			LOG.error(ex.getMessage());
+			return personService.getById(imageId);
+		} catch (FamiliaException familiaEx) {
+			LOG.error(String.format(
+					"GetPersonByImage '%s' failed. Winth error %s", imageId,
+					familiaEx.getException().getMessage()));
 		}
-		return person;
+		return personBean;
 	}
 }

@@ -4,7 +4,7 @@
 	<artifactId>grande-familia-services</artifactId>
 	<packaging>jar</packaging>
 	<name>grande-familia-services</name>
-    <groupId>com.ra</groupId>
+	<groupId>com.ra</groupId>
 	<version>1.0</version>
 
 
@@ -32,18 +32,19 @@
 			<artifactId>javax.mail</artifactId>
 			<version>1.5.2</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
-        
-        <dependency>
+
+		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.2</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -52,14 +53,14 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+				<version>2.3.2</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>
-        <resources>
+		<resources>
 			<resource>
 				<directory>${basedir}/resources</directory>
 				<includes>

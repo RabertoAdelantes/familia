@@ -21,10 +21,7 @@
 		<div class="row">
 			<div class="col-md-4 col-md-offset-7">
 				<div class="panel panel-default">
-					<div class="panel-heading">
-						<strong class=""><fmt:message key="registration.title"
-								bundle="${bundle}" /></strong>
-					</div>
+
 					<div class="panel-body">
 						<form class="form-horizontal" role="form" method="post"
 							action="login">
@@ -32,8 +29,9 @@
 								<label for="email" class="col-sm-3 control-label"><fmt:message
 										key="btn.email" bundle="${bundle}" /></label>
 								<div class="col-sm-9">
-									<input class="form-control" id="email" name="name"
-										placeholder="<fmt:message key="btn.email" bundle="${bundle}"/>"
+									<input class="form-control" id="email" name="email"
+										placeholder="<fmt:message key="btn.email" bundle="${bundle}" />"
+										value="${requestScope.user.email}"
 										required="true">
 								</div>
 							</div>
@@ -46,14 +44,6 @@
 										required="true" type="password">
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="col-sm-offset-3 col-sm-9">
-									<div class="checkbox">
-										<input type="checkbox" name="remember"/>
-										<fmt:message key="link.remember" bundle="${bundle}" />
-									</div>
-								</div>
-							</div>
 							<div class="form-group last">
 								<div class="col-sm-offset-3 col-sm-9">
 									<button type="submit" class="btn btn-success btn-sm">
@@ -61,13 +51,15 @@
 									</button>
 								</div>
 							</div>
-							<jsp:include page="include/error_include.jsp" />
 						</form>
 					</div>
 					<div class="panel-footer">
 						<fmt:message key="register.not" bundle="${bundle}" />
 						<a href="register.jsp" class=""><fmt:message
 								key="register.here" bundle="${bundle}" /></a>
+						<div>
+						<jsp:include page="include/error_include.jsp" />
+						</div>
 					</div>
 				</div>
 			</div>

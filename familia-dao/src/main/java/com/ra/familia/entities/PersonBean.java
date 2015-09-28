@@ -18,6 +18,7 @@ public class PersonBean implements SuperBean{
 	private boolean isDeleted;
 	private boolean isActive;
 	private String groupId;
+	private String confirmationUuid;
 	
 	public String getFirstName() {
 		return firstName;
@@ -69,7 +70,7 @@ public class PersonBean implements SuperBean{
 
 	@Override
 	public String toString() {
-		return firstName + " / " + midleName + " / " + lastName + " * ";
+		return firstName + " / " + midleName + " / " + lastName + " / " + dateDeath + "/" + dateBirth;
 	}
 
 	public String getEmail() {
@@ -139,6 +140,14 @@ public class PersonBean implements SuperBean{
 
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
+	}
+
+	public String getConfirmationUuid() {
+		return confirmationUuid;
+	}
+
+	public void setConfirmationUuid(String confirmationUuid) {
+		this.confirmationUuid = confirmationUuid;
 	}
 
 }

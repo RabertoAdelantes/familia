@@ -1,14 +1,16 @@
 package com.ra.familia.entities;
 
-import java.util.List;
+import java.util.Date;
 
 public class MediaBean implements SuperBean{
 	private static final long serialVersionUID = -6978842748315770797L;
 	private String ID;
-	private String source;
+	private byte[] source;
 	private String notes;
 	private TypeBean type;
-	private List<PersonBean> persons;
+	private String externalSrc;
+	private boolean isPrimary;
+	private Date date;
 
 	@Override
 	public String getID() {
@@ -35,19 +37,36 @@ public class MediaBean implements SuperBean{
 		this.type = type;
 	}
 
-	public List<PersonBean> getPersons() {
-		return persons;
-	}
-
-	public void setPersons(List<PersonBean> persons) {
-		this.persons = persons;
-	}
-
-	public String getSource() {
+	public byte[] getSource() {
 		return source;
 	}
 
-	public void setSource(String source) {
+	public void setSource(byte[] source) {
 		this.source = source;
-	} 
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getExternalSrc() {
+		return externalSrc;
+	}
+
+	public void setExternalSrc(String externalsSrc) {
+		this.externalSrc = externalsSrc;
+	}
+
+	public boolean isPrimary() {
+		return isPrimary;
+	}
+
+	public void setPrimary(boolean isPrimary) {
+		this.isPrimary = isPrimary;
+	}
+
 }

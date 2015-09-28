@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ra.familia.entities.PersonBean;
-import com.ra.familia.exceptions.DaoExeception;
+import com.ra.familia.exceptions.FamiliaException;
 import com.ra.familia.services.IOService;
 import com.ra.familia.services.PersonServiceImpl;
 import com.ra.familia.services.Services;
@@ -52,20 +52,12 @@ public class PersonServlet extends GenericServlet {
 				} else {
 					personService.updateItem(bean);
 				}
-			} catch (DaoExeception ex) {
+			} catch (FamiliaException ex) {
 				req.setAttribute(REQ_ERROR, CAN_NOT_COMPLETE);
 				LOG.error(ex.getMessage());
 			}
 		}
-		String id = req.getParameter(ID);
-		PersonBean bean =null;
-		try {
-			bean = personService.getById(id);
-		} catch (DaoExeception ex) {
-			req.setAttribute(REQ_ERROR, CAN_NOT_COMPLETE);
-			LOG.error(ex.getMessage());
-		}
-		req.getSession().setAttribute(USER_BEAN, bean);
 		resp.sendRedirect(redirectUrl);
 	}
+
 }

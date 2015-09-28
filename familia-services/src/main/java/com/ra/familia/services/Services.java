@@ -1,21 +1,28 @@
 package com.ra.familia.services;
 
+import java.sql.Connection;
 import java.util.Collection;
 import java.util.Set;
 
-import com.ra.familia.exceptions.DaoExeception;
+import com.ra.familia.dao.ConnectionManager;
+import com.ra.familia.exceptions.FamiliaException;
 
 public interface Services<T> {
-	T getById(String personId) throws DaoExeception;
+	T getById(String itemId) throws FamiliaException;
 
-	void addItem(T bean) throws DaoExeception;
+	long addItem(T bean) throws FamiliaException;
 
-	void updateItem(T bean);
+	void updateItem(T bean) throws FamiliaException;
 	
-	T getItemByName(T bean) throws DaoExeception;
+	T getItemByName(T bean) throws FamiliaException;
 	
-	Set<T> getItemsByName(T bean) throws DaoExeception;
+	Set<T> getItemsByName(T bean) throws FamiliaException;
 	
 	Collection<T> getAllItems();
+	
+	default Connection getConnection()
+	{
+		return ConnectionManager.getConnection();
+	}
 
 }

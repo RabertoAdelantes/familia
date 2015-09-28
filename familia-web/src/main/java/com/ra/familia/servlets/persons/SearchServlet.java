@@ -3,19 +3,21 @@ package com.ra.familia.servlets.persons;
 import static com.ra.familia.servlets.constants.UrlsConstants.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Sets;
 import com.ra.familia.entities.PersonBean;
-import com.ra.familia.exceptions.DaoExeception;
+import com.ra.familia.exceptions.FamiliaException;
 import com.ra.familia.services.PersonServiceImpl;
 import com.ra.familia.services.Services;
 import com.ra.familia.servlets.GenericServlet;
@@ -34,37 +36,35 @@ public class SearchServlet extends GenericServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		PersonBean person = getRequestParams(req);
-		Collection<PersonBean> persons = new ArrayList<>();
-		
-		if (person.getID()!=null)
-		{
-			person = getPersonById(person);
-			if (person!=null)
-			{
-				persons.add(person);
-			}
+		Set<PersonBean> persons = Sets.newHashSet();
+		if (areAnyCriterias(person)) {
+			persons = getPersonsByCriteria(person);
+		} else {
+			persons = (Set<PersonBean>) personService.getAllItems();
 		}
-		else if (person.getFirstName() == null
-				|| person.getFirstName().isEmpty()) {
-			persons = personService.getAllItems();
-		}
-		else
-		{
-			try {
-				persons = personService.getItemsByName(person);
-			} catch (DaoExeception dex) {
-				LOG.error(dex.getMessage());
-			}
-		}
+
 		req.getSession().setAttribute(SEARCH_SET, persons);
-		resp.sendRedirect(SEARCH_JSP);
+		req.getRequestDispatcher(SEARCH_JSP).forward(req, resp);
 	}
 
-	private PersonBean getPersonById(PersonBean person) {
-		PersonBean prsn = null;
+	private boolean areAnyCriterias(PersonBean person) {
+		boolean isValid = true;
+		if (StringUtils.isEmpty(person.getFirstName())
+				&& StringUtils.isEmpty(person.getEmail())
+				&& StringUtils.isEmpty(person.getMidleName())
+				&& StringUtils.isEmpty(person.getSecondName())
+				&& StringUtils.isEmpty(person.getDateBirth())
+				&& StringUtils.isEmpty(person.getDateDeath())) {
+			isValid = false;
+		}
+		return isValid;
+	}
+
+	private Set<PersonBean> getPersonsByCriteria(PersonBean person) {
+		Set<PersonBean> prsn = Sets.newHashSet();
 		try {
-			prsn = personService.getById(person.getID());
-		} catch (DaoExeception dex) {
+			prsn = personService.getItemsByName(person);
+		} catch (FamiliaException dex) {
 			LOG.error(dex.getMessage());
 		}
 		return prsn;
@@ -73,8 +73,8 @@ public class SearchServlet extends GenericServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		PersonBean person = (PersonBean) req.getSession().getAttribute(
-				USER_BEAN);
+		HttpSession session = req.getSession(false);
+		PersonBean person = (PersonBean) session.getAttribute(USER_BEAN);
 		if (person == null) {
 			req.getRequestDispatcher(INDEX_JSP).forward(req, resp);
 		} else {
@@ -82,8 +82,8 @@ public class SearchServlet extends GenericServlet {
 			if (isValidPersonId(id)) {
 				req.setAttribute(ID, id);
 			}
+			doPost(req, resp);
 		}
-		doPost(req, resp);
 	}
 
 	private boolean isValidPersonId(String id) {
@@ -91,7 +91,7 @@ public class SearchServlet extends GenericServlet {
 		if (id != null) {
 			try {
 				person = personService.getById(id);
-			} catch (DaoExeception dex) {
+			} catch (FamiliaException dex) {
 				LOG.error(dex.getMessage());
 			}
 		}

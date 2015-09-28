@@ -4,10 +4,11 @@ import java.util.Collection;
 import java.util.Set;
 
 import com.ra.familia.dao.DaoFactory;
-import com.ra.familia.dao.PersonGroupDao;
+import com.ra.familia.dao.persons.PersonGroupDao;
 import com.ra.familia.entities.GroupBean;
 import com.ra.familia.entities.PersonBean;
 import com.ra.familia.exceptions.DaoExeception;
+import com.ra.familia.exceptions.FamiliaException;
 
 public class PersonGroupServiceImpl implements Services<GroupBean> {
 
@@ -25,8 +26,12 @@ public class PersonGroupServiceImpl implements Services<GroupBean> {
 	}
 
 	@Override
-	public GroupBean getItemByName(GroupBean bean) throws DaoExeception  {
-		return personGroupDao.getItemByName(bean);
+	public GroupBean getItemByName(GroupBean bean) throws FamiliaException  {
+		try {
+			return personGroupDao.getItemByName(bean);
+		} catch (DaoExeception daoEx) {
+			throw new FamiliaException(daoEx);
+		}
 	}
 
 	@Override
@@ -35,8 +40,8 @@ public class PersonGroupServiceImpl implements Services<GroupBean> {
 	}
 
 	@Override
-	public void addItem(GroupBean bean) {
-		personGroupDao.addItem(bean);
+	public long addItem(GroupBean bean) {
+		return personGroupDao.addItem(bean);
 	}
 
 	@Override

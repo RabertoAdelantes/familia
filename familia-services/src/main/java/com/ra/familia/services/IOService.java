@@ -8,14 +8,13 @@ import java.util.Properties;
 import java.util.UUID;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ra.familia.dao.PropertiesManager;
 import com.ra.familia.entities.PersonBean;
-
-import static com.ra.familia.dao.constants.TablesConstants.*;
 
 public class IOService {
 
@@ -43,23 +42,20 @@ public class IOService {
 	}
 	
 	public void storageFile(PersonBean bean) {
-		FileItem item = (FileItem) bean.getFilePath();
-		String name = getFileName(item);
+		DiskFileItem item = (DiskFileItem) bean.getFilePath();
+		FileInputStream in = null;
 		try {
-			item.write(new File(name));			
-			if (item.getSize() < Long.valueOf(MAX_SIZE)) {
-				FileInputStream in = new FileInputStream(name);
+				in = new FileInputStream(item.getStoreLocation());
 				byte[] bytes = IOUtils.toByteArray(in);
 				bean.setDbFile(bytes);
-			} 
-			else
-			{
-				bean.setFilePath(name);
-			}
-			imgCashe.add(bean.getID()+IMG_SUFFIX,getMediaFromFs(name));
+			//imgCashe.add(bean.getID()+IMG_SUFFIX,getMediaFromFs(name));
 		} catch (Exception ex) {
 			LOG.error(String.format("Error occured on save '%s'",
 					ex.getLocalizedMessage()));
+		}
+		finally
+		{
+			IOUtils.closeQuietly(in);			
 		}
 	}
 	

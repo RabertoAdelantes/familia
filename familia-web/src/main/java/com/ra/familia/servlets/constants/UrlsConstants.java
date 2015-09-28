@@ -13,15 +13,18 @@ public final class UrlsConstants {
 	public static final String SEARCH_SET = "result";
 	public static final String PROFILE_URL = "profile";
 	public static final String SEARCH_URL = "search";
+	public static final String SUCCESS_URL = "success";
 	// request attributes
 	public static final String REQ_ERROR = "request_error";
 	public static final String SES_ERROR = "session_error";
 	public static final String BEAN = "bean";
 	// jsp pages
-	public static final String SEARCH_JSP = "search.jsp";
-	public static final String INDEX_JSP = "index.jsp";
+	public static final String SEARCH_JSP = "/search.jsp";
+	public static final String INDEX_JSP = "/index.jsp";
+	public static final String ACTIVATE_JSP = "activated_success.jsp";
+	public static final String ACTIVATE_FAILED_JSP = "activation_failed.jsp";
 	public static final String PROFILE_JSP = "profile.jsp";
-	public static final String REGISTER_JSP = "/register.jsp";
+	public static final String REGISTER_JSP = "register.jsp";
 	public static final String REGISTER_SUCCESS_JSP = "/register_success.jsp";
 	// request parameters
 	public static final String PHOTO = "photo";
@@ -41,6 +44,8 @@ public final class UrlsConstants {
 
 	// request parameters
 	public static final String ERR_LOGIN_FAILED = "Login failed : user or password is incorrect";
+	public static final String ERR_NOT_ACTIVE = "Login failed : user is not acive";
+	public static final String ERR_USER_EXIST = "Login failed : user has already exists";
 	
 	public static final String USER_SUSSEFULLY_REGISTERED = "User sussefully registered.";
 	public static final String USER_ALREDY_EXISTS = "User already exists.";

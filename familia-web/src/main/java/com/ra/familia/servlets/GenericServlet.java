@@ -85,14 +85,17 @@ public class GenericServlet extends HttpServlet {
 		try {
 			multiparts = new ServletFileUpload(new DiskFileItemFactory())
 					.parseRequest(req);
-			for (FileItem item : multiparts) {
+			
+			multiparts.forEach(item->
+			{
 				if (item.isFormField()) {
 					parameters.put(item.getFieldName(), item.getString());
 					
 				} else {
 					parameters.put(PHOTO, item);
 				}
-			}
+			});
+
 		} catch (Exception ex) {
 			LOG.error(ex.getLocalizedMessage());
 		}

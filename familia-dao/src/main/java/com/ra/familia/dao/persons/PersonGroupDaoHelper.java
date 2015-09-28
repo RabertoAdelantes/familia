@@ -1,6 +1,7 @@
-package com.ra.familia.dao;
+package com.ra.familia.dao.persons;
 
 import static com.ra.familia.dao.constants.TablesConstants.*;
+import static com.ra.familia.dao.constants.QueriesConstants.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +9,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.ra.familia.dao.Pair;
 import com.ra.familia.entities.GroupBean;
 import com.ra.familia.entities.PersonBean;
 
@@ -20,19 +22,19 @@ public class PersonGroupDaoHelper {
 	public static Pair<Integer, Object> setUpdateCondition(
 			final StringBuffer conditions, final String fieldName,
 			final Object fieldValue) {
-		return setCondition(conditions, fieldName, fieldValue, " , ");
+		return setCondition(conditions, fieldName, fieldValue, COMA);
 	}
 
 	public static Pair<Integer, Object> setWhereAndCondition(
 			final StringBuffer conditions, final String fieldName,
 			final String fieldValue) {
-		return setCondition(conditions, fieldName, fieldValue, " AND ");
+		return setCondition(conditions, fieldName, fieldValue, AND);
 	}
 	
 	public static Pair<Integer, Object> setWhereOrCondition(
 			final StringBuffer conditions, final String fieldName,
 			final String fieldValue) {
-		return setCondition(conditions, fieldName, fieldValue, " OR ");
+		return setCondition(conditions, fieldName, fieldValue, AND);
 	}
 
 	public static void setUpdateBooleanCondition(final StringBuffer conditions,
