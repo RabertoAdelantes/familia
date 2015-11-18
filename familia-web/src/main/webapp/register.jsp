@@ -23,17 +23,8 @@
 
 <script
 	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
-	
-	<!--
-	link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css" />
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
-	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
-	-->
-	
 
-<!-- <link href="css/main_reg.css" rel="stylesheet"> -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css"/>
-<!-- /<link rel="stylesheet" href="${pageContext.request.contextPath}/XXX.css" /> -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/main_reg.css"/>
 <script	src="${pageContext.request.contextPath}/js/familia.js"></script>
 
 <body bgcolor="white">
