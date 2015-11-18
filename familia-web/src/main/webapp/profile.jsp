@@ -4,7 +4,7 @@
 
 
 <jsp:useBean id="user" class="com.ra.familia.entities.PersonBean"
-	scope="session" />
+	scope="request" />
 
 <html>
 <head>
@@ -28,7 +28,7 @@
 
 <script
 	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
-<script	src="js/familia.js"></script>
+<script src="js/familia.js"></script>
 
 <link href="css/main_reg.css" rel="stylesheet">
 </head>

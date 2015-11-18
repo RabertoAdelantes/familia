@@ -2,25 +2,27 @@ package com.ra.familia.validtors;
 
 import static com.ra.familia.servlets.constants.UrlsConstants.*;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.ra.familia.entities.PersonBean;
 
 public class DataValidator {
 
 	
 	public static void validateMandatories(PersonBean bean, StringBuffer errors) {
-		if (!bean.getEmail().matches(EMAIL_PATTERN)) {
+		if (StringUtils.isEmpty(bean.getEmail())&&!bean.getEmail().matches(EMAIL_PATTERN)) {
 			errors.append(EAMIL_IS_NOT_CORRECT);
 		}
 
-		if (bean.getSecondName().isEmpty() && isErrored(errors)) {
+		if (StringUtils.isEmpty(bean.getSecondName()) && isErrored(errors)) {
 			errors.append(SECOND_NAME);
 		}
-
-		if (bean.getSecondName().matches(IMAGE_PATTERN) && isErrored(errors)) {
-			errors.append(FILE_NOT_UPLOAD);
+		
+		if (StringUtils.isEmpty(bean.getFirstName()) && isErrored(errors)) {
+			errors.append(FIRST_NAME);
 		}
 
-		if (bean.getPassword().isEmpty() && isErrored(errors)) {
+		if (StringUtils.isEmpty(bean.getPassword()) && isErrored(errors)) {
 			errors.append(PASSWORD_EMPTY);
 		}
 	}

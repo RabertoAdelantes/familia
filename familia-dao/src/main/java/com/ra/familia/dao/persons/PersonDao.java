@@ -38,7 +38,7 @@ public class PersonDao extends AbstractDao<PersonBean> {
 		StringBuffer where = new StringBuffer();
 		List<Pair<Integer, Object>> pairs = new ArrayList<>();
 		PersonDaoHelper.fillSearchByEmail(bean, where, pairs);
-		return getItemByField(SELECT_PERSONS_FULL, WHERE + where.toString(), pairs);
+		return getItemByField(SELECT_PERSONS, WHERE + where.toString(), pairs);
 	}
 
 	public PersonBean getItemById(final String id) throws DaoExeception {
@@ -77,7 +77,7 @@ public class PersonDao extends AbstractDao<PersonBean> {
 			preparedStatement.setString(5, bean.getPassword());
 			preparedStatement.setString(6, bean.getEmail());
 			preparedStatement
-					.setTimestamp(7, getTimeStamp(bean.getDateDeath()));
+					.setTimestamp(7, getTimeStamp(bean.getDateBirth()));
 			preparedStatement
 					.setTimestamp(8, getTimeStamp(bean.getDateDeath()));
 			preparedStatement.setInt(9, 0);
@@ -113,14 +113,14 @@ public class PersonDao extends AbstractDao<PersonBean> {
 			pair = PersonDaoHelper.setUpdateCondition(conditions, P_EMAIL,
 					bean.getEmail());
 			addPair(pairs, pair);
-
-			pair = PersonDaoHelper.setUpdateBooleanCondition(conditions,
-					P_ISACTIVE, bean.isActive());
+			
+			pair = PersonDaoHelper.setUpdateCondition(conditions, P_DATE_BIRTH,
+					bean.getDateBirth());
 			addPair(pairs, pair);
-
-			pair = PersonDaoHelper.setUpdateBooleanCondition(conditions,
-					P_ISDELETED, bean.isDeleted());
-			addPair(pairs, pair);
+			
+			pair = PersonDaoHelper.setUpdateNullCondition(conditions, P_DATE_DEATH,
+					bean.getDateDeath());
+			addPairWithNull(pairs, pair);
 
 			updateSql.append(conditions.toString());
 			updateSql.append(WHERE);

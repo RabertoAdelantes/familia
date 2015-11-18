@@ -2,7 +2,6 @@ package com.ra.familia.servlets.persons;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,10 +25,7 @@ public class SuccessServlet extends GenericServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String nextJSP = REGISTER_SUCCESS_JSP;
-		RequestDispatcher dispatcher = getServletContext()
-				.getRequestDispatcher(nextJSP);
-		dispatcher.forward(req, resp);
+		resp.sendRedirect(REGISTER_SUCCESS_JSP);
 	}
 
 }

@@ -25,20 +25,20 @@
 			<param-value>es_ES</param-value>
 		</init-param>
 	</filter>
-
+<!-- 
 	<filter>
 		<filter-name>XSSFilter</filter-name>
 		<filter-class>com.ra.familia.filters.XSSFilter</filter-class>
 	</filter>
-
+-->
 	<filter-mapping>
 		<filter-name>IdiomaFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
+	<!-- 
 	<filter-mapping>
 		<filter-name>XSSFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
+	-->
 </web-app>

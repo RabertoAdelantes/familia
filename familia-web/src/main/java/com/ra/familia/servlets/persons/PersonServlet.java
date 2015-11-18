@@ -3,6 +3,7 @@ package com.ra.familia.servlets.persons;
 import static com.ra.familia.servlets.constants.UrlsConstants.*;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +27,7 @@ import com.ra.familia.servlets.GenericServlet;
 		"/profile", "/select", "/Profile", "/Select" })
 public class PersonServlet extends GenericServlet {
 
+	private static final String PROFILE_ID = "profileId";
 	private static final Logger LOG = LoggerFactory
 			.getLogger(PersonServlet.class);
 	private static final long serialVersionUID = 8781195695257213199L;
@@ -56,8 +60,31 @@ public class PersonServlet extends GenericServlet {
 				req.setAttribute(REQ_ERROR, CAN_NOT_COMPLETE);
 				LOG.error(ex.getMessage());
 			}
+		} else {
+			Map<String, Object> params = getParameters(req);
+			try {
+				String profileId = getProfileId(req, params);
+				PersonBean personBean = personService.getById(profileId);
+				req.setAttribute("user", personBean);
+			} catch (FamiliaException ex) {
+				LOG.error(ex.getMessage());
+			}
 		}
-		resp.sendRedirect(redirectUrl);
+		req.getRequestDispatcher(redirectUrl).forward(req, resp);
+
+	}
+
+	private String getProfileId(HttpServletRequest req,
+			Map<String, Object> params) {
+		String profileId = StringUtils.EMPTY;
+		String[] ids = (String[]) params.get("id");
+		if (!ArrayUtils.isEmpty(ids)) {
+			profileId = ids[0];
+			req.getSession().setAttribute(PROFILE_ID, profileId);
+		} else {
+			profileId = (String) req.getSession().getAttribute(PROFILE_ID);
+		}
+		return profileId;
 	}
 
 }
