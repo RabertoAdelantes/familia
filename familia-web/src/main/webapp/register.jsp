@@ -135,7 +135,7 @@
 									<button type="submit" class="btn btn-success btn-sm">
 										<fmt:message key="btn.register" bundle="${bundle}" />
 									</button>
-									<button class="btn btn-success btn-sm" onclick="location.href = '${pageContext.request.contextPath}';">Cancel</button>
+									<button class="btn btn-success btn-sm" onclick="location.href = '${pageContext.request.contextPath}/';">Cancel</button>
 								</div>
 							</div>
 						</form>
