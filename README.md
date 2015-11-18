@@ -1,2 +1,6 @@
-# A mi me parece Familia es todo
- mvn clean install pmd:check checkstyle:checkstyle
+# Build application
+ mvn clean install 
+# Check source codes
+mvn pmd:check checkstyle:checkstyle
+# Check if any new denenies libraries are available 
+mvn versions:display-dependency-updates

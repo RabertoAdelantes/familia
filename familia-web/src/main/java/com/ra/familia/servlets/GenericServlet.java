@@ -2,6 +2,7 @@ package com.ra.familia.servlets;
 
 import static com.ra.familia.servlets.constants.UrlsConstants.*;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ra.familia.entities.PersonBean;
-
 
 public class GenericServlet extends HttpServlet {
 
@@ -79,26 +80,37 @@ public class GenericServlet extends HttpServlet {
 
 	}
 
-	private Map<String, Object> getParameters(HttpServletRequest req) {
+	protected Map<String, Object> getParameters(HttpServletRequest req) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		List<FileItem> multiparts;
-		try {
-			multiparts = new ServletFileUpload(new DiskFileItemFactory())
-					.parseRequest(req);
-			
-			multiparts.forEach(item->
-			{
-				if (item.isFormField()) {
-					parameters.put(item.getFieldName(), item.getString());
-					
-				} else {
-					parameters.put(PHOTO, item);
-				}
+		if (ServletFileUpload.isMultipartContent(req)) {
+			try {
+				List<FileItem> multiparts = new ServletFileUpload(
+						new DiskFileItemFactory()).parseRequest(req);
+				multiparts.forEach(item -> {
+					if (item.isFormField()) {
+						parameters.put(item.getFieldName(), getValue(item));
+					} else {
+						parameters.put(PHOTO, item);
+					}
+				});
+			} catch (Exception ex) {
+				LOG.error(ex.getLocalizedMessage());
+			}
+		} else {
+			req.getParameterMap().forEach((key, value) -> {
+				parameters.put(key, value);
 			});
-
-		} catch (Exception ex) {
-			LOG.error(ex.getLocalizedMessage());
 		}
 		return parameters;
+	}
+
+	private String getValue(FileItem item) {
+		String returnValue = StringUtils.EMPTY;
+		try {
+			returnValue = item.getString(CHARSET_UTF_8);
+		} catch (UnsupportedEncodingException ex) {
+			LOG.error(ex.getLocalizedMessage());
+		}
+		return returnValue;
 	}
 }

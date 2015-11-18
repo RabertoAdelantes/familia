@@ -37,50 +37,43 @@ public class RegisterServlet extends GenericServlet {
 	private IOService ioService = new IOService();
 	private MailService mailService = new MailService();
 
-	private Services<PersonBean> personService = new PersonServiceImpl();
+	private PersonServiceImpl personService = new PersonServiceImpl();
 	private Services<FlowBean> flowService = new FlowServiceImpl();
 
 	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse res)
+	public void doGet(HttpServletRequest request, HttpServletResponse res)
 			throws ServletException, IOException {
-		doPost(req, res);
+		doPost(request, res);
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String nextJSP = register(req);
-		req.getRequestDispatcher(nextJSP).forward(req, resp);
+		String nextJSP = register(request);
+		request.getRequestDispatcher(nextJSP).forward(request, response);
 	}
 
-	private String register(HttpServletRequest req) {
+	private String register(HttpServletRequest request) {
 		StringBuffer messages = new StringBuffer();
-		PersonBean bean = getParamsFromMultipleForm(req);
+		PersonBean bean = getParamsFromMultipleForm(request);
 		DataValidator.validateMandatories(bean, messages);
-		if (ServletFileUpload.isMultipartContent(req) && DataValidator.isErrored(messages)) {
-			processedFile(bean, messages);
+		if (ServletFileUpload.isMultipartContent(request) && DataValidator.isErrored(messages)) {
+			processedFile(bean);
 			if (DataValidator.isErrored(messages)) {
-				if (getPerson(bean, req) == null) {
-					addPerson(bean, messages,req);
+				if (getPerson(bean) == null) {
+					addPerson(bean, messages,request);
 				} else {
 					messages.append(USER_ALREDY_EXISTS);
 				}
 			}
 		}
-		req.setAttribute(BEAN, bean);
-		req.setAttribute(REQ_ERROR, messages);
+		request.setAttribute(BEAN, bean);
+		request.setAttribute(REQ_ERROR, messages);
 		return DataValidator.isErrored(messages) ? SUCCESS_URL : REGISTER_JSP;
 	}
 
-	private PersonBean getPerson(PersonBean bean, HttpServletRequest req) {
-		PersonBean person = null;
-		try {
-			person = personService.getItemByName(bean);
-		} catch (FamiliaException ex) {
-			req.setAttribute(REQ_ERROR, CAN_NOT_COMPLETE);
-			LOG.error(ex.getMessage());
-		}
-		return person;
+	private PersonBean getPerson(PersonBean bean) {
+		return  personService.getItemByEmail(bean);
 	}
 
 	private void addPerson(PersonBean bean, StringBuffer errors, HttpServletRequest request) {
@@ -94,14 +87,14 @@ public class RegisterServlet extends GenericServlet {
 			mailService.sendRegistrationMail(bean);
 		} catch (FamiliaException ex) {
 			errors.append(CAN_NOT_COMPLETE);
+			LOG.error("Add person is failed.",ex.getException());
 		}
 	}
 
-	private void processedFile(PersonBean bean, StringBuffer errors) {
+	private void processedFile(PersonBean bean) {
 		DiskFileItem diskItem = ((DiskFileItem) bean.getFilePath());
-		if (diskItem.getSize() == 0) {
-			errors.append(FILE_NOTSPECIFIED);
-		} else {
+		if (diskItem.getSize() > 0) 
+	    {
 			ioService.storageFile(bean);
 		}
 	}

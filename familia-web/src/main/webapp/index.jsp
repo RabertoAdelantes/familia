@@ -1,11 +1,12 @@
+<%@ page contentType="text/html; charset=UTF-8" language="java"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ include file="include/localized_header.jsp"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <title>Login form</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@ include file="include/localized_header.jsp"%>
-<%@ page language="java" pageEncoding="UTF-8"%>
-
 <link
 	href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -31,8 +32,7 @@
 								<div class="col-sm-9">
 									<input class="form-control" id="email" name="email"
 										placeholder="<fmt:message key="btn.email" bundle="${bundle}" />"
-										value="${requestScope.user.email}"
-										required="true">
+										value="${requestScope.user.email}" required="true">
 								</div>
 							</div>
 							<div class="form-group">
@@ -58,7 +58,7 @@
 						<a href="register.jsp" class=""><fmt:message
 								key="register.here" bundle="${bundle}" /></a>
 						<div>
-						<jsp:include page="include/error_include.jsp" />
+							<jsp:include page="include/error_include.jsp" />
 						</div>
 					</div>
 				</div>

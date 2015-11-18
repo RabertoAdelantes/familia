@@ -18,26 +18,21 @@ public class DaoHelper {
 
 	private static final String SELECT_NEXTVAL_SEQ_PERSON = "SELECT nextval('%s')";
 	private static final String SELECT_SEQ_PERSON_NEXTVAL_FROM_DUAL = "select %s.nextval from dual";
-	private static final String POSTGRESS_TYPE = "org.postgresql.jdbc4.Jdbc4Connection";
-	private static final String ORACLE_TYPE = "oracle.jdbc.driver.T4CConnection";
+	private static final String POSTGRESS_TYPE = "org.postgresql";
 
 	public static String getSeqQuery(String connectionType, String seqName) {
 		String query = String.format(SELECT_SEQ_PERSON_NEXTVAL_FROM_DUAL,
 				seqName);
-		switch (connectionType) {
-		case POSTGRESS_TYPE:
+		if (!StringUtils.isEmpty(connectionType)&&connectionType.contains(POSTGRESS_TYPE)) {
 			query = String.format(SELECT_NEXTVAL_SEQ_PERSON, seqName);
-			break;
-		case ORACLE_TYPE:
-			query = String.format(SELECT_SEQ_PERSON_NEXTVAL_FROM_DUAL, seqName);
-			break;
 		}
 		return query;
 	}
 
 	public static void addPair(final List<Pair<Integer, Object>> pairs,
 			Pair<Integer, Object> pair) {
-		if (pair.getKey() != null && pair.getValue() != null && !pair.getValue().toString().isEmpty()) {
+		if (pair.getKey() != null && pair.getValue() != null
+				&& !pair.getValue().toString().isEmpty()) {
 			pairs.add(pair);
 		}
 	}
@@ -106,7 +101,7 @@ public class DaoHelper {
 			final String fieldValue) {
 		return setCondition(conditions, fieldName, fieldValue, OR);
 	}
-	
+
 	public static Pair<Integer, Object> setWhereOrConditionLike(
 			final StringBuffer conditions, final String fieldName,
 			final String fieldValue) {
@@ -124,9 +119,9 @@ public class DaoHelper {
 			final StringBuffer conditions, final String fieldName,
 			final Object fieldValue, final String delimiter) {
 		Pair<Integer, Object> pair = new Pair<Integer, Object>();
-		if (fieldValue != null&&!fieldValue.toString().isEmpty()) {
+		if (fieldValue != null && !fieldValue.toString().isEmpty()) {
 			if (conditions.toString().isEmpty()) {
-				conditions.append(fieldName + LIKE +"?");
+				conditions.append(fieldName + LIKE + "?");
 			} else {
 				conditions.append(" " + delimiter + LIKE + fieldName + "?");
 			}
@@ -136,7 +131,7 @@ public class DaoHelper {
 		}
 		return pair;
 	}
-	
+
 	public static Pair<Integer, Object> setCondition(
 			final StringBuffer conditions, final String fieldName,
 			final Object fieldValue, final String delimiter) {

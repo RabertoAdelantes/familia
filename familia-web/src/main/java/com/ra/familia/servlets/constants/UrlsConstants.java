@@ -23,9 +23,9 @@ public final class UrlsConstants {
 	public static final String INDEX_JSP = "/index.jsp";
 	public static final String ACTIVATE_JSP = "activated_success.jsp";
 	public static final String ACTIVATE_FAILED_JSP = "activation_failed.jsp";
-	public static final String PROFILE_JSP = "profile.jsp";
+	public static final String PROFILE_JSP = "/profile.jsp";
 	public static final String REGISTER_JSP = "register.jsp";
-	public static final String REGISTER_SUCCESS_JSP = "/register_success.jsp";
+	public static final String REGISTER_SUCCESS_JSP = "register_success.jsp";
 	// request parameters
 	public static final String PHOTO = "photo";
 	public static final String USER_NAME = "userName";
@@ -63,8 +63,6 @@ public final class UrlsConstants {
 	public static final String IMAGE_PATTERN = 
             "([^\\s]+(\\.(?i)(jpg|png|gif|bmp))$)";
 
-
-
-
+	public static final String CHARSET_UTF_8 = "UTF-8";
 
 }

@@ -29,9 +29,6 @@ public class PersonDaoHelper extends DaoHelper {
 		Pair<Integer, Object> pair = setWhereAndCondition(
 				where, P_TABLE + "." + P_EMAIL, bean.getEmail());
 		addPair(pairs, pair);
-		pair = setWhereAndCondition(where, P_TABLE + "."
-				+ P_PASSWORD, bean.getPassword());
-		addPair(pairs, pair);
 	}
 
 	public static void fillSearchById(final PersonBean bean,

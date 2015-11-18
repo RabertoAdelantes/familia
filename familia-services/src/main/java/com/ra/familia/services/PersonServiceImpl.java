@@ -3,7 +3,6 @@ package com.ra.familia.services;
 import java.util.Collection;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,7 +73,7 @@ public class PersonServiceImpl implements Services<PersonBean> {
 		} catch (DaoExeception daoEx) {
 			throw new FamiliaException(daoEx);
 		}
-		addPersonsToCashe(persons);
+		//addPersonsToCashe(persons);
 		return persons;
 	}
 
@@ -94,11 +93,11 @@ public class PersonServiceImpl implements Services<PersonBean> {
 		imgCashe.add(person);
 	}
 
-	private void addPersonsToCashe(Collection<PersonBean> persons) {
-		if (!CollectionUtils.isEmpty(persons)) {
-			persons.forEach(person -> imgCashe.add(person));
-		}
-	}
+//	private void addPersonsToCashe(Collection<PersonBean> persons) {
+//		if (!CollectionUtils.isEmpty(persons)) {
+//			persons.forEach(person -> imgCashe.add(person));
+//		}
+//	}
 
 	@Override
 	public Collection<PersonBean> getAllItems() {

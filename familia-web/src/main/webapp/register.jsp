@@ -24,32 +24,8 @@
 <script
 	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
 
-<link href="css/main_reg.css" rel="stylesheet">
-
-<!-- 
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('#date_birth').datepicker({
-			calendarWeeks : true,
-			todayHighlight : true,
-			toggleActive : true,
-			todayHighlight:true,
-			clearBtn:true,
-			autoclose:true
-		});
-		$('#date_death').datepicker({
-			calendarWeeks : true,
-			todayHighlight : true,
-			toggleActive : true,
-			todayHighlight:true,
-			clearBtn:true,
-			autoclose:true
-		});
-	});
-</script>
--->
-
-<script	src="js/familia.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/main_reg.css"/>
+<script	src="${pageContext.request.contextPath}/js/familia.js"></script>
 
 <body bgcolor="white">
 	<div class="container">
@@ -62,7 +38,7 @@
 						</p>
 					</div>
 					<div class="panel-body">
-						<form class="form-horizontal" role="form" method="post"
+						<form id="registerForm" class="form-horizontal" role="form" method="post"
 							action="register" enctype="multipart/form-data">
 							<div class="form-group">
 								<label for="firstName" class="col-sm-3 control-label"><fmt:message
@@ -70,7 +46,7 @@
 								<div class="col-sm-9">
 									<input class="form-control" id="firstName" name="firstName"
 										value="<c:out value="${bean.firstName}"/>"
-										required="true">
+										required="true" />
 								</div>
 							</div>
 
@@ -79,8 +55,7 @@
 										key="user.name.midle" bundle="${bundle}" /></label>
 								<div class="col-sm-9">
 									<input class="form-control" id="midleName" name="midleName"
-										value="<c:out value="${bean.midleName}"/>"
-										required="true">
+										value="<c:out value="${bean.midleName}"/>">
 								</div>
 							</div>
 
@@ -90,7 +65,7 @@
 								<div class="col-sm-9">
 									<input class="form-control" id="lastName" name="lastName"
 										value="<c:out value="${bean.secondName}"/>"
-										required="true">
+										required="true" />
 								</div>
 							</div>
 
@@ -98,10 +73,9 @@
 								<label for="password" class="col-sm-3 control-label"> <fmt:message
 										key="user.name.password" bundle="${bundle}" /></label>
 								<div class="col-sm-9">
-									<input class="form-control" type="password" id="password"
-										name="password"
+									<input class="form-control" type="password" id="password" name="password"
 										value="<c:out value="${bean.password}"/>"
-										required="true">
+										required="true" />
 								</div>
 							</div>
 
@@ -110,7 +84,8 @@
 										key="btn.email" bundle="${bundle}" /></label>
 								<div class="col-sm-9">
 									<input class="form-control" id="email" name="email"
-										value="<c:out value="${bean.email}"/>" required="true">
+										value="<c:out value="${bean.email}"/>"
+										required="true" />
 								</div>
 							</div>
 
@@ -119,8 +94,9 @@
 										key="user.date.birth" bundle="${bundle}" /></label>
 								<div class="col-xs-5 date">
 									<div class="input-group input-append date" id="date_birth">
-										<input type="text" class="form-control" name="date_birth" /> <span
-											class="input-group-addon add-on"><span
+										<input type="text" class="form-control" name="date_birth" value="<c:out value="${bean.dateBirth}"/>" 
+										required="true" />
+										<span class="input-group-addon add-on"><span
 											class="glyphicon glyphicon-calendar"></span></span>
 									</div>
 								</div>
@@ -131,7 +107,8 @@
 										key="user.date.death" bundle="${bundle}" /></label>
 								<div class="col-xs-5 date">
 									<div class="input-group input-append date" id="date_death">
-										<input type="text" class="form-control" name="date_death" /> <span
+										<input type="text" class="form-control" name="date_death" data-fv-notempty="false" value="<c:out value="${bean.dateDeath}"/>"	/> 
+										<span
 											class="input-group-addon add-on"><span
 											class="glyphicon glyphicon-calendar"></span></span>
 									</div>
@@ -158,7 +135,7 @@
 									<button type="submit" class="btn btn-success btn-sm">
 										<fmt:message key="btn.register" bundle="${bundle}" />
 									</button>
-									<button class="btn btn-success btn-sm" onclick="location.href = '${pageContext.request.contextPath}';">Cancel</button>
+									<button class="btn btn-success btn-sm" onclick="location.href = '${pageContext.request.contextPath}/';">Cancel</button>
 								</div>
 							</div>
 						</form>
