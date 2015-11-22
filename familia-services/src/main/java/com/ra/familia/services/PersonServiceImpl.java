@@ -46,6 +46,7 @@ public class PersonServiceImpl implements Services<PersonBean> {
 	public void updateItem(PersonBean bean) throws FamiliaException {
 		try {
 			personDao.updateItem(bean);
+			imgCashe.add(bean);
 		} catch (DaoExeception daoEx) {
 			throw new FamiliaException(daoEx);
 		}

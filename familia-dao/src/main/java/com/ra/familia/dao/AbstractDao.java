@@ -26,7 +26,6 @@ import com.ra.familia.helpers.DaoHelper;
 
 public abstract class AbstractDao<T> {
 
-	private static final String MM_DD_YYYY = "mm/dd/yyyy";
 	private static final Logger LOG = LoggerFactory
 			.getLogger(AbstractDao.class);
 
@@ -71,8 +70,8 @@ public abstract class AbstractDao<T> {
 			beans = fillBeans(rs);
 			rs.close();
 		} catch (Exception ex) {
-			LOG.error("getItemByFields:" + ex.getLocalizedMessage());
-			throw new DaoExeception(ex.getLocalizedMessage());
+			LOG.error("getItemByFields:" + ex.getMessage());
+			throw new DaoExeception(ex.getMessage());
 		} finally {
 			closeStatement(stmt);
 			closeConnection(conn);
@@ -91,22 +90,24 @@ public abstract class AbstractDao<T> {
 				} else if (DaoHelper.isNumeric(obj)) {
 					stmt.setInt(index + 1, DaoHelper.getInteger(obj.toString()));
 				} else if (obj instanceof String) {
-					if (!StringUtils.isEmpty(obj.toString())) { 
-						
+					if (!StringUtils.isEmpty(obj.toString())) {
+
 						stmt.setString(index + 1,
 								obj == null ? null : obj.toString());
 					}
-				} else if (!DaoHelper.isBoolean(obj) || obj == null) {
+				} else if (obj instanceof Timestamp && obj != null) {
+					stmt.setTimestamp(index + 1, (Timestamp) obj);
+				} else 
+				{
 					stmt.setString(index + 1,
 							obj == null ? null : obj.toString());
 				}
 			} catch (SQLException sqlex) {
-				LOG.error(sqlex.getLocalizedMessage());
+				LOG.error(sqlex.getMessage());
 			}
 		}
 	}
 
-	// FIXME: ASAP
 	protected T getItemByField(final String sqlQuery, final String where,
 			final List<Pair<Integer, Object>> pairs) throws DaoExeception {
 		Set<T> beans = getItemByFields(sqlQuery, where, pairs);
@@ -127,9 +128,8 @@ public abstract class AbstractDao<T> {
 			ResultSet rs = stmt.executeQuery(sqlQuery);
 			beans = fillBeans(rs);
 			rs.close();
-		} catch (Exception e) {
-			LOG.error(String.format("Get all items error :%s",
-					e.getLocalizedMessage()));
+		} catch (Exception ex) {
+			LOG.error(String.format("Get all items error :%s", ex.getMessage()));
 		} finally {
 			closeStatement(stmt);
 			closeConnection(conn);
@@ -137,14 +137,16 @@ public abstract class AbstractDao<T> {
 		return beans;
 	}
 
-	protected Timestamp getTimeStamp(String dateValue) {
+	protected Timestamp getTimeStamp(String dateValue, String dtFormat) {
 		Timestamp timestamp = null;
 		try {
-			SimpleDateFormat dateFormat = new SimpleDateFormat(MM_DD_YYYY);
+			SimpleDateFormat dateFormat = new SimpleDateFormat(dtFormat);
 			Date parsedDate = dateFormat.parse(dateValue);
 			timestamp = new Timestamp(parsedDate.getTime());
 		} catch (ParseException ex) {
-			LOG.error("Date parse exception : ", ex.getLocalizedMessage());
+			LOG.error(String.format(
+					"Date parse exception : %s. Date value %s. Date format %s",
+					ex.getLocalizedMessage(), dateValue, dtFormat));
 		}
 		return timestamp;
 	}
@@ -221,8 +223,7 @@ public abstract class AbstractDao<T> {
 				returnValue = ress.getLong("nextval");
 			}
 		} catch (SQLException sqex) {
-			LOG.error("Get sequence value exception : ",
-					sqex.getLocalizedMessage());
+			LOG.error("Get sequence value exception : ", sqex.getMessage());
 		} finally {
 			closeStatement(stmt);
 			closeConnection(conn);

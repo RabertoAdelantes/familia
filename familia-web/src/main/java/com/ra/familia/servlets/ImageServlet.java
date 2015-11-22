@@ -1,6 +1,9 @@
 package com.ra.familia.servlets;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,6 +24,8 @@ import static com.ra.familia.dao.constants.TablesConstants.*;
 
 @WebServlet("/image/*")
 public class ImageServlet extends HttpServlet {
+	private static final String DEFAULT_AVATAR = "/imagines/default_avatar.jpg";
+
 	private static final Logger LOG = LoggerFactory
 			.getLogger(ImageServlet.class);
 
@@ -38,12 +43,16 @@ public class ImageServlet extends HttpServlet {
 				ioService.getCashe().add(imageId + IMG_SUFFIX,
 						person.getDbFile());
 				byte[] bytes = person.getDbFile();
+				response.setContentType("image/jpg");
 				if (bytes != null) {
-					response.setContentType("image/jpg");
 					response.getOutputStream().write(bytes);
-					response.getOutputStream().flush();
-					response.getOutputStream().close();
+				} else {
+					Path path = Paths.get(request.getServletContext().getRealPath("/") + DEFAULT_AVATAR);
+					bytes = Files.readAllBytes(path);
+					response.getOutputStream().write(bytes);
 				}
+				response.getOutputStream().flush();
+				response.getOutputStream().close();
 			}
 		}
 	}
@@ -51,7 +60,9 @@ public class ImageServlet extends HttpServlet {
 	private PersonBean getPersonByImage(String imageId) {
 		PersonBean personBean = null;
 		try {
-			return personService.getById(imageId);
+			if (imageId != null) {
+				personBean = personService.getById(imageId);
+			}
 		} catch (FamiliaException familiaEx) {
 			LOG.error(String.format(
 					"GetPersonByImage '%s' failed. Winth error %s", imageId,

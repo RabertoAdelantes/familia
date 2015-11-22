@@ -46,7 +46,9 @@ public class PersonServlet extends GenericServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String redirectUrl = PROFILE_JSP;
-		if (ServletFileUpload.isMultipartContent(req)) {
+		String profileId = req.getParameter("id");
+		if (ServletFileUpload.isMultipartContent(req)
+				&& StringUtils.isEmpty(profileId)) {
 			PersonBean bean = getParamsFromMultipleForm(req);
 			ioService.storageFile(bean);
 			try {
@@ -63,7 +65,9 @@ public class PersonServlet extends GenericServlet {
 		} else {
 			Map<String, Object> params = getParameters(req);
 			try {
-				String profileId = getProfileId(req, params);
+				if (StringUtils.isEmpty(profileId)) {
+					profileId = getProfileId(req, params);
+				}
 				PersonBean personBean = personService.getById(profileId);
 				req.setAttribute("user", personBean);
 			} catch (FamiliaException ex) {

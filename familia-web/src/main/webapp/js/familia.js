@@ -1,5 +1,6 @@
-	$(document).ready(function() {
+$(document).ready(function() {
 		$('#date_birth').datepicker({
+			format: 'yyyy-mm-dd',
 			calendarWeeks : true,
 			todayHighlight : true,
 			toggleActive : true,
@@ -8,6 +9,7 @@
 			autoclose : true
 		});
 		$('#date_death').datepicker({
+			format: 'yyyy-mm-dd',
 			calendarWeeks : true,
 			todayHighlight : true,
 			toggleActive : true,

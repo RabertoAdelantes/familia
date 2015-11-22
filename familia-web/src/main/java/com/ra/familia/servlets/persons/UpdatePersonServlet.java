@@ -7,7 +7,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,24 +33,23 @@ public class UpdatePersonServlet extends GenericServlet {
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String pk = update(req);
-		req.getRequestDispatcher("profile?id="+pk).forward(req, resp);
+		String pk = update(request);
+		request.setAttribute("id", pk);
+		response.sendRedirect("profile?id="+pk);
 	}
 
 	private String update(HttpServletRequest req) {
-		String beanPk = "";
-		if (ServletFileUpload.isMultipartContent(req)) {
-			PersonBean bean = getParamsFromMultipleForm(req);
-			try {
-				personService.updateItem(bean);
-				beanPk = bean.getID();
-			} catch (FamiliaException eex) {
-				LOG.error(eex.getMessage());
-			}
+		String retValue = null;
+		PersonBean bean = getParamsFromMultipleForm(req);
+		try {
+			personService.updateItem(bean);
+			retValue = bean.getID();
+		} catch (FamiliaException eex) {
+			LOG.error(eex.getMessage());
 		}
-		return beanPk;
+		return retValue;
 	}
 
 }

@@ -12,7 +12,7 @@
 <title>Personal profile</title>
 <link rel="stylesheet"
 	href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
-<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.3.js"></script>
 <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 
 <link
@@ -74,10 +74,10 @@
 										key="user.name.midle" bundle="${bundle}" /></label>
 								<div class="col-sm-9">
 									<input class="form-control" id="midleName" name="midleName"
+										data-fv-notempty="false"
 										value="<%if (user.getMidleName() != null) {
 				out.println(user.getMidleName());
-			}%>"
-										required="true">
+			}%>">
 								</div>
 							</div>
 
@@ -140,19 +140,34 @@
 										key="user.photo" bundle="${bundle}" />
 								</label>
 								<div style="position: relative;">
-									<img src="image/?id=<%=user.getID()%>" height="300px"
-										width="400px" align="left" />
+									<a class='btn btn-primary' href='javascript:;'> <fmt:message
+											key="user.photo.select" bundle="${bundle}" /> <input
+										type="file"
+										style="position: absolute; z-index: 2; top: 0; filter: alpha(opacity = 0); opacity: 0; background-color: transparent; color: transparent;"
+										name="photo"
+										onchange='$("#upload-file-info").html($(this).val());'>
+									</a> &nbsp; <span class='label label-info' id="upload-file-info"></span>
 								</div>
 
-							</div>
-							<div class="form-group last">
-								<div class="col-sm-offset-3 col-sm-9">
-									<button type="submit" class="btn btn-success btn-sm">
-										<fmt:message key="btn.save" bundle="${bundle}" />
-									</button>
+
+								<div class="form-group">
+									<label for="photo" class="col-sm-3 control-label"> <fmt:message
+											key="user.photo" bundle="${bundle}" />
+									</label> <br>
+									<div style="position: relative;">
+										<img src="image/?id=<%=user.getID()%>" height="200px"
+											width="300px" align="left" />
+									</div>
 								</div>
-							</div>
+								<div class="form-group last">
+									<div class="col-sm-offset-3 col-sm-9">
+										<button type="submit" class="btn btn-success btn-sm">
+											<fmt:message key="btn.save" bundle="${bundle}" />
+										</button>
+									</div>
+								</div>
 						</form>
+						
 						<%@ include file="include/search_include.jsp"%>
 					</div>
 					<div class="panel-footer">

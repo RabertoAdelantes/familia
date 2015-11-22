@@ -23,7 +23,8 @@ public class DaoHelper {
 	public static String getSeqQuery(String connectionType, String seqName) {
 		String query = String.format(SELECT_SEQ_PERSON_NEXTVAL_FROM_DUAL,
 				seqName);
-		if (!StringUtils.isEmpty(connectionType)&&connectionType.contains(POSTGRESS_TYPE)) {
+		if (!StringUtils.isEmpty(connectionType)
+				&& connectionType.contains(POSTGRESS_TYPE)) {
 			query = String.format(SELECT_NEXTVAL_SEQ_PERSON, seqName);
 		}
 		return query;
@@ -136,7 +137,7 @@ public class DaoHelper {
 			final StringBuffer conditions, final String fieldName,
 			final Object fieldValue, final String delimiter) {
 		Pair<Integer, Object> pair = new Pair<Integer, Object>();
-		if (fieldValue != null) {
+		if (isNotBlank(fieldValue)) {
 			if (conditions.toString().isEmpty()) {
 				conditions.append(fieldName + " =?");
 			} else {
@@ -147,6 +148,14 @@ public class DaoHelper {
 			pair.put(Integer.valueOf(count), fieldValue);
 		}
 		return pair;
+	}
+
+	private static boolean isNotBlank(Object fieldValue) {
+		boolean isNotBlank = true;
+		if (fieldValue == null || fieldValue.toString().isEmpty()){
+				isNotBlank = false;
+		}
+		return isNotBlank;
 	}
 
 	public static Pair<Integer, Object> setNullCondition(

@@ -23,6 +23,8 @@ import com.ra.familia.helpers.DaoHelper;
 
 public class PersonDao extends AbstractDao<PersonBean> {
 
+	private static final String YYYY_MM_DD = "yyyy-mm-dd";
+	private static final String MM_DD_YYYY = "mm/dd/yyyy";
 	private static final Logger LOG = LoggerFactory.getLogger(PersonDao.class);
 
 
@@ -77,9 +79,9 @@ public class PersonDao extends AbstractDao<PersonBean> {
 			preparedStatement.setString(5, bean.getPassword());
 			preparedStatement.setString(6, bean.getEmail());
 			preparedStatement
-					.setTimestamp(7, getTimeStamp(bean.getDateBirth()));
+					.setTimestamp(7, getTimeStamp(bean.getDateBirth(),MM_DD_YYYY));
 			preparedStatement
-					.setTimestamp(8, getTimeStamp(bean.getDateDeath()));
+					.setTimestamp(8, getTimeStamp(bean.getDateDeath(),MM_DD_YYYY));
 			preparedStatement.setInt(9, 0);
 			preparedStatement.setInt(10, 0);
 			preparedStatement.setLong(11, pk);
@@ -115,12 +117,12 @@ public class PersonDao extends AbstractDao<PersonBean> {
 			addPair(pairs, pair);
 			
 			pair = PersonDaoHelper.setUpdateCondition(conditions, P_DATE_BIRTH,
-					bean.getDateBirth());
+					getTimeStamp(bean.getDateBirth(),YYYY_MM_DD));
 			addPair(pairs, pair);
 			
-			pair = PersonDaoHelper.setUpdateNullCondition(conditions, P_DATE_DEATH,
-					bean.getDateDeath());
-			addPairWithNull(pairs, pair);
+			pair = PersonDaoHelper.setUpdateCondition(conditions, P_DATE_DEATH,
+					getTimeStamp(bean.getDateDeath(),MM_DD_YYYY));
+			addPair(pairs, pair);
 
 			updateSql.append(conditions.toString());
 			updateSql.append(WHERE);
