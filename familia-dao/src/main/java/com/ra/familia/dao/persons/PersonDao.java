@@ -84,6 +84,7 @@ public class PersonDao extends AbstractDao<PersonBean> {
 					getTimeStamp(bean.getDateBirth(), MM_DD_YYYY));
 			preparedStatement.setTimestamp(8,
 					getTimeStamp(bean.getDateDeath(), MM_DD_YYYY));
+
 			preparedStatement.setInt(9, 0);
 			preparedStatement.setInt(10, 0);
 			preparedStatement.setLong(11, pk);
@@ -125,7 +126,6 @@ public class PersonDao extends AbstractDao<PersonBean> {
 
 			pair = PersonDaoHelper.setUpdateCondition(conditions, P_DATE_DEATH,
 					getTimeStamp(bean.getDateDeath(), MM_DD_YYYY));
-			addPair(pairs, pair);
 
 			updateSql.append(conditions.toString());
 			updateSql.append(WHERE);

@@ -7,14 +7,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ra.familia.dao.Pair;
 
 public class DaoHelper {
-
-	private static final Logger LOG = LoggerFactory.getLogger(DaoHelper.class);
 
 	private static final String SELECT_NEXTVAL_SEQ_PERSON = "SELECT nextval('%s')";
 	private static final String SELECT_SEQ_PERSON_NEXTVAL_FROM_DUAL = "select %s.nextval from dual";

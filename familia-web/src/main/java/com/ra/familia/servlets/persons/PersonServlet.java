@@ -30,6 +30,7 @@ public class PersonServlet extends GenericServlet {
 
 	private static final String ID = "id";
 	private static final String USER = "user";
+
 	private static final String PROFILE_ID = "profileId";
 	private static final Logger LOG = LoggerFactory
 			.getLogger(PersonServlet.class);
@@ -114,6 +115,7 @@ public class PersonServlet extends GenericServlet {
 			Map<String, Object> params) {
 		String profileId = StringUtils.EMPTY;
 		String[] ids = (String[]) params.get(ID);
+
 		if (!ArrayUtils.isEmpty(ids)) {
 			profileId = ids[0];
 			req.getSession().setAttribute(PROFILE_ID, profileId);
