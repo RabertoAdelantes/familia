@@ -31,14 +31,19 @@ public class PersonGroupDao extends AbstractDao<GroupBean> {
 	@Override
 	public long addItem(GroupBean bean) {
 		Connection conn = getConnection();
+		PreparedStatement preparedStatement = null;
 		long pk = getGroupSequence();
 		try {
-			PreparedStatement preparedStatement = conn.prepareStatement(INSERT_GR);
+			preparedStatement = conn.prepareStatement(INSERT_GR);
 			preparedStatement.setString(1, bean.getName());
 			preparedStatement.setInt(2, Long.valueOf(pk).intValue());
 			preparedStatement.executeUpdate();
 		} catch (SQLException exception) {
 			LOG.error(exception.getLocalizedMessage());
+		}
+		finally
+		{
+			closeConnections(preparedStatement,conn);
 		}
 		return pk;
 	}

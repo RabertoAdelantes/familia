@@ -61,8 +61,7 @@ public class MediaDao extends AbstractDao<MediaBean> {
 			throw new DaoExeception(sqlEx.getLocalizedMessage());
 		} finally {
 			IOUtils.closeQuietly(fis);
-			closePrepeareStatment(preparedStatement);
-			closeConnection(conn);
+			closeConnections(preparedStatement,conn);
 		}
 		return pk;
 	}

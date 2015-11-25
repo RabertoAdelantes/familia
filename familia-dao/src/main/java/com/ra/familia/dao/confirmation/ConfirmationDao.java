@@ -22,10 +22,11 @@ public class ConfirmationDao extends AbstractDao<ConfirmationBean> {
 
 	@Override
 	public long addItem(ConfirmationBean bean) throws DaoExeception {
+		Connection conn = getConnection();
 		PreparedStatement preparedStatement = null;
 		long pk = getConfirmSequence();
 		try {
-			preparedStatement = getConnection().prepareStatement(
+			preparedStatement = conn.prepareStatement(
 					INSERT_CONFIRMATION);
 			preparedStatement.setLong(1, bean.getUserReference());
 			preparedStatement.setString(2, bean.getLink());
@@ -35,7 +36,7 @@ public class ConfirmationDao extends AbstractDao<ConfirmationBean> {
 		} catch (SQLException sqlEx) {
 			throw new DaoExeception(sqlEx.getMessage());
 		} finally {
-			closePrepeareStatment(preparedStatement);
+			closeConnections(preparedStatement,conn);
 		}
 		return pk;
 	}
@@ -68,8 +69,8 @@ public class ConfirmationDao extends AbstractDao<ConfirmationBean> {
 		} catch (SQLException sqlEx) {
 			throw new DaoExeception(sqlEx.getMessage());
 		} finally {
-			closePrepeareStatment(preparedStatement);
-			closeConnection(conn);
+			closeConnections(preparedStatement,conn);
+
 		}
 	}
 

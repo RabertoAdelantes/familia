@@ -42,7 +42,7 @@ public class MediaRefDao extends AbstractDao<MediaRefBean> {
 		} catch (SQLException sqlEx) {
 			throw new DaoExeception(sqlEx.getLocalizedMessage());
 		} finally {
-			closePrepeareStatment(preparedStatement);
+			closeStatment(preparedStatement);
 		}
 		return primaryKey;
 	}

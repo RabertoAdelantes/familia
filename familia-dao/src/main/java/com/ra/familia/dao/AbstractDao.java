@@ -73,8 +73,7 @@ public abstract class AbstractDao<T> {
 			LOG.error("getItemByFields:" + ex.getMessage());
 			throw new DaoExeception(ex.getMessage());
 		} finally {
-			closeStatement(stmt);
-			closeConnection(conn);
+			closeConnections(stmt, conn);
 		}
 		return beans;
 	}
@@ -97,8 +96,7 @@ public abstract class AbstractDao<T> {
 					}
 				} else if (obj instanceof Timestamp && obj != null) {
 					stmt.setTimestamp(index + 1, (Timestamp) obj);
-				} else 
-				{
+				} else {
 					stmt.setString(index + 1,
 							obj == null ? null : obj.toString());
 				}
@@ -131,8 +129,7 @@ public abstract class AbstractDao<T> {
 		} catch (Exception ex) {
 			LOG.error(String.format("Get all items error :%s", ex.getMessage()));
 		} finally {
-			closeStatement(stmt);
-			closeConnection(conn);
+			closeConnections(stmt, conn);
 		}
 		return beans;
 	}
@@ -151,14 +148,14 @@ public abstract class AbstractDao<T> {
 		return timestamp;
 	}
 
-	protected void closePrepeareStatment(PreparedStatement preparedStatement)
-			throws DaoExeception {
+	protected void closeStatment(Statement statement)
+	  {
 		try {
-			if (preparedStatement != null) {
-				preparedStatement.close();
+			if (statement != null) {
+				statement.close();
 			}
 		} catch (SQLException sqlEx) {
-			throw new DaoExeception(sqlEx.getMessage());
+			LOG.equals("Close connection failed : " + sqlEx.getMessage());
 		}
 	}
 
@@ -182,7 +179,7 @@ public abstract class AbstractDao<T> {
 	protected long getPersonRelationSequence() {
 		return getNextSequence(SEQ_PERSON_REF);
 	}
-	
+
 	protected long getPersonSequence() {
 		return getNextSequence(SEQ_PERSON);
 	}
@@ -229,9 +226,13 @@ public abstract class AbstractDao<T> {
 		} catch (SQLException sqex) {
 			LOG.error("Get sequence value exception : ", sqex.getMessage());
 		} finally {
-			closeStatement(stmt);
-			closeConnection(conn);
+			closeConnections(stmt, conn);
 		}
 		return returnValue;
+	}
+
+	protected void closeConnections(Statement preparedStatement,final Connection conn) {
+		closeStatment(preparedStatement);
+		closeConnection(conn);
 	}
 }

@@ -70,9 +70,10 @@ public class PersonDao extends AbstractDao<PersonBean> {
 	@Override
 	public long addItem(PersonBean bean) throws DaoExeception {
 		PreparedStatement preparedStatement = null;
+		Connection conn = getConnection();
 		long pk = getPersonSequence();
 		try {
-			preparedStatement = getConnection()
+			preparedStatement = conn
 					.prepareStatement(INSERT_PERSONS);
 			preparedStatement.setString(1, bean.getFirstName());
 			preparedStatement.setString(2, bean.getMidleName());
@@ -92,7 +93,7 @@ public class PersonDao extends AbstractDao<PersonBean> {
 		} catch (SQLException sqlEx) {
 			throw new DaoExeception(sqlEx.getMessage());
 		} finally {
-			closePrepeareStatment(preparedStatement);
+			closeConnections(preparedStatement,conn);
 		}
 		return pk;
 	}
@@ -137,7 +138,7 @@ public class PersonDao extends AbstractDao<PersonBean> {
 			LOG.error(exception.getLocalizedMessage());
 			throw new DaoExeception(exception.getLocalizedMessage());
 		} finally {
-			closePrepeareStatment(preparedStatement);
+			closeConnections(preparedStatement,conn);
 		}
 	}
 
@@ -159,7 +160,7 @@ public class PersonDao extends AbstractDao<PersonBean> {
 			LOG.error(exception.getLocalizedMessage());
 			throw new DaoExeception(exception.getLocalizedMessage());
 		} finally {
-			closePrepeareStatment(preparedStatement);
+			closeConnections(preparedStatement,conn);
 		}
 		return result;
 	}

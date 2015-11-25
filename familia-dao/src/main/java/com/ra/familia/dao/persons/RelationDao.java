@@ -3,6 +3,7 @@ package com.ra.familia.dao.persons;
 import static com.ra.familia.dao.constants.QueriesConstants.*;
 import static com.ra.familia.dao.constants.TablesConstants.*;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,10 +28,11 @@ public class RelationDao extends AbstractDao<RelationBean> {
 
 	@Override
 	public long addItem(RelationBean bean) throws DaoExeception {
+		Connection conn = getConnection();
 		PreparedStatement preparedStatement = null;
 		long pk = getPersonRelationSequence();
 		try {
-			preparedStatement = getConnection().prepareStatement(
+			preparedStatement = conn.prepareStatement(
 					INSERT_PERSONS_RELATIONS);
 			preparedStatement.setInt(1, Integer.valueOf(bean.getPersonId()));
 			preparedStatement.setInt(2, Integer.valueOf(bean.getPersonRelationId()));
@@ -40,7 +42,7 @@ public class RelationDao extends AbstractDao<RelationBean> {
 		} catch (SQLException sqlEx) {
 			throw new DaoExeception(sqlEx.getMessage());
 		} finally {
-			closePrepeareStatment(preparedStatement);
+			closeConnections(preparedStatement, conn);
 		}
 		return pk;
 	}
