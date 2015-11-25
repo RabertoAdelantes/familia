@@ -20,6 +20,7 @@ import com.ra.familia.entities.PersonBean;
 import com.ra.familia.exceptions.FamiliaException;
 import com.ra.familia.services.PersonServiceImpl;
 import com.ra.familia.services.Services;
+import com.ra.familia.services.TypesServiceImpl;
 import com.ra.familia.servlets.GenericServlet;
 
 @WebServlet(name = "SearchServlet", displayName = "Search Servlet", urlPatterns = {
@@ -31,20 +32,23 @@ public class SearchServlet extends GenericServlet {
 	private static final long serialVersionUID = 8781195695257213199L;
 
 	private Services<PersonBean> personService = new PersonServiceImpl();
+	private TypesServiceImpl typesService = new TypesServiceImpl();
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+	protected void doPost(HttpServletRequest request, HttpServletResponse resp)
 			throws ServletException, IOException {
-		PersonBean person = getRequestParams(req);
+		PersonBean person = getRequestParams(request);
 		Set<PersonBean> persons = Sets.newHashSet();
 		if (areAnyCriterias(person)) {
 			persons = getPersonsByCriteria(person);
 		} else {
 			persons = (Set<PersonBean>) personService.getAllItems();
 		}
-
-		req.getSession().setAttribute(SEARCH_SET, persons);
-		req.getRequestDispatcher(SEARCH_JSP).forward(req, resp);
+		request.setAttribute(SEARCH_SET, persons);
+		request.setAttribute("relTypes", typesService.getRelatives());
+		request.setAttribute("currentUserId",request.getParameter("currentId"));
+		String nextUrl = request.getParameter("isRelSearch")!=null?SEARCH_REL_JSP:SEARCH_JSP;
+		request.getRequestDispatcher(nextUrl).forward(request, resp);
 	}
 
 	private boolean areAnyCriterias(PersonBean person) {

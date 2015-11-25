@@ -15,6 +15,7 @@ public final class TablesConstants {
 	public static final String SEQ_MEDIA_REF = "seq_media_ref";
 	public static final String SEQ_PLACE_REF = "seq_place_ref";
 	public static final String SEQ_CONFIRM_REF = "seq_confirm_ref";
+	public static final String SEQ_PERSON_REF = "seq_person_ref";
 	
 	//****************************** PERSONS *********************************************
 	public static final String P_TABLE = "PERSON";
@@ -55,8 +56,9 @@ public final class TablesConstants {
 	public static final String PL_TABLE = "PLACES";
 	//********************************* PERSON REFERENCES **********************************************
 	public static final String R_TABLE = "PERSONREFERENCE";
+	public static final String R_PERSON_PK = "PERSON_PK";
 	public static final String R_PERSON_FK = "PERSON_FK";
-	public static final String R_PERSON_RELATION_FK = "PERSON_RELATION_FK";
+	public static final String R_PERSON_RELATION_FK = "PERSON_RELATION_ID";
 	public static final String R_TYPES_FK = "TYPES_FK";
 	//********************************* CONFIRMATION REFERENCES **********************************************
 	public static final String C_TABLE = "USERCONFIRMATION";
@@ -64,4 +66,5 @@ public final class TablesConstants {
 	public static final String C_LINK = "LINK";
 	public static final String C_DATE = "EXPIRE_DATE";
 	public static final String C_ISUSED = "ISUSED";
+	
 }

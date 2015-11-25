@@ -63,20 +63,15 @@ public class DaoHelper {
 		return isNumeric;
 	}
 
-	public static boolean isParameterInRowSet(final ResultSet rowSet,
-			String columnName) {
-		boolean isInRowSet = false;
+	public static boolean isColumnExist(final ResultSet rs, String columnLabel) {
+		boolean isExist = false;
 		try {
-			for (int index = 1; index < rowSet.getMetaData().getColumnCount() + 1; index++) {
-				String name = rowSet.getMetaData().getColumnName(index);
-				if (name.equalsIgnoreCase(columnName)) {
-					isInRowSet = true;
-				}
-			}
-		} catch (SQLException sqlEx) {
-			LOG.warn(sqlEx.getMessage());
+			rs.findColumn(columnLabel);
+			isExist = true;
+		} catch (SQLException exc) {
+
 		}
-		return isInRowSet;
+		return isExist;
 	}
 
 	public static Pair<Integer, Object> setUpdateCondition(

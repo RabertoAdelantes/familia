@@ -1,8 +1,8 @@
 <%@ include file="include/localized_header.jsp"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="jgc" uri="WEB-INF/custom.tld"%>
-
-
+<%@ page import="com.ra.familia.entities.PersonBean"%>
+<%@ page import="java.util.Set"%>
 <jsp:useBean id="user" class="com.ra.familia.entities.PersonBean"
 	scope="request" />
 
@@ -159,6 +159,34 @@
 											width="300px" align="left" />
 									</div>
 								</div>
+
+								<div class="form-group">
+									<label for="relatives" class="col-sm-3 control-label">
+										<fmt:message key="user.relatives" bundle="${bundle}" />
+									</label>
+									<table width="600px" cellpadding="5" style="border:1px solid gray">
+										<tbody>
+											<tr style="border:1px solid gray">
+												<td style="border:1px solid gray" width="150px" align="center"><b><fmt:message
+															key="user.name.first" bundle="${bundle}" /></b></td>
+												<td style="border:1px solid gray" width="150px" align="center"><b><fmt:message
+															key="user.name.midle" bundle="${bundle}" /></b></td>
+												<td style="border:1px solid gray" width="150px" align="center"><b><fmt:message
+															key="user.name.last" bundle="${bundle}" /></b></td>
+												<td style="border:1px solid gray" width="50px" align="center"><b><fmt:message
+															key="user.relatives" bundle="${bundle}" /></b></td>
+											</tr>
+											<c:forEach items="${requestScope.relatives}" var="person">
+												<tr style="border:1px solid gray">
+													<td style="border:1px solid gray" align="center">${person.firstName}</td>
+													<td style="border:1px solid gray" align="center">${person.midleName}</td>
+													<td style="border:1px solid gray" align="center">${person.secondName}</td>
+													<td style="border:1px solid gray" align="center">${person.connection}</td>
+												</tr>
+											</c:forEach>
+									</table>
+								</div>
+
 								<div class="form-group last">
 									<div class="col-sm-offset-3 col-sm-9">
 										<button type="submit" class="btn btn-success btn-sm">
@@ -167,7 +195,19 @@
 									</div>
 								</div>
 						</form>
-						
+
+						<form class="form-horizontal" role="profile" method="post"
+							action="relatives">
+							<input type="text" value="${user.getID()}" name="currentUserId"
+								hidden="true" />
+							<div class="form-group last">
+								<div class="col-sm-offset-3 col-sm-9">
+									<button type="submit" class="btn btn-success btn-sm">
+										<fmt:message key="btn.updaterelatives" bundle="${bundle}" />
+									</button>
+								</div>
+							</div>
+						</form>
 						<%@ include file="include/search_include.jsp"%>
 					</div>
 					<div class="panel-footer">

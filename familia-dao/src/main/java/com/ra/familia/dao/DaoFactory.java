@@ -5,6 +5,7 @@ import com.ra.familia.dao.media.MediaDao;
 import com.ra.familia.dao.media.MediaRefDao;
 import com.ra.familia.dao.persons.PersonDao;
 import com.ra.familia.dao.persons.PersonGroupDao;
+import com.ra.familia.dao.persons.RelationDao;
 import com.ra.familia.dao.types.TypesDao;
 
 public final class DaoFactory {
@@ -16,6 +17,7 @@ public final class DaoFactory {
 	private static MediaRefDao mediaRefDao = new MediaRefDao();
 	private static TypesDao typesDao = new TypesDao();
 	private static ConfirmationDao confirmationDao = new ConfirmationDao();
+	private static RelationDao relationDao = new RelationDao();
 	
 	private DaoFactory()
 	{
@@ -57,6 +59,11 @@ public final class DaoFactory {
 	public ConfirmationDao getConfirmationDao()
 	{
 		return confirmationDao;
+	}
+	
+	public RelationDao getRelationDao()
+	{
+		return relationDao;
 	}
 
 }

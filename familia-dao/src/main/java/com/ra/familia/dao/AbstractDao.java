@@ -179,6 +179,10 @@ public abstract class AbstractDao<T> {
 		return new java.sql.Date(today.getTime());
 	}
 
+	protected long getPersonRelationSequence() {
+		return getNextSequence(SEQ_PERSON_REF);
+	}
+	
 	protected long getPersonSequence() {
 		return getNextSequence(SEQ_PERSON);
 	}

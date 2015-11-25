@@ -27,12 +27,12 @@ public class PersonDao extends AbstractDao<PersonBean> {
 	private static final String MM_DD_YYYY = "mm/dd/yyyy";
 	private static final Logger LOG = LoggerFactory.getLogger(PersonDao.class);
 
-
 	public PersonBean getItemByName(final PersonBean bean) throws DaoExeception {
 		StringBuffer where = new StringBuffer();
 		List<Pair<Integer, Object>> pairs = new ArrayList<>();
 		PersonDaoHelper.fillSearchByName(bean, where, pairs);
-		return getItemByField(SELECT_PERSONS_FULL, WHERE + where.toString(), pairs);
+		return getItemByField(SELECT_PERSONS_FULL, WHERE + where.toString(),
+				pairs);
 	}
 
 	public PersonBean getItemByEmail(final PersonBean bean)
@@ -49,7 +49,8 @@ public class PersonDao extends AbstractDao<PersonBean> {
 		PersonBean bean = new PersonBean();
 		bean.setID(id);
 		PersonDaoHelper.fillSearchById(bean, where, pairs);
-		return getItemByField(SELECT_PERSONS_FULL, WHERE + where.toString(), pairs);
+		return getItemByField(SELECT_PERSONS_FULL, WHERE + where.toString(),
+				pairs);
 	}
 
 	public Set<PersonBean> getItemsByName(final PersonBean bean)
@@ -57,9 +58,10 @@ public class PersonDao extends AbstractDao<PersonBean> {
 		StringBuffer where = new StringBuffer();
 		List<Pair<Integer, Object>> pairs = new ArrayList<>();
 		PersonDaoHelper.fillSearchAll(bean, where, pairs);
-		return getItemByFields(SELECT_PERSONS_FULL, WHERE + where.toString(), pairs);
+		return getItemByFields(SELECT_PERSONS_FULL, WHERE + where.toString(),
+				pairs);
 	}
-	
+
 	@Override
 	public PersonBean fillBean(ResultSet rs) throws SQLException {
 		return PersonDaoHelper.fillBeanByRs(rs);
@@ -78,10 +80,10 @@ public class PersonDao extends AbstractDao<PersonBean> {
 			preparedStatement.setString(4, bean.getLastName2());
 			preparedStatement.setString(5, bean.getPassword());
 			preparedStatement.setString(6, bean.getEmail());
-			preparedStatement
-					.setTimestamp(7, getTimeStamp(bean.getDateBirth(),MM_DD_YYYY));
-			preparedStatement
-					.setTimestamp(8, getTimeStamp(bean.getDateDeath(),MM_DD_YYYY));
+			preparedStatement.setTimestamp(7,
+					getTimeStamp(bean.getDateBirth(), MM_DD_YYYY));
+			preparedStatement.setTimestamp(8,
+					getTimeStamp(bean.getDateDeath(), MM_DD_YYYY));
 			preparedStatement.setInt(9, 0);
 			preparedStatement.setInt(10, 0);
 			preparedStatement.setLong(11, pk);
@@ -96,6 +98,7 @@ public class PersonDao extends AbstractDao<PersonBean> {
 
 	@Override
 	public void updateItem(PersonBean bean) throws DaoExeception {
+		PreparedStatement preparedStatement = null;
 		Connection conn = getConnection();
 		List<Pair<Integer, Object>> pairs = new ArrayList<>();
 		try {
@@ -115,30 +118,50 @@ public class PersonDao extends AbstractDao<PersonBean> {
 			pair = PersonDaoHelper.setUpdateCondition(conditions, P_EMAIL,
 					bean.getEmail());
 			addPair(pairs, pair);
-			
+
 			pair = PersonDaoHelper.setUpdateCondition(conditions, P_DATE_BIRTH,
-					getTimeStamp(bean.getDateBirth(),YYYY_MM_DD));
+					getTimeStamp(bean.getDateBirth(), YYYY_MM_DD));
 			addPair(pairs, pair);
-			
+
 			pair = PersonDaoHelper.setUpdateCondition(conditions, P_DATE_DEATH,
-					getTimeStamp(bean.getDateDeath(),MM_DD_YYYY));
+					getTimeStamp(bean.getDateDeath(), MM_DD_YYYY));
 			addPair(pairs, pair);
 
 			updateSql.append(conditions.toString());
 			updateSql.append(WHERE);
 			updateSql.append(P_TABLE + "." + PK + "=" + bean.getID());
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(updateSql.toString());
+			preparedStatement = conn.prepareStatement(updateSql.toString());
 			fillStatmentParameters(pairs, preparedStatement);
 			preparedStatement.executeUpdate();
 		} catch (SQLException exception) {
 			LOG.error(exception.getLocalizedMessage());
 			throw new DaoExeception(exception.getLocalizedMessage());
+		} finally {
+			closePrepeareStatment(preparedStatement);
 		}
 	}
 
 	public Collection<PersonBean> getAllItems() {
 		return super.getAllItems(SELECT_PERSONS_FULL);
+	}
+
+	public Set<PersonBean> getRelatives(String userId) throws DaoExeception {
+		PreparedStatement preparedStatement = null;
+		Connection conn = getConnection();
+		Set<PersonBean> result = null;
+		try {
+			preparedStatement = conn
+					.prepareStatement(SELECT_RELATIVES_FOR_PERSON);
+			preparedStatement.setInt(1, Integer.valueOf(userId));
+			ResultSet rs = preparedStatement.executeQuery();
+			result = fillBeans(rs);
+		} catch (SQLException exception) {
+			LOG.error(exception.getLocalizedMessage());
+			throw new DaoExeception(exception.getLocalizedMessage());
+		} finally {
+			closePrepeareStatment(preparedStatement);
+		}
+		return result;
 	}
 
 }

@@ -20,6 +20,7 @@ public final class UrlsConstants {
 	public static final String BEAN = "bean";
 	// jsp pages
 	public static final String SEARCH_JSP = "/search.jsp";
+	public static final String SEARCH_REL_JSP = "/relatives_search.jsp";
 	public static final String INDEX_JSP = "/index.jsp";
 	public static final String ACTIVATE_JSP = "activated_success.jsp";
 	public static final String ACTIVATE_FAILED_JSP = "activation_failed.jsp";

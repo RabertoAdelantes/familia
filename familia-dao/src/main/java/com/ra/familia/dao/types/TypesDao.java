@@ -48,4 +48,5 @@ public class TypesDao extends AbstractDao<TypeBean> {
 		TypeHelper.fillTypeById(bean, where, pairs);
 		return getItemByField(SELECT_TYPES, WHERE + where.toString(), pairs);
 	}
+
 }

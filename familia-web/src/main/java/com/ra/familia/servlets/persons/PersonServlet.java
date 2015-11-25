@@ -4,6 +4,7 @@ import static com.ra.familia.servlets.constants.UrlsConstants.*;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,6 +28,8 @@ import com.ra.familia.servlets.GenericServlet;
 		"/profile", "/select", "/Profile", "/Select" })
 public class PersonServlet extends GenericServlet {
 
+	private static final String ID = "id";
+	private static final String USER = "user";
 	private static final String PROFILE_ID = "profileId";
 	private static final Logger LOG = LoggerFactory
 			.getLogger(PersonServlet.class);
@@ -45,43 +48,72 @@ public class PersonServlet extends GenericServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String redirectUrl = PROFILE_JSP;
-		String profileId = req.getParameter("id");
+		String redirectUrl = null;
+		PersonBean personBean = null;
+		String profileId = req.getParameter(ID);
 		if (ServletFileUpload.isMultipartContent(req)
 				&& StringUtils.isEmpty(profileId)) {
-			PersonBean bean = getParamsFromMultipleForm(req);
-			ioService.storageFile(bean);
-			try {
-				if (personService.getById(bean.getID()) == null) {
-					personService.addItem(bean);
-					redirectUrl = req.getContextPath();
-				} else {
-					personService.updateItem(bean);
-				}
-			} catch (FamiliaException ex) {
-				req.setAttribute(REQ_ERROR, CAN_NOT_COMPLETE);
-				LOG.error(ex.getMessage());
-			}
+			redirectUrl = handleMultiRequest(req);
 		} else {
-			Map<String, Object> params = getParameters(req);
-			try {
-				if (StringUtils.isEmpty(profileId)) {
-					profileId = getProfileId(req, params);
-				}
-				PersonBean personBean = personService.getById(profileId);
-				req.setAttribute("user", personBean);
-			} catch (FamiliaException ex) {
-				LOG.error(ex.getMessage());
+			personBean = (PersonBean) req.getAttribute(USER);
+			if (personBean == null) {
+				personBean = handleRequest(req, profileId);
+				req.setAttribute(USER, personBean);
 			}
 		}
-		req.getRequestDispatcher(redirectUrl).forward(req, resp);
+		Set<PersonBean> relatives = getRelatives(personBean.getID());
+		req.setAttribute("relatives", relatives);
+		req.getRequestDispatcher(
+				redirectUrl == null ? PROFILE_JSP : redirectUrl).forward(req,
+				resp);
+	}
 
+	private Set<PersonBean> getRelatives(String userId) {
+		Set<PersonBean> result = null;
+		try {
+			return ((PersonServiceImpl) personService).getRelatives(userId);
+		} catch (FamiliaException ex) {
+			LOG.error(ex.getMessage());
+		}
+		return result;
+	}
+
+	private PersonBean handleRequest(HttpServletRequest req, String profileId) {
+		Map<String, Object> params = getParameters(req);
+		PersonBean personBean = null;
+		try {
+			if (StringUtils.isEmpty(profileId)) {
+				profileId = getProfileId(req, params);
+			}
+			personBean = personService.getById(profileId);
+		} catch (FamiliaException ex) {
+			LOG.error(ex.getMessage());
+		}
+		return personBean;
+	}
+
+	private String handleMultiRequest(HttpServletRequest req) {
+		String redirectUrl = PROFILE_JSP;
+		PersonBean bean = getParamsFromMultipleForm(req);
+		ioService.storageFile(bean);
+		try {
+			if (personService.getById(bean.getID()) == null) {
+				personService.addItem(bean);
+				redirectUrl = req.getContextPath();
+			} else {
+				personService.updateItem(bean);
+			}
+		} catch (FamiliaException ex) {
+			req.setAttribute(REQ_ERROR, CAN_NOT_COMPLETE);
+			LOG.error(ex.getMessage());
+		}
+		return redirectUrl;
 	}
 
 	private String getProfileId(HttpServletRequest req,
 			Map<String, Object> params) {
 		String profileId = StringUtils.EMPTY;
-		String[] ids = (String[]) params.get("id");
+		String[] ids = (String[]) params.get(ID);
 		if (!ArrayUtils.isEmpty(ids)) {
 			profileId = ids[0];
 			req.getSession().setAttribute(PROFILE_ID, profileId);

@@ -19,6 +19,7 @@ public class PersonBean implements SuperBean{
 	private boolean isActive;
 	private String groupId;
 	private String confirmationUuid;
+	private String connection;
 	
 	public String getFirstName() {
 		return firstName;
@@ -148,6 +149,14 @@ public class PersonBean implements SuperBean{
 
 	public void setConfirmationUuid(String confirmationUuid) {
 		this.confirmationUuid = confirmationUuid;
+	}
+
+	public String getConnection() {
+		return connection;
+	}
+
+	public void setConnection(String connection) {
+		this.connection = connection;
 	}
 
 }

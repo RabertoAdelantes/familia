@@ -1,7 +1,9 @@
 package com.ra.familia.services;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.ra.familia.dao.DaoFactory;
 import com.ra.familia.dao.types.TypesDao;
@@ -43,6 +45,11 @@ public class TypesServiceImpl implements Services<TypeBean> {
 	public Collection<TypeBean> getAllItems() {
 		throw new UnsupportedOperationException("Not implemnted yet");
 
+	}
+
+	public List<TypeBean> getRelatives() {
+		return typesDao.getAllItems().stream()
+				.filter(type -> Integer.valueOf(type.getID()) > 2000).collect(Collectors.toList());				
 	}
 
 }

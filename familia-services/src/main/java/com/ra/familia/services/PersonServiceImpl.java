@@ -72,9 +72,10 @@ public class PersonServiceImpl implements Services<PersonBean> {
 		try {
 			persons = personDao.getItemsByName(person);
 		} catch (DaoExeception daoEx) {
+			LOG.error(daoEx.getMessage());
 			throw new FamiliaException(daoEx);
 		}
-		//addPersonsToCashe(persons);
+		addPersonsToCashe(persons);
 		return persons;
 	}
 
@@ -94,15 +95,24 @@ public class PersonServiceImpl implements Services<PersonBean> {
 		imgCashe.add(person);
 	}
 
-//	private void addPersonsToCashe(Collection<PersonBean> persons) {
-//		if (!CollectionUtils.isEmpty(persons)) {
-//			persons.forEach(person -> imgCashe.add(person));
-//		}
-//	}
+	private void addPersonsToCashe(Collection<PersonBean> persons) {
+		if (persons!=null&&!persons.isEmpty()) {
+			persons.forEach(person -> imgCashe.add(person));
+		}
+	}
 
 	@Override
 	public Collection<PersonBean> getAllItems() {
 		return personDao.getAllItems();
+	}
+
+	public Set<PersonBean> getRelatives(String userId) throws FamiliaException {
+		try {
+			return personDao.getRelatives(userId);
+		} catch (DaoExeception daoEx) {
+			LOG.error(daoEx.getMessage());
+			throw new FamiliaException(daoEx);
+		}
 	}
 
 }
