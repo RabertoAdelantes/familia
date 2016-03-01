@@ -4,7 +4,7 @@
 <%@ include file="resources/include/localized_header.jsp"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
 
-<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="resources/css/main.css">
 <title>Activation</title>
 </head>
 <body bgcolor="white">
