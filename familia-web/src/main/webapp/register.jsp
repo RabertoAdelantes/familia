@@ -24,8 +24,8 @@
 <script
 	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/main_reg.css"/>
-<script	src="${pageContext.request.contextPath}/js/familia.js"></script>
+<link rel="stylesheet" href="resources/css/main_reg.css"/>
+<script	src="resources/js/familia.js"></script>
 
 <body bgcolor="white">
 	<div class="container">

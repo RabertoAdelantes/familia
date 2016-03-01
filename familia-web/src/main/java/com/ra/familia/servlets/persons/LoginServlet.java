@@ -12,14 +12,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+
 import com.google.common.collect.Maps;
 import com.ra.familia.entities.PersonBean;
 import com.ra.familia.services.EncryptionService;
 import com.ra.familia.services.PersonServiceImpl;
 import com.ra.familia.servlets.GenericServlet;
 
-@WebServlet(name = "LoginServlet", displayName = "Authorization Servlet", urlPatterns = {
-		"/login", "/Login" }, loadOnStartup = 1)
+@WebServlet(name = "LoginServlet", displayName = "Authorization Servlet", urlPatterns = { "/login",
+		"/Login" }, loadOnStartup = 1)
 public class LoginServlet extends GenericServlet {
 
 	private static final long serialVersionUID = 4583682557004705736L;
@@ -28,14 +32,12 @@ public class LoginServlet extends GenericServlet {
 	private PersonServiceImpl personService = new PersonServiceImpl();
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		String email = req.getParameter(EMAIL);
 		String password = req.getParameter(PASSWORD);
@@ -46,13 +48,16 @@ public class LoginServlet extends GenericServlet {
 
 		if (nextStep == null) {
 			req.getRequestDispatcher("index.jsp").forward(req, resp);
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if (auth != null) {
+				new SecurityContextLogoutHandler().logout(req, resp, auth);
+			}
 		} else {
 			resp.sendRedirect("search.jsp");
 		}
 	}
 
-	private void handleErrorMessages(Map<String, Object> errorMap,
-			HttpServletRequest req) {
+	private void handleErrorMessages(Map<String, Object> errorMap, HttpServletRequest req) {
 		errorMap.forEach((param, value) -> {
 			if (USER_BEAN.equals(param)) {
 				HttpSession session = req.getSession(true);
@@ -63,8 +68,7 @@ public class LoginServlet extends GenericServlet {
 		});
 	}
 
-	private String performLogin(String email, String password,
-			Map<String, Object> errorMap) {
+	private String performLogin(String email, String password, Map<String, Object> errorMap) {
 		String nextStep = null;
 		PersonBean person = getUserByEmailAndPassword(email, password);
 		if (person == null) {
@@ -81,8 +85,7 @@ public class LoginServlet extends GenericServlet {
 		return nextStep;
 	}
 
-	private PersonBean getUserByEmailAndPassword(final String email,
-			final String password) {
+	private PersonBean getUserByEmailAndPassword(final String email, final String password) {
 		PersonBean person = new PersonBean();
 		person.setPassword(encryptionService.encode(password));
 		person.setEmail(email);

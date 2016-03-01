@@ -8,9 +8,10 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.ra.familia.dao.PropertiesManager;
-
+@Service("encryptionService")
 public class EncryptionService {
 
 	private static final String CHARSET = "UTF-8";

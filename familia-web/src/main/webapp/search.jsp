@@ -1,7 +1,7 @@
 <%@ taglib prefix="jgc" uri="WEB-INF/custom.tld"%>
 <%@ page import="com.ra.familia.entities.PersonBean"%>
 <%@ page import="java.util.Set"%>
-<%@ include file="include/localized_header.jsp"%>
+<%@ include file="resources/include/localized_header.jsp"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -25,7 +25,8 @@
 <script
 	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
 
-<link href="css/main_reg.css" rel="stylesheet">
+<link href="resources/css/main_reg.css" rel="stylesheet">
+
 <title>Search</title>
 </head>
 <body bgcolor="white">

@@ -9,11 +9,13 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
 import com.google.common.collect.Sets;
 import com.ra.familia.entities.PersonBean;
@@ -23,11 +25,10 @@ import com.ra.familia.services.Services;
 import com.ra.familia.services.TypesServiceImpl;
 import com.ra.familia.servlets.GenericServlet;
 
-@WebServlet(name = "SearchServlet", displayName = "Search Servlet", urlPatterns = {
-		"/search", "/Search" })
+@WebServlet(name = "SearchServlet", displayName = "Search Servlet", urlPatterns = { "/search", "/Search" })
 public class SearchServlet extends GenericServlet {
-	private static final Logger LOG = LoggerFactory
-			.getLogger(SearchServlet.class);
+
+	private static final Logger LOG = LoggerFactory.getLogger(SearchServlet.class);
 
 	private static final long serialVersionUID = 8781195695257213199L;
 
@@ -35,8 +36,7 @@ public class SearchServlet extends GenericServlet {
 	private TypesServiceImpl typesService = new TypesServiceImpl();
 
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
 		PersonBean person = getRequestParams(request);
 		Set<PersonBean> persons = Sets.newHashSet();
 		if (areAnyCriterias(person)) {
@@ -46,19 +46,16 @@ public class SearchServlet extends GenericServlet {
 		}
 		request.setAttribute(SEARCH_SET, persons);
 		request.setAttribute("relTypes", typesService.getRelatives());
-		request.setAttribute("currentUserId",request.getParameter("currentId"));
-		String nextUrl = request.getParameter("isRelSearch")!=null?SEARCH_REL_JSP:SEARCH_JSP;
+		request.setAttribute("currentUserId", request.getParameter("currentId"));
+		String nextUrl = request.getParameter("isRelSearch") != null ? SEARCH_REL_JSP : SEARCH_JSP;
 		request.getRequestDispatcher(nextUrl).forward(request, resp);
 	}
 
 	private boolean areAnyCriterias(PersonBean person) {
 		boolean isValid = true;
-		if (StringUtils.isEmpty(person.getFirstName())
-				&& StringUtils.isEmpty(person.getEmail())
-				&& StringUtils.isEmpty(person.getMidleName())
-				&& StringUtils.isEmpty(person.getSecondName())
-				&& StringUtils.isEmpty(person.getDateBirth())
-				&& StringUtils.isEmpty(person.getDateDeath())) {
+		if (StringUtils.isEmpty(person.getFirstName()) && StringUtils.isEmpty(person.getEmail())
+				&& StringUtils.isEmpty(person.getMidleName()) && StringUtils.isEmpty(person.getSecondName())
+				&& StringUtils.isEmpty(person.getDateBirth()) && StringUtils.isEmpty(person.getDateDeath())) {
 			isValid = false;
 		}
 		return isValid;
@@ -75,18 +72,17 @@ public class SearchServlet extends GenericServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		HttpSession session = req.getSession(false);
-		PersonBean person = (PersonBean) session.getAttribute(USER_BEAN);
-		if (person == null) {
-			req.getRequestDispatcher(INDEX_JSP).forward(req, resp);
-		} else {
-			String id = req.getParameter(ID);
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth.isAuthenticated() && !ANONYMOUS_USER.equals(auth.getName())) {
+			User user = (User) auth.getPrincipal();
+			String id = user.getUsername();
 			if (isValidPersonId(id)) {
 				req.setAttribute(ID, id);
 			}
 			doPost(req, resp);
+		} else {
+			resp.sendRedirect(req.getContextPath()+"/login");
 		}
 	}
 

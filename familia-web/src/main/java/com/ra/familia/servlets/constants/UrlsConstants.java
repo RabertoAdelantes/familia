@@ -8,6 +8,7 @@ public final class UrlsConstants {
 		
 	}
 	// session attributes
+	public static final String ANONYMOUS_USER = "anonymousUser";
 	public static final String IS_ADMIN = "isAdmin";
 	public static final String USER_BEAN = "user";
 	public static final String SEARCH_SET = "result";

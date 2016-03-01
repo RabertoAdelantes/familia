@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<%@ include file="include/localized_header.jsp"%>
+<%@ include file="resources/include/localized_header.jsp"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
 
 <link rel="stylesheet" href="css/main.css">

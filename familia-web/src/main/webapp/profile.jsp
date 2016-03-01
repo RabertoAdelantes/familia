@@ -1,4 +1,4 @@
-<%@ include file="include/localized_header.jsp"%>
+<%@ include file="resources/include/localized_header.jsp"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="jgc" uri="WEB-INF/custom.tld"%>
 <%@ page import="com.ra.familia.entities.PersonBean"%>
@@ -28,9 +28,9 @@
 
 <script
 	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
-<script src="js/familia.js"></script>
+<script src="resources/js/familia.js"></script>
 
-<link href="css/main_reg.css" rel="stylesheet">
+<link href="resources/css/main_reg.css" rel="stylesheet">
 </head>
 <body bgcolor="white">
 	<div class="container">
@@ -208,7 +208,7 @@
 								</div>
 							</div>
 						</form>
-						<%@ include file="include/search_include.jsp"%>
+						<%@ include file="resources/include/search_include.jsp"%>
 					</div>
 					<div class="panel-footer">
 						<p>
@@ -217,7 +217,7 @@
 								<fmt:message key="comments.dates" bundle="${bundle}" />
 							</h5>
 						</div>
-						<jsp:include page="include/error_include.jsp" />
+						<jsp:include page="resources/include/error_include.jsp" />
 					</div>
 				</div>
 			</div>

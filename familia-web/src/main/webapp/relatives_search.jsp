@@ -2,7 +2,7 @@
 <%@ page import="com.ra.familia.entities.PersonBean"%>
 <%@ page import="com.ra.familia.entities.TypeBean"%>
 <%@ page import="java.util.Set"%>
-<%@ include file="include/localized_header.jsp"%>
+<%@ include file="resources/include/localized_header.jsp"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>

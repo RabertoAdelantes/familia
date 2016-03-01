@@ -70,7 +70,7 @@ public class DaoHelper {
 			rs.findColumn(columnLabel);
 			isExist = true;
 		} catch (SQLException exc) {
-			LOG.debug(String.format("Jdbc column $s doesn't exists",columnLabel));
+			LOG.debug(String.format("Jdbc column %s doesn't exists",columnLabel));
 		}
 		return isExist;
 	}
