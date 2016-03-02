@@ -1,26 +1,11 @@
-<%@ include file="resources/include/localized_header.jsp"%>
-<%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="jgc" uri="WEB-INF/custom.tld"%>
-<%@ page import="com.ra.familia.entities.PersonBean"%>
-<%@ page import="java.util.Set"%>
-<jsp:useBean id="user" class="com.ra.familia.entities.PersonBean"
-	scope="request" />
+<%@ page language="java" pageEncoding="UTF-8"%>
 
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Personal profile</title>
-<link rel="stylesheet"
-	href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
-<script src="http://code.jquery.com/jquery-1.11.3.js"></script>
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-
-<link
-	href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"
-	rel="stylesheet">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
+<%@ include file="resources/include/localized_header.jsp"%>
 <link rel="stylesheet"
 	href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css" />
 <link rel="stylesheet"

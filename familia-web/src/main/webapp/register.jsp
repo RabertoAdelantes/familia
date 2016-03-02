@@ -1,20 +1,10 @@
-<%@ include file="resources/include/localized_header.jsp"%>
-<%@ page language="java" pageEncoding="UTF-8"%>
-
 <html>
 <head>
 <title>Registration</title>
 </head>
-<link rel="stylesheet"
-	href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
-<script src="http://code.jquery.com/jquery-1.11.3.js"></script>
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-
-<link
-	href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"
-	rel="stylesheet">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ include file="resources/include/localized_header.jsp"%>
+<link href="resources/css/main.css" rel="stylesheet">
 
 <link rel="stylesheet"
 	href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css" />
